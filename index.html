@@ -111,7 +111,17 @@ nav {
 }
 @keyframes floatOrb { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-20px,30px)} }
 
-.hero-inner { position: relative; z-index: 2; max-width: 800px; width: 100%; margin: 0 auto; }
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* TÜM İÇERİĞİ ORTALAR */
+}
 
 /* ── YENİ: Profil Fotoğrafı Stili ── */
 .hero-profile-img {
