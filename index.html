@@ -113,6 +113,22 @@ nav {
 
 .hero-inner { position: relative; z-index: 2; max-width: 800px; width: 100%; margin: 0 auto; }
 
+/* ── YENİ: Profil Fotoğrafı Stili ── */
+.hero-profile-img {
+  width: 150px; /* Fotoğraf boyutu */
+  height: 150px;
+  border-radius: 50%; /* Yuvarlak olması için */
+  object-fit: cover; /* Fotoğrafın sünmemesi için */
+  border: 2px solid var(--green); /* Yeşil kenarlık */
+  box-shadow: 0 0 20px var(--glow); /* Yeşil parlama efekti */
+  margin-bottom: 1.5rem; /* İsim ile arasındaki boşluk */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.hero-profile-img:hover {
+  transform: scale(1.05); /* Üzerine gelince hafif büyüme */
+  box-shadow: 0 0 30px rgba(0,230,118,0.6); /* Daha güçlü parlama */
+}
+
 .terminal-badge {
   display: inline-flex; align-items: center; gap: 0.6rem;
   font-family: var(--mono); font-size: 0.72rem;
@@ -373,20 +389,19 @@ footer span { color: var(--cyan); }
   .hero-stats{gap:2rem;flex-wrap:wrap}
   .about-grid{grid-template-columns:1fr;gap:2rem}
   footer{flex-direction:column;gap:0.5rem;text-align:center}
+  /* Mobilde fotoğrafı biraz küçültelim */
+  .hero-profile-img { width: 120px; height: 120px; }
 }
 </style>
 </head>
 <body>
 
-<!-- Cursor -->
 <div id="cur-dot"></div>
 <div id="cur-ring"></div>
 
-<!-- Matrix background -->
 <canvas id="matrix-bg"></canvas>
 <div class="scanlines"></div>
 
-<!-- NAV -->
 <nav>
   <div class="nav-logo">HAS<span>::</span>portfolio</div>
   <ul class="nav-links">
@@ -397,11 +412,12 @@ footer span { color: var(--cyan); }
   </ul>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
   <div class="orb1"></div>
   <div class="orb2"></div>
   <div class="hero-inner">
+    <img src="alperen.jpg" alt="Hüseyin Alperen Şenel" class="hero-profile-img">
+
     <div class="terminal-badge"><span class="dot"></span>SYS://ISTANBUL &nbsp;·&nbsp; ONLINE &nbsp;·&nbsp; READY</div>
     <h1>
       Hüseyin<br>
@@ -430,7 +446,6 @@ footer span { color: var(--cyan); }
   </div>
 </section>
 
-<!-- SKILLS -->
 <section id="skills">
 <div class="inner">
   <div class="sec-tag">Yetenekler</div>
@@ -465,14 +480,13 @@ footer span { color: var(--cyan); }
       <div class="skill-val">İngilizce <span class="hl">(B1)</span> · Rusça <span class="hl">(A1)</span></div>
     </div>
     <div class="skill-card fade-in"><span class="skill-num">[08]</span>
-      <div class="skill-label">Sertifikalar</div>
+      <div class="skill-val">Sertifikalar</div>
       <div class="skill-val">Bilgisayar Programcılığı (İst. Üni.) · Amatör Denizci · İHA/Drone Pilotu · A & B Sınıfı Ehliyet</div>
     </div>
   </div>
 </div>
 </section>
 
-<!-- EXPERIENCE -->
 <section id="experience">
 <div class="inner">
   <div class="sec-tag">Deneyim</div>
@@ -500,7 +514,7 @@ footer span { color: var(--cyan); }
       </div>
       <ul class="t-list">
         <li>Kurumsal ağ altyapısı yönetimi süreçlerine destek sağlayarak günlük operasyonların kesintisiz yürümesine katkıda bulundum.</li>
-        <li>Ağ ve yazılım sorunlarında L1 arıza tespiti ve giderme işlemleri yaparak müşteri problemlerini hızla çözdüm.</li>
+        <li>Ağ og yazılım sorunlarında L1 arıza tespiti ve giderme işlemleri yaparak müşteri problemlerini hızla çözdüm.</li>
         <li>Karmaşık problemleri L2/L3 teknik ekiplerine eskalasyon süreçleriyle yönettim.</li>
       </ul>
     </div>
@@ -541,7 +555,6 @@ footer span { color: var(--cyan); }
 </div>
 </section>
 
-<!-- PROJECTS -->
 <section id="projects">
 <div class="inner">
   <div class="sec-tag">Projeler</div>
@@ -575,7 +588,6 @@ footer span { color: var(--cyan); }
 </div>
 </section>
 
-<!-- ABOUT -->
 <section id="about">
 <div class="inner">
   <div class="sec-tag">Hakkımda & İletişim</div>
@@ -613,13 +625,11 @@ footer span { color: var(--cyan); }
 </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div>© 2025 <span>Hüseyin Alperen Şenel</span> — IT & Helpdesk Uzmanı</div>
   <div style="font-size:0.67rem;color:var(--dim)">📍 İstanbul · <span>alperensenel37@gmail.com</span></div>
 </footer>
 
-<!-- CONTACT MODAL -->
 <div id="contactModal" class="modal-backdrop">
   <div class="modal-bg" onclick="closeContact()"></div>
   <div class="modal-box">
