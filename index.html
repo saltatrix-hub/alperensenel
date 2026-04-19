@@ -32,314 +32,285 @@
   --disp:   'Syne', sans-serif;
 }
 
-*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body { background: var(--dark); color: var(--text); font-family: var(--sans); overflow-x: hidden; cursor: crosshair; }
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { background:var(--dark); color:var(--text); font-family:var(--sans); overflow-x:hidden; cursor:crosshair; }
 
-/* ── CUSTOM CURSOR ── */
-#cur-dot {
-  position: fixed; width: 10px; height: 10px;
-  background: var(--cyan); border-radius: 50%;
-  pointer-events: none; z-index: 999999; display: none;
-  box-shadow: 0 0 8px var(--cyan), 0 0 20px rgba(0,255,170,0.4);
-}
-#cur-ring {
-  position: fixed; width: 32px; height: 32px;
-  border: 1px solid var(--green); border-radius: 50%;
-  pointer-events: none; z-index: 999998; display: none;
-}
+/* CURSOR */
+#cur-dot { position:fixed; width:10px; height:10px; background:var(--cyan); border-radius:50%; pointer-events:none; z-index:999999; display:none; box-shadow:0 0 8px var(--cyan),0 0 20px rgba(0,255,170,0.4); }
+#cur-ring { position:fixed; width:32px; height:32px; border:1px solid var(--green); border-radius:50%; pointer-events:none; z-index:999998; display:none; }
 
-/* ── GRID ── */
-body::before {
-  content: ''; position: fixed; inset: 0;
-  background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
-  background-size: 48px 48px; opacity: 0.35; pointer-events: none; z-index: 0;
-}
+/* GRID */
+body::before { content:''; position:fixed; inset:0; background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px); background-size:48px 48px; opacity:0.35; pointer-events:none; z-index:0; }
 
-/* ── SCANLINES ── */
-.scanlines { position: fixed; inset: 0; z-index: 9; pointer-events: none;
-  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.07) 3px, rgba(0,0,0,0.07) 4px); }
+/* SCANLINES */
+.scanlines { position:fixed; inset:0; z-index:9; pointer-events:none; background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.07) 3px,rgba(0,0,0,0.07) 4px); }
 
-/* ── MATRIX CANVAS ── */
-#matrix-bg { position: fixed; inset: 0; z-index: 0; opacity: 0.06; pointer-events: none; }
+/* MATRIX */
+#matrix-bg { position:fixed; inset:0; z-index:0; opacity:0.06; pointer-events:none; }
 
-/* ── NAV ── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 1.1rem 3rem;
-  background: rgba(6,14,8,0.88); backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--border);
-}
-.nav-logo { font-family: var(--mono); font-size: 0.82rem; color: var(--cyan); letter-spacing: 0.12em; }
-.nav-logo span { color: var(--dim); }
-.nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
-.nav-links a {
-  font-family: var(--mono); font-size: 0.75rem; color: var(--dim);
-  text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase;
-  transition: color 0.2s; position: relative;
-}
-.nav-links a::after {
-  content: ''; position: absolute; bottom: -4px; left: 0;
-  width: 0; height: 1px; background: var(--cyan); transition: width 0.3s;
-}
-.nav-links a:hover { color: var(--cyan); }
-.nav-links a:hover::after { width: 100%; }
-
-/* QA Nav Button — özel stil */
-.nav-qa-btn {
-  font-family: var(--mono); font-size: 0.72rem;
-  background: rgba(0,230,118,0.08);
-  border: 1px solid rgba(0,230,118,0.3);
-  color: var(--green) !important;
-  padding: 0.35rem 0.9rem;
-  border-radius: 3px;
-  transition: background 0.2s, box-shadow 0.2s !important;
-  display: flex; align-items: center; gap: 0.4rem;
-}
-.nav-qa-btn:hover {
-  background: rgba(0,230,118,0.15) !important;
-  box-shadow: 0 0 16px rgba(0,230,118,0.2);
-  color: var(--cyan) !important;
-}
-.nav-qa-btn::after { display: none !important; }
-.qa-pulse {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--green); box-shadow: 0 0 6px var(--green);
-  animation: pulseDot 2s ease-in-out infinite; flex-shrink: 0;
-}
+/* NAV */
+nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; align-items:center; justify-content:space-between; padding:1.1rem 3rem; background:rgba(6,14,8,0.88); backdrop-filter:blur(14px); border-bottom:1px solid var(--border); }
+.nav-logo { font-family:var(--mono); font-size:0.82rem; color:var(--cyan); letter-spacing:0.12em; }
+.nav-logo span { color:var(--dim); }
+.nav-links { display:flex; gap:2rem; list-style:none; align-items:center; }
+.nav-links a { font-family:var(--mono); font-size:0.75rem; color:var(--dim); text-decoration:none; letter-spacing:0.1em; text-transform:uppercase; transition:color 0.2s; position:relative; }
+.nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:1px; background:var(--cyan); transition:width 0.3s; }
+.nav-links a:hover { color:var(--cyan); }
+.nav-links a:hover::after { width:100%; }
+/* QA nav link — özel */
+.nav-qa { color:var(--green) !important; display:flex; align-items:center; gap:0.4rem; }
+.nav-qa::after { background:var(--green) !important; }
+.nav-qa:hover { color:var(--cyan) !important; }
+.qa-dot { width:6px; height:6px; border-radius:50%; background:var(--green); box-shadow:0 0 6px var(--green); animation:pulseDot 2s ease-in-out infinite; flex-shrink:0; }
 @keyframes pulseDot { 0%,100%{opacity:1} 50%{opacity:0.2} }
 
-/* ── HERO ── */
-.hero {
-  position: relative; min-height: 100vh;
-  display: flex; align-items: center; justify-content: center;
-  padding: 8rem 3rem 4rem; overflow: hidden; z-index: 1; text-align: center;
-}
-.hero::after {
-  content: ''; position: absolute; inset: 0;
-  background-image: radial-gradient(circle, rgba(0,230,118,0.05) 1px, transparent 1px);
-  background-size: 28px 28px; pointer-events: none;
-}
-.orb1 { position: absolute; width: 500px; height: 500px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(0,122,60,0.2) 0%, transparent 70%);
-  top: -80px; right: -80px; filter: blur(60px); animation: floatOrb 8s ease-in-out infinite; }
-.orb2 { position: absolute; width: 350px; height: 350px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(0,255,170,0.08) 0%, transparent 70%);
-  bottom: 0; left: 5%; filter: blur(60px); animation: floatOrb 10s ease-in-out infinite reverse; }
+/* HERO */
+.hero { position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:8rem 3rem 4rem; overflow:hidden; z-index:1; text-align:center; }
+.hero::after { content:''; position:absolute; inset:0; background-image:radial-gradient(circle,rgba(0,230,118,0.05) 1px,transparent 1px); background-size:28px 28px; pointer-events:none; }
+.orb1 { position:absolute; width:500px; height:500px; border-radius:50%; background:radial-gradient(circle,rgba(0,122,60,0.2) 0%,transparent 70%); top:-80px; right:-80px; filter:blur(60px); animation:floatOrb 8s ease-in-out infinite; }
+.orb2 { position:absolute; width:350px; height:350px; border-radius:50%; background:radial-gradient(circle,rgba(0,255,170,0.08) 0%,transparent 70%); bottom:0; left:5%; filter:blur(60px); animation:floatOrb 10s ease-in-out infinite reverse; }
 @keyframes floatOrb { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-20px,30px)} }
-
-.hero-inner { position: relative; z-index: 2; max-width: 800px; width: 100%; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
-
-.hero-profile-img {
-  width: 150px; height: 150px; border-radius: 50%; object-fit: cover;
-  border: 2px solid var(--green); box-shadow: 0 0 20px var(--glow);
-  margin-bottom: 1.5rem; transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.hero-profile-img:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(0,230,118,0.6); }
-
-.terminal-badge {
-  display: inline-flex; align-items: center; gap: 0.6rem;
-  font-family: var(--mono); font-size: 0.72rem;
-  background: rgba(0,230,118,0.07); border: 1px solid rgba(0,230,118,0.25);
-  border-radius: 3px; padding: 0.4rem 1rem; color: var(--green);
-  margin-bottom: 1.4rem; letter-spacing: 0.1em;
-}
-.terminal-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulseDot 2s ease-in-out infinite; }
-
-.hero h1 { font-family: var(--disp); font-size: clamp(2.8rem,6vw,5.2rem); font-weight: 800; line-height: 1.05; color: var(--white); margin-bottom: 0.4rem; }
-.hero h1 .acc { color: var(--cyan); }
-.hero h1 .gdim { color: var(--green); }
-
-.glitch { position: relative; display: inline-block; }
-.glitch::before, .glitch::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; overflow: hidden; }
-.glitch::before { clip-path: polygon(0 0,100% 0,100% 40%,0 40%); animation: glitch1 5s infinite; }
-.glitch::after { clip-path: polygon(0 60%,100% 60%,100% 100%,0 100%); animation: glitch2 5s infinite; }
+.hero-inner { position:relative; z-index:2; max-width:800px; width:100%; margin:0 auto; display:flex; flex-direction:column; align-items:center; }
+.hero-profile-img { width:150px; height:150px; border-radius:50%; object-fit:cover; border:2px solid var(--green); box-shadow:0 0 20px var(--glow); margin-bottom:1.5rem; transition:transform 0.3s,box-shadow 0.3s; }
+.hero-profile-img:hover { transform:scale(1.05); box-shadow:0 0 30px rgba(0,230,118,0.6); }
+.terminal-badge { display:inline-flex; align-items:center; gap:0.6rem; font-family:var(--mono); font-size:0.72rem; background:rgba(0,230,118,0.07); border:1px solid rgba(0,230,118,0.25); border-radius:3px; padding:0.4rem 1rem; color:var(--green); margin-bottom:1.4rem; letter-spacing:0.1em; }
+.terminal-badge .dot { width:6px; height:6px; border-radius:50%; background:var(--green); box-shadow:0 0 6px var(--green); animation:pulseDot 2s ease-in-out infinite; }
+.hero h1 { font-family:var(--disp); font-size:clamp(2.8rem,6vw,5.2rem); font-weight:800; line-height:1.05; color:var(--white); margin-bottom:0.4rem; }
+.hero h1 .acc { color:var(--cyan); }
+.hero h1 .gdim { color:var(--green); }
+.glitch { position:relative; display:inline-block; }
+.glitch::before,.glitch::after { content:attr(data-text); position:absolute; top:0; left:0; width:100%; overflow:hidden; }
+.glitch::before { clip-path:polygon(0 0,100% 0,100% 40%,0 40%); animation:glitch1 5s infinite; }
+.glitch::after { clip-path:polygon(0 60%,100% 60%,100% 100%,0 100%); animation:glitch2 5s infinite; }
 @keyframes glitch1 { 0%,88%,100%{transform:translate(0);opacity:0} 90%{transform:translate(-3px,1px);opacity:0.5;color:var(--cyan)} 92%{transform:translate(2px,-1px);opacity:0.5;color:#ff005e} 94%{transform:translate(0);opacity:0} }
 @keyframes glitch2 { 0%,88%,100%{transform:translate(0);opacity:0} 91%{transform:translate(3px,2px);opacity:0.4;color:var(--green)} 93%{transform:translate(-2px,-1px);opacity:0.4;color:#ff005e} 95%{transform:translate(0);opacity:0} }
-
-.hero-subtitle { font-family: var(--mono); font-size: 0.95rem; color: var(--green); margin-bottom: 1.5rem; letter-spacing: 0.05em; min-height: 1.5rem; }
-.blink { animation: blink 1.1s step-end infinite; }
+.hero-subtitle { font-family:var(--mono); font-size:0.95rem; color:var(--green); margin-bottom:1.5rem; letter-spacing:0.05em; min-height:1.5rem; }
+.blink { animation:blink 1.1s step-end infinite; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+.hero-desc { font-size:1rem; color:var(--dim); max-width:540px; line-height:1.85; margin:0 auto 2.5rem; font-weight:300; }
+.hero-actions { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; }
+.btn { display:inline-flex; align-items:center; gap:0.5rem; padding:0.8rem 1.8rem; font-family:var(--mono); font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase; text-decoration:none; border-radius:2px; transition:all 0.25s; border:1px solid transparent; cursor:pointer; }
+.btn-primary { background:var(--gdim); color:var(--white); border-color:var(--green); box-shadow:0 0 20px var(--glow); }
+.btn-primary:hover { background:var(--green); color:var(--dark); transform:translateY(-2px); box-shadow:0 0 36px rgba(0,230,118,0.5); }
+.btn-outline { background:transparent; color:var(--cyan); border-color:var(--cyan); }
+.btn-outline:hover { background:rgba(0,255,170,0.08); transform:translateY(-2px); box-shadow:0 0 24px rgba(0,255,170,0.2); }
+.hero-stats { display:flex; gap:3rem; margin-top:3.5rem; padding-top:2rem; border-top:1px solid var(--border); justify-content:center; }
+.stat-num { font-family:var(--disp); font-size:2rem; font-weight:800; color:var(--white); }
+.stat-num span { color:var(--cyan); }
+.stat-label { font-family:var(--mono); font-size:0.68rem; color:var(--dim); text-transform:uppercase; letter-spacing:0.1em; margin-top:0.2rem; }
 
-.hero-desc { font-size: 1rem; color: var(--dim); max-width: 540px; line-height: 1.85; margin: 0 auto 2.5rem; font-weight: 300; }
+/* SECTIONS */
+section { position:relative; z-index:1; padding:6rem 3rem; }
+.inner { max-width:960px; margin:0 auto; }
+.sec-tag { font-family:var(--mono); font-size:0.7rem; color:var(--cyan); letter-spacing:0.2em; text-transform:uppercase; margin-bottom:0.8rem; display:flex; align-items:center; gap:0.8rem; }
+.sec-tag::before { content:''; display:inline-block; width:28px; height:1px; background:var(--cyan); }
+.sec-title { font-family:var(--disp); font-size:clamp(1.8rem,3.5vw,2.6rem); font-weight:700; color:var(--white); margin-bottom:3rem; line-height:1.15; }
+.sec-title em { color:var(--green); font-style:normal; }
 
-.hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
-.btn {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  padding: 0.8rem 1.8rem; font-family: var(--mono); font-size: 0.78rem;
-  letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
-  border-radius: 2px; transition: all 0.25s; border: 1px solid transparent;
-  cursor: pointer;
+/* SKILLS */
+#skills { background:var(--dark2); }
+.skills-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1.2rem; }
+.skill-card { background:var(--panel); border:1px solid var(--border); border-radius:4px; padding:1.4rem 1.6rem; transition:border-color 0.3s,transform 0.3s,box-shadow 0.3s; position:relative; overflow:hidden; }
+.skill-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--gdim),var(--cyan)); transform:scaleX(0); transform-origin:left; transition:transform 0.4s; }
+.skill-card:hover { border-color:var(--green); transform:translateY(-4px); box-shadow:0 12px 40px var(--glow); }
+.skill-card:hover::before { transform:scaleX(1); }
+.skill-num { position:absolute; top:0.8rem; right:1rem; font-family:var(--mono); font-size:0.58rem; color:rgba(0,255,170,0.2); }
+.skill-label { font-family:var(--mono); font-size:0.7rem; color:var(--cyan); text-transform:uppercase; letter-spacing:0.12em; margin-bottom:0.7rem; }
+.skill-val { font-size:0.88rem; color:var(--text); line-height:1.6; }
+.hl { color:var(--cyan); }
+
+/* EXPERIENCE */
+#experience { background:var(--dark); }
+.timeline { position:relative; padding-left:2rem; }
+.timeline::before { content:''; position:absolute; left:0; top:8px; bottom:8px; width:1px; background:linear-gradient(to bottom,var(--cyan),var(--gdim),transparent); }
+.titem { position:relative; margin-bottom:3rem; padding-left:2rem; }
+.titem::before { content:''; position:absolute; left:-2rem; top:8px; width:9px; height:9px; border-radius:50%; background:var(--cyan); border:2px solid var(--dark); box-shadow:0 0 10px var(--cyan); }
+.t-header { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.6rem; }
+.t-role { font-family:var(--disp); font-size:1.05rem; font-weight:700; color:var(--white); }
+.t-company { font-family:var(--mono); font-size:0.78rem; color:var(--green); margin-top:0.2rem; }
+.t-period { font-family:var(--mono); font-size:0.7rem; color:var(--dim); background:var(--panel); padding:0.25rem 0.8rem; border:1px solid var(--border); border-radius:2px; }
+.t-list { list-style:none; margin-top:0.8rem; }
+.t-list li { font-size:0.87rem; color:var(--dim); line-height:1.75; padding:0.2rem 0 0.2rem 1.2rem; position:relative; }
+.t-list li::before { content:'▸'; position:absolute; left:0; color:var(--green); font-size:0.7rem; top:0.28rem; }
+
+/* PROJECTS */
+#projects { background:var(--dark2); }
+.proj-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:1.5rem; }
+.proj-card { background:var(--panel); border:1px solid var(--border); border-radius:4px; padding:1.8rem; transition:all 0.3s; position:relative; overflow:hidden; }
+.proj-card::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(0,122,60,0.07) 0%,transparent 60%); opacity:0; transition:opacity 0.3s; }
+.proj-card:hover { border-color:var(--cyan); transform:translateY(-5px); box-shadow:0 16px 50px var(--glow); }
+.proj-card:hover::after { opacity:1; }
+.proj-icon { font-size:1.8rem; margin-bottom:0.9rem; }
+.proj-name { font-family:var(--disp); font-size:1.02rem; font-weight:700; color:var(--white); margin-bottom:0.6rem; }
+.proj-tag { display:inline-block; font-family:var(--mono); font-size:0.62rem; color:var(--cyan); border:1px solid rgba(0,255,170,0.25); padding:0.15rem 0.55rem; border-radius:2px; text-transform:uppercase; letter-spacing:0.07em; margin-bottom:0.8rem; }
+.proj-desc { font-size:0.87rem; color:var(--dim); line-height:1.7; }
+
+/* ABOUT */
+#about { background:var(--dark); }
+.about-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start; }
+.about-text { font-size:0.95rem; color:var(--dim); line-height:1.9; }
+.about-text p { margin-bottom:1.2rem; }
+.about-text strong { color:var(--white); font-weight:500; }
+.tags-wrap { display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:1.5rem; }
+.itag { font-family:var(--mono); font-size:0.66rem; color:var(--dim); border:1px solid var(--border); padding:0.28rem 0.7rem; border-radius:2px; text-transform:uppercase; letter-spacing:0.06em; transition:all 0.2s; }
+.itag:hover { border-color:var(--green); color:var(--green); }
+.contact-panel { background:var(--panel); border:1px solid var(--border); border-radius:4px; padding:2rem; }
+.contact-panel h3 { font-family:var(--disp); font-size:1.05rem; font-weight:700; color:var(--white); margin-bottom:1.5rem; }
+.citem { display:flex; align-items:center; gap:1rem; padding:0.75rem 0; border-bottom:1px solid var(--border); font-size:0.87rem; }
+.citem:last-child { border-bottom:none; }
+.cicon { font-family:var(--mono); font-size:0.72rem; color:var(--cyan); min-width:2rem; }
+.cval { color:var(--text); }
+.cval a { color:var(--green); text-decoration:none; }
+.cval a:hover { color:var(--cyan); }
+
+/* ═══════════════════════════════════════
+   QA SECTION — tam gömülü
+═══════════════════════════════════════ */
+#qa { background:var(--dark); }
+
+/* Alt sekme switcher */
+.qa-tabs {
+  display:flex; gap:0; margin-bottom:2.5rem;
+  border-bottom:1px solid var(--border);
 }
-.btn-primary { background: var(--gdim); color: var(--white); border-color: var(--green); box-shadow: 0 0 20px var(--glow); }
-.btn-primary:hover { background: var(--green); color: var(--dark); transform: translateY(-2px); box-shadow: 0 0 36px rgba(0,230,118,0.5); }
-.btn-outline { background: transparent; color: var(--cyan); border-color: var(--cyan); }
-.btn-outline:hover { background: rgba(0,255,170,0.08); transform: translateY(-2px); box-shadow: 0 0 24px rgba(0,255,170,0.2); }
-/* QA Hero Button */
-.btn-qa {
-  background: rgba(0,230,118,0.08); color: var(--green);
-  border-color: rgba(0,230,118,0.4);
-  box-shadow: 0 0 14px rgba(0,230,118,0.1);
+.qa-tab {
+  font-family:var(--mono); font-size:0.72rem; color:var(--dim);
+  padding:0.7rem 1.4rem; cursor:pointer;
+  border-bottom:2px solid transparent;
+  transition:color 0.2s,border-color 0.2s;
+  letter-spacing:0.06em; text-transform:uppercase; user-select:none;
 }
-.btn-qa:hover { background: rgba(0,230,118,0.16); color: var(--cyan); border-color: var(--cyan); transform: translateY(-2px); box-shadow: 0 0 28px rgba(0,230,118,0.25); }
+.qa-tab:hover { color:var(--text); }
+.qa-tab.active { color:var(--green); border-bottom-color:var(--green); }
+.qa-page { display:none; }
+.qa-page.active { display:block; }
 
-.hero-stats { display: flex; gap: 3rem; margin-top: 3.5rem; padding-top: 2rem; border-top: 1px solid var(--border); justify-content: center; }
-.stat-num { font-family: var(--disp); font-size: 2rem; font-weight: 800; color: var(--white); }
-.stat-num span { color: var(--cyan); }
-.stat-label { font-family: var(--mono); font-size: 0.68rem; color: var(--dim); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.2rem; }
+/* Legend */
+.qa-legend { display:flex; gap:1.5rem; flex-wrap:wrap; margin-bottom:2rem; align-items:center; }
+.qa-legend-item { display:flex; align-items:center; gap:0.5rem; font-size:0.7rem; color:var(--dim); font-family:var(--mono); }
+.qa-legend-dot { width:9px; height:9px; border-radius:2px; }
+.qa-hint { margin-left:auto; font-family:var(--mono); font-size:0.62rem; color:var(--dim); opacity:0.6; }
 
-/* ── SECTIONS ── */
-section { position: relative; z-index: 1; padding: 6rem 3rem; }
-.inner { max-width: 960px; margin: 0 auto; }
-.sec-tag { font-family: var(--mono); font-size: 0.7rem; color: var(--cyan); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.8rem; }
-.sec-tag::before { content: ''; display: inline-block; width: 28px; height: 1px; background: var(--cyan); }
-.sec-title { font-family: var(--disp); font-size: clamp(1.8rem,3.5vw,2.6rem); font-weight: 700; color: var(--white); margin-bottom: 3rem; line-height: 1.15; }
-.sec-title em { color: var(--green); font-style: normal; }
+/* Roadmap timeline çizgisi */
+.qa-roadmap { position:relative; }
+.qa-roadmap::before { content:''; position:absolute; left:19px; top:0; bottom:0; width:1px; background:linear-gradient(to bottom,var(--cyan),var(--green),transparent); opacity:0.2; }
 
-/* ── SKILLS ── */
-#skills { background: var(--dark2); }
-.skills-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(280px,1fr)); gap: 1.2rem; }
-.skill-card { background: var(--panel); border: 1px solid var(--border); border-radius: 4px; padding: 1.4rem 1.6rem; transition: border-color 0.3s,transform 0.3s,box-shadow 0.3s; position: relative; overflow: hidden; }
-.skill-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg,var(--gdim),var(--cyan)); transform: scaleX(0); transform-origin: left; transition: transform 0.4s; }
-.skill-card:hover { border-color: var(--green); transform: translateY(-4px); box-shadow: 0 12px 40px var(--glow); }
-.skill-card:hover::before { transform: scaleX(1); }
-.skill-num { position: absolute; top: 0.8rem; right: 1rem; font-family: var(--mono); font-size: 0.58rem; color: rgba(0,255,170,0.2); }
-.skill-label { font-family: var(--mono); font-size: 0.7rem; color: var(--cyan); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.7rem; }
-.skill-val { font-size: 0.88rem; color: var(--text); line-height: 1.6; }
-.hl { color: var(--cyan); }
+/* RM Section */
+.rm-section { margin-bottom:2.5rem; position:relative; }
+.rm-header { display:flex; align-items:center; gap:1rem; margin-bottom:1rem; }
+.rm-icon { width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0; position:relative; z-index:1; }
+.rm-title { font-family:var(--disp); font-size:1rem; font-weight:700; }
+.rm-sub { font-size:0.68rem; color:var(--dim); margin-top:2px; }
+.rm-divider { margin-left:48px; margin-bottom:6px; margin-top:8px; font-family:var(--mono); font-size:0.6rem; color:var(--dim); letter-spacing:0.1em; text-transform:uppercase; display:flex; align-items:center; gap:8px; }
+.rm-divider::after { content:''; flex:1; height:1px; background:var(--border); }
 
-/* ── EXPERIENCE ── */
-#experience { background: var(--dark); }
-.timeline { position: relative; padding-left: 2rem; }
-.timeline::before { content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom,var(--cyan),var(--gdim),transparent); }
-.titem { position: relative; margin-bottom: 3rem; padding-left: 2rem; }
-.titem::before { content: ''; position: absolute; left: -2rem; top: 8px; width: 9px; height: 9px; border-radius: 50%; background: var(--cyan); border: 2px solid var(--dark); box-shadow: 0 0 10px var(--cyan); }
-.t-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.6rem; }
-.t-role { font-family: var(--disp); font-size: 1.05rem; font-weight: 700; color: var(--white); }
-.t-company { font-family: var(--mono); font-size: 0.78rem; color: var(--green); margin-top: 0.2rem; }
-.t-period { font-family: var(--mono); font-size: 0.7rem; color: var(--dim); background: var(--panel); padding: 0.25rem 0.8rem; border: 1px solid var(--border); border-radius: 2px; }
-.t-list { list-style: none; margin-top: 0.8rem; }
-.t-list li { font-size: 0.87rem; color: var(--dim); line-height: 1.75; padding: 0.2rem 0 0.2rem 1.2rem; position: relative; }
-.t-list li::before { content: '▸'; position: absolute; left: 0; color: var(--green); font-size: 0.7rem; top: 0.28rem; }
+/* Cards grid */
+.rm-cards { margin-left:48px; display:grid; grid-template-columns:repeat(auto-fill,minmax(185px,1fr)); gap:8px; }
 
-/* ── PROJECTS ── */
-#projects { background: var(--dark2); }
-.proj-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(300px,1fr)); gap: 1.5rem; }
-.proj-card { background: var(--panel); border: 1px solid var(--border); border-radius: 4px; padding: 1.8rem; transition: all 0.3s; position: relative; overflow: hidden; }
-.proj-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg,rgba(0,122,60,0.07) 0%,transparent 60%); opacity: 0; transition: opacity 0.3s; }
-.proj-card:hover { border-color: var(--cyan); transform: translateY(-5px); box-shadow: 0 16px 50px var(--glow); }
-.proj-card:hover::after { opacity: 1; }
-.proj-icon { font-size: 1.8rem; margin-bottom: 0.9rem; }
-.proj-name { font-family: var(--disp); font-size: 1.02rem; font-weight: 700; color: var(--white); margin-bottom: 0.6rem; }
-.proj-tag { display: inline-block; font-family: var(--mono); font-size: 0.62rem; color: var(--cyan); border: 1px solid rgba(0,255,170,0.25); padding: 0.15rem 0.55rem; border-radius: 2px; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.8rem; }
-.proj-desc { font-size: 0.87rem; color: var(--dim); line-height: 1.7; }
-
-/* ── QA PROMO CARD (Sectionda) ── */
-.qa-promo {
-  margin-top: 2rem;
-  background: linear-gradient(135deg, rgba(0,122,60,0.12) 0%, rgba(0,255,170,0.04) 100%);
-  border: 1px solid rgba(0,230,118,0.3);
-  border-radius: 8px; padding: 2rem 2.2rem;
-  display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;
-  position: relative; overflow: hidden;
+/* Card — tıklanabilir */
+.rm-card {
+  background:var(--panel); border:1px solid var(--border);
+  border-radius:8px; padding:12px 14px;
+  cursor:pointer; position:relative; overflow:hidden;
+  transition:transform 0.15s,border-color 0.2s,box-shadow 0.2s;
 }
-.qa-promo::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, var(--gdim), var(--cyan), var(--green));
-}
-.qa-promo-icon { font-size: 2.5rem; flex-shrink: 0; }
-.qa-promo-text { flex: 1; min-width: 200px; }
-.qa-promo-text h3 { font-family: var(--disp); font-size: 1.1rem; font-weight: 700; color: var(--white); margin-bottom: 0.4rem; }
-.qa-promo-text p { font-size: 0.85rem; color: var(--dim); line-height: 1.6; }
-.qa-promo-badge { font-family: var(--mono); font-size: 0.6rem; color: var(--green); background: rgba(0,230,118,0.08); border: 1px solid rgba(0,230,118,0.2); padding: 0.2rem 0.6rem; border-radius: 2px; display: inline-block; margin-bottom: 0.4rem; letter-spacing: 0.08em; }
+.rm-card::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; opacity:0; transition:opacity 0.2s; }
+.rm-card:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(0,230,118,0.1); }
+.rm-card:hover::before { opacity:1; }
+.rm-card-title { font-weight:600; font-size:0.8rem; margin-bottom:3px; color:var(--text); }
+.rm-card-desc { font-size:0.68rem; color:var(--dim); line-height:1.5; }
+.rm-card-tag { display:inline-block; font-family:var(--mono); font-size:0.56rem; padding:2px 5px; border-radius:2px; margin-top:6px; text-transform:uppercase; letter-spacing:0.4px; }
+.rm-card-hint { position:absolute; bottom:5px; right:7px; font-family:var(--mono); font-size:0.52rem; color:var(--dim); opacity:0.4; }
 
-/* ── ABOUT ── */
-#about { background: var(--dark); }
-.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
-.about-text { font-size: 0.95rem; color: var(--dim); line-height: 1.9; }
-.about-text p { margin-bottom: 1.2rem; }
-.about-text strong { color: var(--white); font-weight: 500; }
-.tags-wrap { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
-.itag { font-family: var(--mono); font-size: 0.66rem; color: var(--dim); border: 1px solid var(--border); padding: 0.28rem 0.7rem; border-radius: 2px; text-transform: uppercase; letter-spacing: 0.06em; transition: all 0.2s; }
-.itag:hover { border-color: var(--green); color: var(--green); }
-.contact-panel { background: var(--panel); border: 1px solid var(--border); border-radius: 4px; padding: 2rem; }
-.contact-panel h3 { font-family: var(--disp); font-size: 1.05rem; font-weight: 700; color: var(--white); margin-bottom: 1.5rem; }
-.citem { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid var(--border); font-size: 0.87rem; }
-.citem:last-child { border-bottom: none; }
-.cicon { font-family: var(--mono); font-size: 0.72rem; color: var(--cyan); min-width: 2rem; }
-.cval { color: var(--text); }
-.cval a { color: var(--green); text-decoration: none; }
-.cval a:hover { color: var(--cyan); }
+/* Per-section renk temaları */
+.s1 .rm-icon{background:rgba(240,192,64,0.12)} .s1 .rm-title{color:#f0c040} .s1 .rm-card::before{background:#f0c040} .s1 .rm-card-tag{background:rgba(240,192,64,0.1);color:#f0c040} .s1 .rm-card:hover{border-color:rgba(240,192,64,0.3)}
+.s2 .rm-icon{background:rgba(91,143,255,0.12)} .s2 .rm-title{color:#5b8fff} .s2 .rm-card::before{background:#5b8fff} .s2 .rm-card-tag{background:rgba(91,143,255,0.1);color:#5b8fff} .s2 .rm-card:hover{border-color:rgba(91,143,255,0.3)}
+.s3 .rm-icon{background:rgba(255,107,107,0.12)} .s3 .rm-title{color:#ff6b6b} .s3 .rm-card::before{background:#ff6b6b} .s3 .rm-card-tag{background:rgba(255,107,107,0.1);color:#ff6b6b} .s3 .rm-card:hover{border-color:rgba(255,107,107,0.3)}
+.s4 .rm-icon{background:rgba(78,205,196,0.12)} .s4 .rm-title{color:#4ecdc4} .s4 .rm-card::before{background:#4ecdc4} .s4 .rm-card-tag{background:rgba(78,205,196,0.1);color:#4ecdc4} .s4 .rm-card:hover{border-color:rgba(78,205,196,0.3)}
+.s5 .rm-icon{background:rgba(168,139,250,0.12)} .s5 .rm-title{color:#a88bfa} .s5 .rm-card::before{background:#a88bfa} .s5 .rm-card-tag{background:rgba(168,139,250,0.1);color:#a88bfa} .s5 .rm-card:hover{border-color:rgba(168,139,250,0.3)}
+.s6 .rm-icon{background:rgba(52,211,153,0.12)} .s6 .rm-title{color:#34d399} .s6 .rm-card::before{background:#34d399} .s6 .rm-card-tag{background:rgba(52,211,153,0.1);color:#34d399} .s6 .rm-card:hover{border-color:rgba(52,211,153,0.3)}
+.s7 .rm-icon{background:rgba(251,146,60,0.12)} .s7 .rm-title{color:#fb923c} .s7 .rm-card::before{background:#fb923c} .s7 .rm-card-tag{background:rgba(251,146,60,0.1);color:#fb923c} .s7 .rm-card:hover{border-color:rgba(251,146,60,0.3)}
+.s8 .rm-icon{background:rgba(244,114,182,0.12)} .s8 .rm-title{color:#f472b6} .s8 .rm-card::before{background:#f472b6} .s8 .rm-card-tag{background:rgba(244,114,182,0.1);color:#f472b6} .s8 .rm-card:hover{border-color:rgba(244,114,182,0.3)}
+.s9 .rm-icon{background:rgba(56,189,248,0.12)} .s9 .rm-title{color:#38bdf8} .s9 .rm-card::before{background:#38bdf8} .s9 .rm-card-tag{background:rgba(56,189,248,0.1);color:#38bdf8} .s9 .rm-card:hover{border-color:rgba(56,189,248,0.3)}
 
-/* ── FOOTER ── */
-footer { position: relative; z-index: 1; background: var(--dark2); border-top: 1px solid var(--border); padding: 1.8rem 3rem; display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: 0.7rem; color: var(--dim); }
-footer span { color: var(--cyan); }
+/* FLOWCHART */
+.fc-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem; }
+.lang-toggle { display:flex; background:var(--panel); border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+.lang-btn { font-family:var(--mono); font-size:0.68rem; padding:5px 14px; cursor:pointer; color:var(--dim); transition:background 0.2s,color 0.2s; letter-spacing:0.08em; user-select:none; }
+.lang-btn.active { background:var(--green); color:#000; font-weight:700; }
+.fc-canvas { position:relative; width:100%; overflow-x:auto; }
+.fc-inner { min-width:760px; position:relative; padding:8px 0; }
+.fc-svg { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; overflow:visible; }
+.fc-node { position:absolute; border-radius:8px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:8px 11px; cursor:default; transition:transform 0.15s,box-shadow 0.15s; box-sizing:border-box; }
+.fc-node:hover { transform:scale(1.04); z-index:10; box-shadow:0 6px 24px rgba(0,0,0,0.5); }
+.fc-node .nd-title { font-family:var(--disp); font-size:10.5px; font-weight:700; line-height:1.3; }
+.fc-node .nd-sub { font-size:9px; margin-top:2px; opacity:0.75; line-height:1.3; }
+.nd-start { background:var(--cyan); color:#000; border-radius:40px; font-family:var(--disp); font-weight:800; font-size:11px; }
+.nd-phase { background:#0a1a0d; border:2px solid; color:var(--text); }
+.nd-tool  { background:rgba(13,26,16,0.9); border:1px solid var(--border); color:var(--text); }
+.nd-dec   { background:#0a1a0d; border:2px solid #fb923c; color:#fb923c; }
+.nd-end   { background:var(--green); color:#000; border-radius:40px; font-family:var(--disp); font-weight:800; font-size:11px; }
+.lang-tr,.lang-en { display:none; }
+.show-tr .lang-tr { display:block; }
+.show-en .lang-en { display:block; }
+.fc-legend { display:flex; gap:1.2rem; flex-wrap:wrap; margin-top:1.5rem; padding-top:1.2rem; border-top:1px solid var(--border); }
+.fc-legend-item { display:flex; align-items:center; gap:0.5rem; font-size:0.65rem; color:var(--dim); font-family:var(--mono); }
+.fc-legend-box { width:11px; height:11px; border-radius:2px; flex-shrink:0; }
 
-/* ── CONTACT MODAL ── */
-.modal-backdrop { position: fixed; inset: 0; z-index: 10000; display: none; align-items: center; justify-content: center; }
-.modal-backdrop.open { display: flex; }
-.modal-bg { position: absolute; inset: 0; background: rgba(6,14,8,0.88); backdrop-filter: blur(10px); }
-.modal-box { position: relative; z-index: 1; background: var(--panel); border: 1px solid rgba(0,200,100,0.4); border-radius: 6px; padding: 2.5rem 2.8rem; max-width: 420px; width: 90%; box-shadow: 0 0 60px rgba(0,122,60,0.3); }
-.modal-top-line { position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg,var(--gdim),var(--cyan)); border-radius: 6px 6px 0 0; }
-.modal-close { position: absolute; top: 1rem; right: 1.2rem; background: none; border: none; color: var(--dim); font-size: 1.2rem; cursor: pointer; line-height: 1; transition: color 0.2s; }
-.modal-close:hover { color: var(--cyan); }
-.modal-tag { font-family: var(--mono); font-size: 0.68rem; color: var(--cyan); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.2rem; }
-.modal-name { font-family: var(--disp); font-size: 1.35rem; font-weight: 700; color: var(--white); margin-bottom: 0.3rem; }
-.modal-sub { font-family: var(--mono); font-size: 0.73rem; color: var(--green); margin-bottom: 2rem; }
-.modal-row { display: flex; align-items: center; gap: 1rem; padding: 0.9rem 1.1rem; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 4px; margin-bottom: 0.8rem; transition: border-color 0.2s; }
-.modal-row:hover { border-color: var(--cyan); }
-.modal-row-icon { font-size: 1.2rem; }
-.modal-row-label { font-family: var(--mono); font-size: 0.62rem; color: var(--dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.2rem; }
-.modal-row-val a { color: var(--cyan); font-size: 0.87rem; text-decoration: none; }
-.modal-row-val a:hover { color: var(--white); }
-.copy-btn { margin-left: auto; background: rgba(0,122,60,0.2); border: 1px solid rgba(0,200,100,0.3); color: var(--green); font-family: var(--mono); font-size: 0.6rem; padding: 0.28rem 0.65rem; border-radius: 2px; cursor: pointer; transition: all 0.2s; }
-.copy-btn:hover { background: rgba(0,200,100,0.3); color: var(--white); }
-.modal-linkedin { display: flex; align-items: center; justify-content: center; gap: 0.6rem; width: 100%; padding: 0.8rem; margin-top: 0.5rem; background: rgba(0,122,60,0.12); border: 1px solid rgba(0,200,100,0.3); border-radius: 4px; color: var(--text); font-family: var(--mono); font-size: 0.73rem; text-decoration: none; letter-spacing: 0.06em; transition: all 0.2s; }
-.modal-linkedin:hover { background: rgba(0,200,100,0.2); border-color: var(--green); color: var(--white); }
+/* POPUP MODAL */
+.popup-backdrop { position:fixed; inset:0; z-index:9999; display:none; align-items:center; justify-content:center; padding:1.5rem; }
+.popup-backdrop.open { display:flex; }
+.popup-bg { position:absolute; inset:0; background:rgba(6,14,8,0.88); backdrop-filter:blur(14px); }
+.popup-box { position:relative; z-index:1; background:var(--panel); border:1px solid rgba(0,200,100,0.4); border-radius:10px; padding:2rem 2.2rem; max-width:540px; width:100%; max-height:85vh; overflow-y:auto; box-shadow:0 0 60px rgba(0,122,60,0.25); animation:popIn 0.22s ease; }
+@keyframes popIn { from{opacity:0;transform:scale(0.94) translateY(10px)} to{opacity:1;transform:scale(1) translateY(0)} }
+.popup-topline { position:absolute; top:0; left:0; right:0; height:2px; border-radius:10px 10px 0 0; }
+.popup-close { position:absolute; top:0.9rem; right:1.1rem; background:none; border:none; color:var(--dim); font-size:1.1rem; cursor:pointer; transition:color 0.2s; }
+.popup-close:hover { color:var(--cyan); }
+.popup-tag { font-family:var(--mono); font-size:0.62rem; color:var(--dim); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:0.5rem; }
+.popup-title { font-family:var(--disp); font-size:1.25rem; font-weight:800; color:var(--white); margin-bottom:1.3rem; line-height:1.2; }
+.popup-body { font-size:0.86rem; color:var(--dim); line-height:1.85; }
+.popup-body h4 { font-family:var(--mono); font-size:0.68rem; color:var(--cyan); text-transform:uppercase; letter-spacing:0.1em; margin:1.1rem 0 0.45rem; }
+.popup-body ul { list-style:none; padding:0; }
+.popup-body ul li { padding:0.18rem 0 0.18rem 1rem; position:relative; }
+.popup-body ul li::before { content:'▸'; position:absolute; left:0; color:var(--green); font-size:0.62rem; top:0.28rem; }
+.popup-body strong { color:var(--white); }
+.popup-body code { background:rgba(0,230,118,0.08); border:1px solid rgba(0,200,100,0.2); border-radius:3px; padding:0.1rem 0.38rem; font-family:var(--mono); font-size:0.78rem; color:var(--cyan); }
+.popup-body p { margin-bottom:0.4rem; }
+.popup-tools { display:flex; flex-wrap:wrap; gap:0.35rem; margin-top:0.5rem; }
+.popup-tool { font-family:var(--mono); font-size:0.62rem; color:var(--green); background:rgba(0,230,118,0.07); border:1px solid rgba(0,200,100,0.2); border-radius:3px; padding:0.18rem 0.52rem; }
 
-/* ── QA MODAL ── */
-.qa-modal-backdrop { position: fixed; inset: 0; z-index: 10500; display: none; align-items: flex-start; justify-content: flex-end; }
-.qa-modal-backdrop.open { display: flex; }
-.qa-modal-overlay { position: absolute; inset: 0; background: rgba(6,14,8,0.7); backdrop-filter: blur(8px); }
-.qa-modal-panel {
-  position: relative; z-index: 1;
-  width: min(840px, 95vw);
-  height: 100vh;
-  background: #060e08;
-  border-left: 1px solid rgba(0,200,100,0.3);
-  display: flex; flex-direction: column;
-  box-shadow: -20px 0 60px rgba(0,0,0,0.6);
-  animation: slideInRight 0.3s ease;
-}
-@keyframes slideInRight { from{transform:translateX(100%)} to{transform:translateX(0)} }
+/* CONTACT MODAL */
+.modal-backdrop { position:fixed; inset:0; z-index:10000; display:none; align-items:center; justify-content:center; }
+.modal-backdrop.open { display:flex; }
+.modal-bg { position:absolute; inset:0; background:rgba(6,14,8,0.88); backdrop-filter:blur(10px); }
+.modal-box { position:relative; z-index:1; background:var(--panel); border:1px solid rgba(0,200,100,0.4); border-radius:6px; padding:2.5rem 2.8rem; max-width:420px; width:90%; box-shadow:0 0 60px rgba(0,122,60,0.3); }
+.modal-top-line { position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--gdim),var(--cyan)); border-radius:6px 6px 0 0; }
+.modal-close { position:absolute; top:1rem; right:1.2rem; background:none; border:none; color:var(--dim); font-size:1.2rem; cursor:pointer; transition:color 0.2s; }
+.modal-close:hover { color:var(--cyan); }
+.modal-tag { font-family:var(--mono); font-size:0.68rem; color:var(--cyan); letter-spacing:0.2em; text-transform:uppercase; margin-bottom:1.2rem; }
+.modal-name { font-family:var(--disp); font-size:1.35rem; font-weight:700; color:var(--white); margin-bottom:0.3rem; }
+.modal-sub { font-family:var(--mono); font-size:0.73rem; color:var(--green); margin-bottom:2rem; }
+.modal-row { display:flex; align-items:center; gap:1rem; padding:0.9rem 1.1rem; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:4px; margin-bottom:0.8rem; transition:border-color 0.2s; }
+.modal-row:hover { border-color:var(--cyan); }
+.modal-row-icon { font-size:1.2rem; }
+.modal-row-label { font-family:var(--mono); font-size:0.62rem; color:var(--dim); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.2rem; }
+.modal-row-val a { color:var(--cyan); font-size:0.87rem; text-decoration:none; }
+.modal-row-val a:hover { color:var(--white); }
+.copy-btn { margin-left:auto; background:rgba(0,122,60,0.2); border:1px solid rgba(0,200,100,0.3); color:var(--green); font-family:var(--mono); font-size:0.6rem; padding:0.28rem 0.65rem; border-radius:2px; cursor:pointer; transition:all 0.2s; }
+.copy-btn:hover { background:rgba(0,200,100,0.3); color:var(--white); }
+.modal-linkedin { display:flex; align-items:center; justify-content:center; gap:0.6rem; width:100%; padding:0.8rem; margin-top:0.5rem; background:rgba(0,122,60,0.12); border:1px solid rgba(0,200,100,0.3); border-radius:4px; color:var(--text); font-family:var(--mono); font-size:0.73rem; text-decoration:none; letter-spacing:0.06em; transition:all 0.2s; }
+.modal-linkedin:hover { background:rgba(0,200,100,0.2); border-color:var(--green); color:var(--white); }
 
-.qa-modal-header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 1rem 1.5rem;
-  background: rgba(9,20,16,0.95); backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(0,200,100,0.2);
-  flex-shrink: 0;
-}
-.qa-modal-logo { font-family: var(--mono); font-size: 0.75rem; color: var(--cyan); letter-spacing: 0.1em; display: flex; align-items: center; gap: 0.6rem; }
-.qa-modal-logo-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); animation: pulseDot 2s infinite; }
-.qa-modal-close { background: none; border: 1px solid rgba(0,200,100,0.25); color: var(--dim); font-family: var(--mono); font-size: 0.65rem; padding: 0.3rem 0.7rem; border-radius: 3px; cursor: pointer; transition: all 0.2s; letter-spacing: 0.06em; }
-.qa-modal-close:hover { border-color: var(--cyan); color: var(--cyan); }
-.qa-modal-tabs { display: flex; border-bottom: 1px solid rgba(0,200,100,0.15); flex-shrink: 0; background: rgba(9,20,16,0.7); }
-.qa-modal-tab { font-family: var(--mono); font-size: 0.68rem; color: var(--dim); padding: 0.75rem 1.2rem; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; letter-spacing: 0.06em; text-transform: uppercase; }
-.qa-modal-tab.active { color: var(--cyan); border-bottom-color: var(--cyan); }
-.qa-modal-tab:hover { color: var(--text); }
-.qa-modal-body { flex: 1; overflow-y: auto; }
-.qa-modal-body iframe {
-  width: 100%; height: 100%;
-  border: none; display: block;
-}
+/* FOOTER */
+footer { position:relative; z-index:1; background:var(--dark2); border-top:1px solid var(--border); padding:1.8rem 3rem; display:flex; justify-content:space-between; align-items:center; font-family:var(--mono); font-size:0.7rem; color:var(--dim); }
+footer span { color:var(--cyan); }
 
-/* ── ANIMATIONS ── */
-.fade-in { animation: fadeUp 0.6s ease both; }
+/* ANIMATIONS */
+.fade-in { animation:fadeUp 0.6s ease both; }
 @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
 
-/* ── RESPONSIVE ── */
+/* RESPONSIVE */
 @media(max-width:768px){
   nav{padding:1rem 1.5rem}
   .nav-links{display:none}
@@ -349,7 +320,8 @@ footer span { color: var(--cyan); }
   .about-grid{grid-template-columns:1fr;gap:2rem}
   footer{flex-direction:column;gap:0.5rem;text-align:center}
   .hero-profile-img{width:120px;height:120px}
-  .qa-modal-panel{width:100vw}
+  .rm-cards{margin-left:36px}
+  .qa-roadmap::before{left:13px}
 }
 </style>
 </head>
@@ -360,23 +332,19 @@ footer span { color: var(--cyan); }
 <canvas id="matrix-bg"></canvas>
 <div class="scanlines"></div>
 
-<!-- ── NAV ── -->
+<!-- NAV -->
 <nav>
   <div class="nav-logo">HAS<span>::</span>portfolio</div>
   <ul class="nav-links">
     <li><a href="#skills">Yetenekler</a></li>
     <li><a href="#experience">Deneyim</a></li>
     <li><a href="#projects">Projeler</a></li>
+    <li><a href="#qa" class="nav-qa"><span class="qa-dot"></span>QA</a></li>
     <li><a href="#about">İletişim</a></li>
-    <li>
-      <a href="#" class="nav-qa-btn" onclick="openQA(event)">
-        <span class="qa-pulse"></span> QA Roadmap
-      </a>
-    </li>
   </ul>
 </nav>
 
-<!-- ── HERO ── -->
+<!-- HERO -->
 <section class="hero">
   <div class="orb1"></div>
   <div class="orb2"></div>
@@ -390,7 +358,6 @@ footer span { color: var(--cyan); }
       <button class="btn btn-primary" onclick="openContact()">✉ İletişime Geç</button>
       <a href="cv.pdf" download="Huseyin_Alperen_Senel_CV.pdf" class="btn btn-outline">📥 CV İndir</a>
       <a href="https://linkedin.com/in/alperensenel" target="_blank" class="btn btn-outline">🔗 LinkedIn</a>
-      <button class="btn btn-qa" onclick="openQA(event)">🧪 QA Roadmap</button>
     </div>
     <div class="hero-stats">
       <div><div class="stat-num">3.5<span>+</span></div><div class="stat-label">Yıl Deneyim</div></div>
@@ -400,7 +367,7 @@ footer span { color: var(--cyan); }
   </div>
 </section>
 
-<!-- ── SKİLLS ── -->
+<!-- SKILLS -->
 <section id="skills">
 <div class="inner">
   <div class="sec-tag">Yetenekler</div>
@@ -418,53 +385,22 @@ footer span { color: var(--cyan); }
 </div>
 </section>
 
-<!-- ── EXPERIENCE ── -->
+<!-- EXPERIENCE -->
 <section id="experience">
 <div class="inner">
   <div class="sec-tag">Deneyim</div>
   <h2 class="sec-title">İş <em>Geçmişim</em></h2>
   <div class="timeline">
-    <div class="titem fade-in">
-      <div class="t-header"><div><div class="t-role">Serbest Yazılım Geliştirici & IT Danışmanı</div><div class="t-company">Freelance</div></div><div class="t-period">2024 – Devam Ediyor</div></div>
-      <ul class="t-list">
-        <li>Python Araç Geliştirme (AI Destekli) — yapay zeka desteğiyle otomasyon projeleri, müşterilere özel çözümler.</li>
-        <li>Per Process Proxy Changer (AI Destekli) — Windows'ta uygulama bazlı proxy yönetimi sağlayan özgün C++ aracı.</li>
-        <li>Kişisel sanal makine lab ortamı — Active Directory ve sistem yönetimi üzerine aktif eğitim çalışmaları.</li>
-        <li>BalıkçıPro Mobil Uygulaması — sportif balıkçılara yönelik uygulamada proje yöneticisi/geliştirici.</li>
-        <li>Laptop ve masaüstü bilgisayarlarda arıza teşhis, bakım, temizlik ve onarım hizmetleri.</li>
-      </ul>
-    </div>
-    <div class="titem fade-in">
-      <div class="t-header"><div><div class="t-role">Level-1 Destek Uzmanı</div><div class="t-company">Innova Bilişim Çözümleri</div></div><div class="t-period">2022 – Temmuz 2025</div></div>
-      <ul class="t-list">
-        <li>Kurumsal ağ altyapısı yönetimi süreçlerine destek sağlayarak günlük operasyonların kesintisiz yürümesine katkıda bulundum.</li>
-        <li>Ağ ve yazılım sorunlarında L1 arıza tespiti ve giderme işlemleri yaparak müşteri problemlerini hızla çözdüm.</li>
-        <li>Karmaşık problemleri L2/L3 teknik ekiplerine eskalasyon süreçleriyle yönettim.</li>
-      </ul>
-    </div>
-    <div class="titem fade-in">
-      <div class="t-header"><div><div class="t-role">Operasyon Takım Lideri</div><div class="t-company">Cleango Life</div></div><div class="t-period">2022</div></div>
-      <ul class="t-list">
-        <li>Veri yönetimi, rezervasyon süreçleri ve kriz anı çağrı yönetimini üstlendim.</li>
-        <li>Operasyonel süreçleri denetleyerek personel atamalarını ve hizmet kalitesi değerlendirmelerini gerçekleştirdim.</li>
-      </ul>
-    </div>
-    <div class="titem fade-in">
-      <div class="t-header"><div><div class="t-role">Rehberlik ve Kariyer Asistanı</div><div class="t-company">Nişantaşı Üniversitesi</div></div><div class="t-period">2018 – 2020</div></div>
-      <ul class="t-list"><li>Üniversite adaylarına bölüm tanıtımları ve kariyer planlama süreçlerinde danışmanlık verdim.</li></ul>
-    </div>
-    <div class="titem fade-in">
-      <div class="t-header"><div><div class="t-role">Bilgi İşlem (IT) Stajyeri</div><div class="t-company">Sarıyer Belediyesi – Bilgi İşlem Daire Başkanlığı</div></div><div class="t-period">2015 – 2016</div></div>
-      <ul class="t-list">
-        <li>Kurumsal altyapıda temel teknik destek, sistem bakımı, bilgisayar arıza giderme ve veri girişi operasyonlarında aktif rol aldım.</li>
-        <li>Kamu kurumu standartlarında IT operasyonlarının işleyişini kavrayarak problem çözme yeteneklerimi geliştirdim.</li>
-      </ul>
-    </div>
+    <div class="titem fade-in"><div class="t-header"><div><div class="t-role">Serbest Yazılım Geliştirici & IT Danışmanı</div><div class="t-company">Freelance</div></div><div class="t-period">2024 – Devam Ediyor</div></div><ul class="t-list"><li>Python Araç Geliştirme (AI Destekli) — yapay zeka desteğiyle otomasyon projeleri, müşterilere özel çözümler.</li><li>Per Process Proxy Changer (AI Destekli) — Windows'ta uygulama bazlı proxy yönetimi sağlayan özgün C++ aracı.</li><li>Kişisel sanal makine lab ortamı — Active Directory ve sistem yönetimi üzerine aktif eğitim çalışmaları.</li><li>BalıkçıPro Mobil Uygulaması — sportif balıkçılara yönelik uygulamada proje yöneticisi/geliştirici.</li><li>Laptop ve masaüstü bilgisayarlarda arıza teşhis, bakım, temizlik ve onarım hizmetleri.</li></ul></div>
+    <div class="titem fade-in"><div class="t-header"><div><div class="t-role">Level-1 Destek Uzmanı</div><div class="t-company">Innova Bilişim Çözümleri</div></div><div class="t-period">2022 – Temmuz 2025</div></div><ul class="t-list"><li>Kurumsal ağ altyapısı yönetimi süreçlerine destek sağlayarak günlük operasyonların kesintisiz yürümesine katkıda bulundum.</li><li>Ağ ve yazılım sorunlarında L1 arıza tespiti ve giderme işlemleri yaparak müşteri problemlerini hızla çözdüm.</li><li>Karmaşık problemleri L2/L3 teknik ekiplerine eskalasyon süreçleriyle yönettim.</li></ul></div>
+    <div class="titem fade-in"><div class="t-header"><div><div class="t-role">Operasyon Takım Lideri</div><div class="t-company">Cleango Life</div></div><div class="t-period">2022</div></div><ul class="t-list"><li>Veri yönetimi, rezervasyon süreçleri ve kriz anı çağrı yönetimini üstlendim.</li><li>Operasyonel süreçleri denetleyerek personel atamalarını ve hizmet kalitesi değerlendirmelerini gerçekleştirdim.</li></ul></div>
+    <div class="titem fade-in"><div class="t-header"><div><div class="t-role">Rehberlik ve Kariyer Asistanı</div><div class="t-company">Nişantaşı Üniversitesi</div></div><div class="t-period">2018 – 2020</div></div><ul class="t-list"><li>Üniversite adaylarına bölüm tanıtımları ve kariyer planlama süreçlerinde danışmanlık verdim.</li></ul></div>
+    <div class="titem fade-in"><div class="t-header"><div><div class="t-role">Bilgi İşlem (IT) Stajyeri</div><div class="t-company">Sarıyer Belediyesi – Bilgi İşlem Daire Başkanlığı</div></div><div class="t-period">2015 – 2016</div></div><ul class="t-list"><li>Kurumsal altyapıda temel teknik destek, sistem bakımı, bilgisayar arıza giderme ve veri girişi operasyonlarında aktif rol aldım.</li><li>Kamu kurumu standartlarında IT operasyonlarının işleyişini kavrayarak problem çözme yeteneklerimi geliştirdim.</li></ul></div>
   </div>
 </div>
 </section>
 
-<!-- ── PROJECTS ── -->
+<!-- PROJECTS -->
 <section id="projects">
 <div class="inner">
   <div class="sec-tag">Projeler</div>
@@ -475,21 +411,209 @@ footer span { color: var(--cyan); }
     <div class="proj-card fade-in"><div class="proj-icon">🤖</div><div class="proj-name">YZ Destekli Süreç Otomasyonu</div><span class="proj-tag">Python · AI Destekli · YOLO · OCR</span><p class="proj-desc">Görüntü işleme (YOLO) ve OCR ile insan müdahalesi gerektiren doğrulama adımlarını otomatik çözen Python tabanlı otonom betikler.</p></div>
     <div class="proj-card fade-in"><div class="proj-icon">⚡</div><div class="proj-name">İletişim API Entegrasyonları</div><span class="proj-tag">Python · AI Destekli · Discord · Telegram</span><p class="proj-desc">Discord ticket taleplerini anlık olarak Telegram kanallarına yönlendiren otomasyon botları.</p></div>
   </div>
-
-  <!-- QA Promo Card -->
-  <div class="qa-promo fade-in">
-    <div class="qa-promo-icon">🧪</div>
-    <div class="qa-promo-text">
-      <div class="qa-promo-badge">// YENİ SAYFA</div>
-      <h3>QA Mühendisi Yol Haritası 2026</h3>
-      <p>Modern QA süreçleri, test otomasyonu, CI/CD entegrasyonu ve ileri seviye konuları kapsayan interaktif Türkçe yol haritası. Her konuya tıklayarak detaylı bilgi al.</p>
-    </div>
-    <button class="btn btn-qa" onclick="openQA(event)" style="flex-shrink:0;">🔍 Keşfet</button>
-  </div>
 </div>
 </section>
 
-<!-- ── ABOUT ── -->
+<!-- ═══════════════════════════════════════════════
+     QA SECTION — tam gömülü
+════════════════════════════════════════════════ -->
+<section id="qa">
+<div class="inner">
+  <div class="sec-tag">Kalite Güvence</div>
+  <h2 class="sec-title">QA Mühendisi <em>Yol Haritası</em></h2>
+
+  <!-- ALT SEKMELER -->
+  <div class="qa-tabs">
+    <div class="qa-tab active" onclick="switchQATab('roadmap',this)">📚 Yol Haritası</div>
+    <div class="qa-tab" onclick="switchQATab('flowchart',this)">🔀 Flowchart</div>
+  </div>
+
+  <!-- ── YOL HARİTASI ── -->
+  <div class="qa-page active" id="qa-roadmap">
+    <div class="qa-legend">
+      <div class="qa-legend-item"><div class="qa-legend-dot" style="background:#f0c040"></div>Temel</div>
+      <div class="qa-legend-item"><div class="qa-legend-dot" style="background:#5b8fff"></div>Orta</div>
+      <div class="qa-legend-item"><div class="qa-legend-dot" style="background:#4ecdc4"></div>İleri</div>
+      <div class="qa-legend-item"><div class="qa-legend-dot" style="background:#5a8070"></div>Opsiyonel</div>
+      <span class="qa-hint">💡 Kartlara tıkla → detay</span>
+    </div>
+    <div class="qa-roadmap">
+
+      <!-- S1 -->
+      <div class="rm-section s1">
+        <div class="rm-header"><div class="rm-icon">🧠</div><div><div class="rm-title">Temel Kavramlar</div><div class="rm-sub">QA'ya başlamadan önce bilinmesi gerekenler</div></div></div>
+        <div class="rm-cards">
+          <div class="rm-card" onclick="openPopup('test-nedir')"><div class="rm-card-title">Test Nedir?</div><div class="rm-card-desc">Yazılımın beklenen davranışı gösterip göstermediğini doğrulama süreci.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('qa-qc-test')"><div class="rm-card-title">QA vs QC vs Test</div><div class="rm-card-desc">Kalite Güvence, Kalite Kontrol ve test arasındaki farklar.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('sdlc')"><div class="rm-card-title">SDLC</div><div class="rm-card-desc">Yazılım geliştirme yaşam döngüsü aşamaları ve QA'nın rolü.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('stlc')"><div class="rm-card-title">Test Yaşam Döngüsü</div><div class="rm-card-desc">Planlama, tasarım, uygulama ve raporlama aşamaları.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('bug-lifecycle')"><div class="rm-card-title">Bug Yaşam Döngüsü</div><div class="rm-card-desc">Bir hatanın açılmasından kapatılmasına kadar geçen süreç.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('test-pyramid')"><div class="rm-card-title">Test Piramidi</div><div class="rm-card-desc">Unit, entegrasyon ve E2E testlerin dengeli dağılımı.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+        </div>
+      </div>
+
+      <!-- S2 -->
+      <div class="rm-section s2">
+        <div class="rm-header"><div class="rm-icon">🗂️</div><div><div class="rm-title">Test Türleri</div><div class="rm-sub">Farklı test yaklaşımları ve metodolojileri</div></div></div>
+        <div class="rm-divider">Fonksiyonel</div>
+        <div class="rm-cards">
+          <div class="rm-card" onclick="openPopup('fonksiyonel-test')"><div class="rm-card-title">Fonksiyonel Test</div><div class="rm-card-desc">Sistemin gereksinimlerine uygun çalışıp çalışmadığını doğrulama.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('smoke-test')"><div class="rm-card-title">Smoke Test</div><div class="rm-card-desc">Temel işlevlerin çalıştığını doğrulayan hızlı kontrol.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('regresyon')"><div class="rm-card-title">Regresyon Testi</div><div class="rm-card-desc">Değişikliklerin mevcut işlevselliği bozmadığını kontrol etme.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('uat')"><div class="rm-card-title">UAT</div><div class="rm-card-desc">Son kullanıcıların iş gereksinimlerine göre test etmesi.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('exploratory')"><div class="rm-card-title">Keşif Testi</div><div class="rm-card-desc">Senaryosuz, sezgisel sistem keşfi.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('sinir-deger')"><div class="rm-card-title">Sınır Değer Analizi</div><div class="rm-card-desc">Giriş değerlerinin sınırlarını test etme tekniği.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+        </div>
+        <div class="rm-divider" style="margin-top:10px">Fonksiyonel Olmayan</div>
+        <div class="rm-cards">
+          <div class="rm-card" onclick="openPopup('performans-test')"><div class="rm-card-title">Performans Testi</div><div class="rm-card-desc">Hız, ölçeklenebilirlik ve kararlılık testleri.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('yuk-test')"><div class="rm-card-title">Yük Testi</div><div class="rm-card-desc">Sistem yük altında nasıl davranır?</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('guvenlik-test')"><div class="rm-card-title">Güvenlik Testi</div><div class="rm-card-desc">Güvenlik açıklarını ve zafiyetleri tespit etme.</div><div class="rm-card-tag">İleri</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('kullanilabilirlik')"><div class="rm-card-title">Kullanılabilirlik</div><div class="rm-card-desc">Arayüzün kullanıcı dostu olup olmadığını değerlendirme.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+        </div>
+      </div>
+
+      <!-- S3 -->
+      <div class="rm-section s3">
+        <div class="rm-header"><div class="rm-icon">✏️</div><div><div class="rm-title">Test Tasarımı</div><div class="rm-sub">Etkili test senaryoları oluşturma teknikleri</div></div></div>
+        <div class="rm-cards">
+          <div class="rm-card" onclick="openPopup('test-plani')"><div class="rm-card-title">Test Planı</div><div class="rm-card-desc">Kapsam, yaklaşım, kaynak ve takvimi tanımlayan belge.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('test-senaryosu')"><div class="rm-card-title">Test Senaryosu</div><div class="rm-card-desc">İşlevselliği doğrulayan adım adım prosedür.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('esdegerlik')"><div class="rm-card-title">Eşdeğerlik Bölümleme</div><div class="rm-card-desc">Giriş verilerini geçerli/geçersiz gruplara ayırma.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('karar-tablosu')"><div class="rm-card-title">Karar Tablosu</div><div class="rm-card-desc">Birden fazla koşulun kombinasyonlarını test etme.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('durum-gecis')"><div class="rm-card-title">Durum Geçiş Testi</div><div class="rm-card-desc">Farklı durumlardaki geçişleri test etme.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('risk-tabanli')"><div class="rm-card-title">Risk Tabanlı Test</div><div class="rm-card-desc">En yüksek riskli alanlara öncelik verme yaklaşımı.</div><div class="rm-card-tag">İleri</div><div class="rm-card-hint">tıkla →</div></div>
+        </div>
+      </div>
+
+      <!-- S4 -->
+      <div class="rm-section s4">
+        <div class="rm-header"><div class="rm-icon">🤖</div><div><div class="rm-title">Test Otomasyonu</div><div class="rm-sub">Modern QA'nın en kritik becerisi</div></div></div>
+        <div class="rm-divider">Programlama</div>
+        <div class="rm-cards">
+          <div class="rm-card" onclick="openPopup('python-js')"><div class="rm-card-title">Python / JavaScript</div><div class="rm-card-desc">Test otomasyonu için en yaygın diller.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('java-csharp')"><div class="rm-card-title">Java / C#</div><div class="rm-card-desc">Kurumsal ortamlarda yaygın kullanılan diller.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('git')"><div class="rm-card-title">Git & Versiyon Kontrol</div><div class="rm-card-desc">Test kodları için temel araç.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+        </div>
+        <div class="rm-divider" style="margin-top:10px">UI Test Araçları</div>
+        <div class="rm-cards">
+          <div class="rm-card" onclick="openPopup('selenium')"><div class="rm-card-title">Selenium WebDriver</div><div class="rm-card-desc">Web otomasyon için endüstri standardı.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('playwright')"><div class="rm-card-title">Playwright</div><div class="rm-card-desc">Microsoft'un hızlı çapraz-tarayıcı kütüphanesi.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('cypress')"><div class="rm-card-title">Cypress</div><div class="rm-card-desc">JS tabanlı modern E2E test framework'ü.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('appium')"><div class="rm-card-title">Appium</div><div class="rm-card-desc">iOS ve Android test otomasyonu.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+        </div>
+        <div class="rm-divider" style="margin-top:10px">API Test Araçları</div>
+        <div class="rm-cards">
+          <div class="rm-card" onclick="openPopup('postman')"><div class="rm-card-title">Postman</div><div class="rm-card-desc">API test ve dokümantasyonu için popüler araç.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('rest-assured')"><div class="rm-card-title">REST Assured</div><div class="rm-card-desc">Java tabanlı REST API test kütüphanesi.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('supertest')"><div class="rm-card-title">SuperTest / Axios</div><div class="rm-card-desc">Node.js API testleri için yaygın kütüphaneler.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+        </div>
+      </div>
+
+      <!-- S5 -->
+      <div class="rm-section s5">
+        <div class="rm-header"><div class="rm-icon">⚙️</div><div><div class="rm-title">CI/CD & DevOps</div><div class="rm-sub">Testleri geliştirme sürecine entegre etme</div></div></div>
+        <div class="rm-cards">
+          <div class="rm-card" onclick="openPopup('jenkins')"><div class="rm-card-title">Jenkins</div><div class="rm-card-desc">Açık kaynak CI/CD otomasyon sunucusu.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('github-actions')"><div class="rm-card-title">GitHub Actions</div><div class="rm-card-desc">GitHub'a entegre CI/CD pipeline'ları.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('gitlab-ci')"><div class="rm-card-title">GitLab CI</div><div class="rm-card-desc">GitLab'ın yerleşik CI/CD çözümü.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('docker')"><div class="rm-card-title">Docker</div><div class="rm-card-desc">Test ortamlarını konteynerize etme.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('kubernetes')"><div class="rm-card-title">Kubernetes</div><div class="rm-card-desc">Ölçeklenebilir test ortamları ve orkestrasyon.</div><div class="rm-card-tag">İleri</div><div class="rm-card-hint">tıkla →</div></div>
+        </div>
+      </div>
+
+      <!-- S6 -->
+      <div class="rm-section s6">
+        <div class="rm-header"><div class="rm-icon">⚡</div><div><div class="rm-title">Performans Testi</div><div class="rm-sub">Sistem kapasitesini ve hızını ölçme</div></div></div>
+        <div class="rm-cards">
+          <div class="rm-card" onclick="openPopup('jmeter')"><div class="rm-card-title">Apache JMeter</div><div class="rm-card-desc">Açık kaynak yük ve performans test aracı.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('k6')"><div class="rm-card-title">k6</div><div class="rm-card-desc">Geliştirici dostu modern yük testi aracı.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('gatling')"><div class="rm-card-title">Gatling</div><div class="rm-card-desc">Scala tabanlı yük test framework'ü.</div><div class="rm-card-tag">İleri</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('locust')"><div class="rm-card-title">Locust</div><div class="rm-card-desc">Python tabanlı dağıtık yük testi aracı.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+        </div>
+      </div>
+
+      <!-- S7 -->
+      <div class="rm-section s7">
+        <div class="rm-header"><div class="rm-icon">🔒</div><div><div class="rm-title">Güvenlik Testi</div><div class="rm-sub">Zafiyetleri tespit etme ve giderme</div></div></div>
+        <div class="rm-cards">
+          <div class="rm-card" onclick="openPopup('owasp')"><div class="rm-card-title">OWASP Top 10</div><div class="rm-card-desc">En yaygın web güvenlik açıkları listesi.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('zap')"><div class="rm-card-title">OWASP ZAP</div><div class="rm-card-desc">Açık kaynak web güvenlik tarayıcısı.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('burp')"><div class="rm-card-title">Burp Suite</div><div class="rm-card-desc">Web güvenlik testi için endüstri standardı.</div><div class="rm-card-tag">İleri</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('sqli-xss')"><div class="rm-card-title">SQL Injection & XSS</div><div class="rm-card-desc">En yaygın güvenlik açıklarını test etme.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+        </div>
+      </div>
+
+      <!-- S8 -->
+      <div class="rm-section s8">
+        <div class="rm-header"><div class="rm-icon">📋</div><div><div class="rm-title">Test Yönetimi</div><div class="rm-sub">Testleri organize etme ve raporlama</div></div></div>
+        <div class="rm-cards">
+          <div class="rm-card" onclick="openPopup('jira')"><div class="rm-card-title">Jira</div><div class="rm-card-desc">Hata takibi ve proje yönetimi platformu.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('testrail')"><div class="rm-card-title">TestRail</div><div class="rm-card-desc">Test senaryolarını yönetmek için özel araç.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('agile-test')"><div class="rm-card-title">Agile Test</div><div class="rm-card-desc">Scrum ve Kanban'da QA rolü ve pratikleri.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('bdd')"><div class="rm-card-title">BDD</div><div class="rm-card-desc">Cucumber ile Gherkin tabanlı test yaklaşımı.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+        </div>
+      </div>
+
+      <!-- S9 -->
+      <div class="rm-section s9">
+        <div class="rm-header"><div class="rm-icon">🚀</div><div><div class="rm-title">İleri Seviye</div><div class="rm-sub">Kariyer gelişimi için uzmanlaşma alanları</div></div></div>
+        <div class="rm-cards">
+          <div class="rm-card" onclick="openPopup('ai-test')"><div class="rm-card-title">AI Destekli Test</div><div class="rm-card-desc">Yapay zeka ile test üretme ve self-healing testler.</div><div class="rm-card-tag">İleri</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('gorsel-regresyon')"><div class="rm-card-title">Görsel Regresyon</div><div class="rm-card-desc">Percy, Applitools ile görsel değişiklikleri tespit.</div><div class="rm-card-tag">İleri</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('kaos')"><div class="rm-card-title">Kaos Mühendisliği</div><div class="rm-card-desc">Kasıtlı hata enjeksiyonuyla sistem dayanıklılığı testi.</div><div class="rm-card-tag">İleri</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('erisebilirlik')"><div class="rm-card-title">Erişilebilirlik (a11y)</div><div class="rm-card-desc">WCAG standartlarına uygunluk testi.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+        </div>
+      </div>
+
+    </div><!-- /qa-roadmap div -->
+  </div><!-- /qa-page roadmap -->
+
+  <!-- ── FLOWCHART ── -->
+  <div class="qa-page" id="qa-flowchart">
+    <div class="fc-head">
+      <div style="font-family:var(--mono);font-size:0.65rem;color:var(--dim);">// 13 aşamalı kariyer akış şeması</div>
+      <div class="lang-toggle">
+        <div class="lang-btn active" id="btn-tr" onclick="setLang('tr')">TR</div>
+        <div class="lang-btn" id="btn-en" onclick="setLang('en')">EN</div>
+      </div>
+    </div>
+    <div class="fc-canvas" id="fc-canvas">
+      <div class="fc-inner" id="fc-inner" style="height:2300px;">
+        <svg class="fc-svg" id="fc-svg"></svg>
+        <div class="fc-node nd-start" id="n-start" style="left:300px;top:10px;width:180px;height:42px;"><span class="lang-tr">QA Kariyerine Başla</span><span class="lang-en">Start QA Career</span></div>
+        <div class="fc-node nd-phase" id="n-1" style="left:195px;top:96px;width:390px;height:54px;border-color:#f0c040;"><div class="nd-title" style="color:#f0c040;"><span class="lang-tr">① Temel Kavramlar</span><span class="lang-en">① Fundamentals</span></div><div class="nd-sub"><span class="lang-tr">Test · SDLC · STLC · Bug Döngüsü · Test Piramidi</span><span class="lang-en">Testing · SDLC · STLC · Bug Lifecycle · Test Pyramid</span></div></div>
+        <div class="fc-node nd-phase" id="n-2" style="left:195px;top:200px;width:390px;height:54px;border-color:#5b8fff;"><div class="nd-title" style="color:#5b8fff;"><span class="lang-tr">② Test Türleri</span><span class="lang-en">② Types of Testing</span></div><div class="nd-sub"><span class="lang-tr">Fonksiyonel · Regresyon · Smoke · UAT · Keşif</span><span class="lang-en">Functional · Regression · Smoke · UAT · Exploratory</span></div></div>
+        <div class="fc-node nd-phase" id="n-3" style="left:195px;top:304px;width:390px;height:54px;border-color:#ff6b6b;"><div class="nd-title" style="color:#ff6b6b;"><span class="lang-tr">③ Test Tasarımı</span><span class="lang-en">③ Test Design</span></div><div class="nd-sub"><span class="lang-tr">Test Planı · Senaryo · Eşdeğerlik · Sınır Değer</span><span class="lang-en">Test Plan · Cases · Equivalence · Boundary Value</span></div></div>
+        <div class="fc-node nd-dec" id="n-d1" style="left:260px;top:408px;width:260px;height:48px;"><div class="nd-title"><span class="lang-tr">Otomasyon Öğren?</span><span class="lang-en">Learn Automation?</span></div></div>
+        <div class="fc-node nd-tool" id="n-prog" style="left:20px;top:510px;width:195px;height:56px;border-color:#34d399;"><div class="nd-title" style="color:#34d399;"><span class="lang-tr">Programlama Dili</span><span class="lang-en">Programming Language</span></div><div class="nd-sub">Python · JS · Java · C#</div></div>
+        <div class="fc-node nd-tool" id="n-manual" style="left:560px;top:510px;width:195px;height:56px;border-color:#5a8070;"><div class="nd-title" style="color:#9ca3af;"><span class="lang-tr">Manuel Test Uzmanı</span><span class="lang-en">Manual Testing Expert</span></div><div class="nd-sub">Test Mgmt · BDD · Agile</div></div>
+        <div class="fc-node nd-phase" id="n-ui" style="left:0px;top:624px;width:230px;height:54px;border-color:#4ecdc4;"><div class="nd-title" style="color:#4ecdc4;"><span class="lang-tr">④ UI Test Araçları</span><span class="lang-en">④ UI Test Tools</span></div><div class="nd-sub">Selenium · Playwright · Cypress</div></div>
+        <div class="fc-node nd-phase" id="n-api" style="left:0px;top:728px;width:230px;height:54px;border-color:#a88bfa;"><div class="nd-title" style="color:#a88bfa;"><span class="lang-tr">⑤ API Test Araçları</span><span class="lang-en">⑤ API Test Tools</span></div><div class="nd-sub">Postman · REST Assured · SuperTest</div></div>
+        <div class="fc-node nd-tool" id="n-fw" style="left:0px;top:832px;width:230px;height:54px;border-color:#f472b6;"><div class="nd-title" style="color:#f472b6;"><span class="lang-tr">⑥ Test Framework</span><span class="lang-en">⑥ Test Framework</span></div><div class="nd-sub">Jest · PyTest · JUnit · TestNG</div></div>
+        <div class="fc-node nd-phase" id="n-cicd" style="left:195px;top:950px;width:390px;height:54px;border-color:#38bdf8;"><div class="nd-title" style="color:#38bdf8;"><span class="lang-tr">⑦ CI/CD Entegrasyonu</span><span class="lang-en">⑦ CI/CD Integration</span></div><div class="nd-sub">Jenkins · GitHub Actions · Docker · K8s</div></div>
+        <div class="fc-node nd-dec" id="n-d2" style="left:260px;top:1054px;width:260px;height:48px;"><div class="nd-title"><span class="lang-tr">Uzmanlık Alanı?</span><span class="lang-en">Specialization?</span></div></div>
+        <div class="fc-node nd-tool" id="n-perf" style="left:10px;top:1158px;width:182px;height:64px;border-color:#fb923c;"><div class="nd-title" style="color:#fb923c;"><span class="lang-tr">⑧ Performans</span><span class="lang-en">⑧ Performance</span></div><div class="nd-sub">JMeter · k6 · Gatling</div></div>
+        <div class="fc-node nd-tool" id="n-sec" style="left:219px;top:1158px;width:182px;height:64px;border-color:#ff6b6b;"><div class="nd-title" style="color:#ff6b6b;"><span class="lang-tr">⑨ Güvenlik</span><span class="lang-en">⑨ Security</span></div><div class="nd-sub">OWASP · ZAP · Burp</div></div>
+        <div class="fc-node nd-tool" id="n-mob" style="left:428px;top:1158px;width:182px;height:64px;border-color:#4ecdc4;"><div class="nd-title" style="color:#4ecdc4;"><span class="lang-tr">⑩ Mobil Test</span><span class="lang-en">⑩ Mobile Testing</span></div><div class="nd-sub">Appium · BrowserStack</div></div>
+        <div class="fc-node nd-phase" id="n-mgmt" style="left:195px;top:1282px;width:390px;height:54px;border-color:#f472b6;"><div class="nd-title" style="color:#f472b6;"><span class="lang-tr">⑪ Test Yönetimi & Raporlama</span><span class="lang-en">⑪ Test Mgmt & Reporting</span></div><div class="nd-sub">Jira · TestRail · Allure · Metrikler</div></div>
+        <div class="fc-node nd-phase" id="n-agile" style="left:195px;top:1386px;width:390px;height:54px;border-color:#34d399;"><div class="nd-title" style="color:#34d399;"><span class="lang-tr">⑫ Agile & BDD</span><span class="lang-en">⑫ Agile & BDD</span></div><div class="nd-sub">Scrum · Kanban · Cucumber · Gherkin</div></div>
+        <div class="fc-node nd-phase" id="n-adv" style="left:195px;top:1490px;width:390px;height:62px;border-color:#f0c040;"><div class="nd-title" style="color:#f0c040;"><span class="lang-tr">⑬ İleri Seviye</span><span class="lang-en">⑬ Advanced Topics</span></div><div class="nd-sub"><span class="lang-tr">AI Test · Görsel Regresyon · Kaos Mühendisliği · a11y</span><span class="lang-en">AI Testing · Visual Regression · Chaos Engineering · a11y</span></div></div>
+        <div class="fc-node nd-end" id="n-end" style="left:295px;top:1610px;width:190px;height:42px;"><span class="lang-tr">🎯 Kıdemli QA Mühendisi</span><span class="lang-en">🎯 Senior QA Engineer</span></div>
+      </div>
+    </div>
+    <div class="fc-legend">
+      <div class="fc-legend-item"><div class="fc-legend-box" style="background:var(--cyan)"></div><span class="lang-tr">Başlangıç/Bitiş</span><span class="lang-en">Start/End</span></div>
+      <div class="fc-legend-item"><div class="fc-legend-box" style="background:#0a1a0d;border:2px solid #5b8fff"></div><span class="lang-tr">Ana Aşama</span><span class="lang-en">Main Phase</span></div>
+      <div class="fc-legend-item"><div class="fc-legend-box" style="background:rgba(13,26,16,0.9);border:1px solid rgba(0,200,100,0.2)"></div><span class="lang-tr">Araç</span><span class="lang-en">Tool</span></div>
+      <div class="fc-legend-item"><div class="fc-legend-box" style="background:#0a1a0d;border:2px solid #fb923c"></div><span class="lang-tr">Karar Noktası</span><span class="lang-en">Decision</span></div>
+    </div>
+  </div><!-- /qa-page flowchart -->
+
+</div><!-- /inner -->
+</section>
+
+<!-- ABOUT -->
 <section id="about">
 <div class="inner">
   <div class="sec-tag">Hakkımda & İletişim</div>
@@ -526,7 +650,7 @@ footer span { color: var(--cyan); }
   <div style="font-size:0.67rem;color:var(--dim)">📍 İstanbul · <span>alperensenel37@gmail.com</span></div>
 </footer>
 
-<!-- ── CONTACT MODAL ── -->
+<!-- CONTACT MODAL -->
 <div id="contactModal" class="modal-backdrop">
   <div class="modal-bg" onclick="closeContact()"></div>
   <div class="modal-box">
@@ -535,129 +659,196 @@ footer span { color: var(--cyan); }
     <div class="modal-tag">// iletişim</div>
     <div class="modal-name">Hüseyin Alperen Şenel</div>
     <div class="modal-sub">IT Destek & Helpdesk Uzmanı</div>
-    <div class="modal-row">
-      <div class="modal-row-icon">✉</div>
-      <div><div class="modal-row-label">E-Posta</div><div class="modal-row-val"><a href="mailto:alperensenel37@gmail.com">alperensenel37@gmail.com</a></div></div>
-      <button class="copy-btn" onclick="copyText('alperensenel37@gmail.com',this)">KOPYALA</button>
-    </div>
-    <div class="modal-row">
-      <div class="modal-row-icon">📞</div>
-      <div><div class="modal-row-label">Telefon</div><div class="modal-row-val"><a href="tel:+905557183737">+90 555 718 3737</a></div></div>
-      <button class="copy-btn" onclick="copyText('+905557183737',this)">KOPYALA</button>
-    </div>
+    <div class="modal-row"><div class="modal-row-icon">✉</div><div><div class="modal-row-label">E-Posta</div><div class="modal-row-val"><a href="mailto:alperensenel37@gmail.com">alperensenel37@gmail.com</a></div></div><button class="copy-btn" onclick="copyText('alperensenel37@gmail.com',this)">KOPYALA</button></div>
+    <div class="modal-row"><div class="modal-row-icon">📞</div><div><div class="modal-row-label">Telefon</div><div class="modal-row-val"><a href="tel:+905557183737">+90 555 718 3737</a></div></div><button class="copy-btn" onclick="copyText('+905557183737',this)">KOPYALA</button></div>
     <a href="https://linkedin.com/in/alperensenel" target="_blank" class="modal-linkedin">🔗 LinkedIn Profili</a>
   </div>
 </div>
 
-<!-- ── QA MODAL (Sağdan Açılan Panel) ── -->
-<div id="qaModal" class="qa-modal-backdrop">
-  <div class="qa-modal-overlay" onclick="closeQA()"></div>
-  <div class="qa-modal-panel">
-    <div class="qa-modal-header">
-      <div class="qa-modal-logo">
-        <div class="qa-modal-logo-dot"></div>
-        QA::roadmap — alperensenel.com
-      </div>
-      <div style="display:flex;align-items:center;gap:0.6rem;">
-        <a href="qa.html" target="_blank" style="font-family:var(--mono);font-size:0.62rem;color:var(--dim);text-decoration:none;padding:0.28rem 0.65rem;border:1px solid var(--border);border-radius:3px;transition:all 0.2s;" onmouseover="this.style.color='var(--cyan)';this.style.borderColor='var(--cyan)'" onmouseout="this.style.color='var(--dim)';this.style.borderColor='rgba(0,200,100,0.2)'">↗ Yeni Sekme</a>
-        <button class="qa-modal-close" onclick="closeQA()">✕ KAPAT</button>
-      </div>
-    </div>
-    <div class="qa-modal-body">
-      <iframe id="qa-iframe" src="" title="QA Roadmap" loading="lazy"></iframe>
-    </div>
+<!-- POPUP — QA kart detayları -->
+<div class="popup-backdrop" id="popup-backdrop" onclick="handleBackdropClick(event)">
+  <div class="popup-bg"></div>
+  <div class="popup-box" id="popup-box">
+    <div class="popup-topline" id="popup-topline"></div>
+    <button class="popup-close" onclick="closePopup()">✕</button>
+    <div class="popup-tag" id="popup-tag"></div>
+    <div class="popup-title" id="popup-title"></div>
+    <div class="popup-body" id="popup-body"></div>
   </div>
 </div>
 
 <script>
-// ── CURSOR ──
+// ═══════════ CURSOR ═══════════
 var dot=document.getElementById('cur-dot'),ring=document.getElementById('cur-ring');
 var mx=0,my=0,rx=0,ry=0,active=false;
-window.addEventListener('mousemove',function(e){
-  mx=e.clientX;my=e.clientY;
-  if(!active){active=true;dot.style.display='block';ring.style.display='block';rx=mx;ry=my;}
-  dot.style.left=(mx-5)+'px';dot.style.top=(my-5)+'px';
-});
-(function animRing(){
-  rx+=(mx-rx)*0.13;ry+=(my-ry)*0.13;
-  ring.style.left=(rx-16)+'px';ring.style.top=(ry-16)+'px';
-  requestAnimationFrame(animRing);
-})();
+window.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;if(!active){active=true;dot.style.display='block';ring.style.display='block';rx=mx;ry=my;}dot.style.left=(mx-5)+'px';dot.style.top=(my-5)+'px';});
+(function animRing(){rx+=(mx-rx)*0.13;ry+=(my-ry)*0.13;ring.style.left=(rx-16)+'px';ring.style.top=(ry-16)+'px';requestAnimationFrame(animRing);})();
 
-// ── MATRIX ──
+// ═══════════ MATRIX ═══════════
 var mc=document.getElementById('matrix-bg'),mctx=mc.getContext('2d');
-function resizeMc(){mc.width=window.innerWidth;mc.height=window.innerHeight;}
-resizeMc();window.addEventListener('resize',resizeMc);
-var mchars='アイウエオカキクケコ01ABCDEFGHIJKLMNOPQRSTUVWXYZｦｧｨｩ<>{}[]';
-var mfs=13,mcols=Math.floor(window.innerWidth/mfs),mdrops=Array(mcols).fill(1);
-function drawMatrix(){
-  mctx.fillStyle='rgba(6,14,8,0.05)';mctx.fillRect(0,0,mc.width,mc.height);
-  mctx.fillStyle='#00e676';mctx.font=mfs+'px monospace';
-  for(var i=0;i<mdrops.length;i++){
-    mctx.fillText(mchars[Math.floor(Math.random()*mchars.length)],i*mfs,mdrops[i]*mfs);
-    if(mdrops[i]*mfs>mc.height&&Math.random()>0.975)mdrops[i]=0;
-    mdrops[i]++;
-  }
-}
+function resizeMc(){mc.width=window.innerWidth;mc.height=window.innerHeight;}resizeMc();window.addEventListener('resize',resizeMc);
+var mchars='アイウエオカ01ABCDEFGHIJKLMNOPQRSTUVWXYZｦｧ<>{}[]';
+var mfs=13,mdrops=Array(Math.floor(window.innerWidth/mfs)).fill(1);
+function drawMatrix(){mctx.fillStyle='rgba(6,14,8,0.05)';mctx.fillRect(0,0,mc.width,mc.height);mctx.fillStyle='#00e676';mctx.font=mfs+'px monospace';for(var i=0;i<mdrops.length;i++){mctx.fillText(mchars[Math.floor(Math.random()*mchars.length)],i*mfs,mdrops[i]*mfs);if(mdrops[i]*mfs>mc.height&&Math.random()>0.975)mdrops[i]=0;mdrops[i]++;}}
 setInterval(drawMatrix,45);
 
-// ── TYPED ──
+// ═══════════ TYPED ═══════════
 var phrases=['IT & Helpdesk Uzmanı','Teknik Destek Uzmanı','Vibe Coder','QA Enthusiast'];
-var pi=0,ci=0,deleting=false;
-var typedEl=document.getElementById('typed');
-function type(){
-  var cur=phrases[pi];
-  if(!deleting){typedEl.textContent=cur.slice(0,++ci);if(ci===cur.length){deleting=true;setTimeout(type,1800);return;}}
-  else{typedEl.textContent=cur.slice(0,--ci);if(ci===0){deleting=false;pi=(pi+1)%phrases.length;}}
-  setTimeout(type,deleting?45:80);
-}
+var pi=0,ci=0,deleting=false,typedEl=document.getElementById('typed');
+function type(){var cur=phrases[pi];if(!deleting){typedEl.textContent=cur.slice(0,++ci);if(ci===cur.length){deleting=true;setTimeout(type,1800);return;}}else{typedEl.textContent=cur.slice(0,--ci);if(ci===0){deleting=false;pi=(pi+1)%phrases.length;}}setTimeout(type,deleting?45:80);}
 type();
 
-// ── CONTACT MODAL ──
+// ═══════════ CONTACT ═══════════
 function openContact(){document.getElementById('contactModal').classList.add('open');}
 function closeContact(){document.getElementById('contactModal').classList.remove('open');}
-function copyText(text,btn){
-  navigator.clipboard.writeText(text).then(function(){
-    var orig=btn.textContent;btn.textContent='✓ KOPYALANDI';btn.style.color='#00ffaa';
-    setTimeout(function(){btn.textContent=orig;btn.style.color='';},2000);
-  });
+function copyText(text,btn){navigator.clipboard.writeText(text).then(function(){var o=btn.textContent;btn.textContent='✓ KOPYALANDI';btn.style.color='#00ffaa';setTimeout(function(){btn.textContent=o;btn.style.color='';},2000);});}
+
+// ═══════════ SCROLL FADE ═══════════
+var obs=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';}});},{threshold:0.08});
+document.querySelectorAll('.fade-in').forEach(function(el){el.style.opacity='0';el.style.transform='translateY(20px)';el.style.transition='opacity 0.6s ease,transform 0.6s ease';obs.observe(el);});
+
+// ═══════════ QA TABS (Yol Haritası / Flowchart) ═══════════
+function switchQATab(id, el) {
+  document.querySelectorAll('.qa-page').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.qa-tab').forEach(function(t){t.classList.remove('active');});
+  document.getElementById('qa-'+id).classList.add('active');
+  el.classList.add('active');
+  if(id==='flowchart') setTimeout(drawLines,60);
 }
 
-// ── QA MODAL ──
-var qaOpen=false;
-function openQA(e){
-  if(e)e.preventDefault();
-  var modal=document.getElementById('qaModal');
-  var iframe=document.getElementById('qa-iframe');
-  if(!iframe.src||iframe.src==='about:blank'||iframe.src===''){
-    iframe.src='qa.html';
-  }
-  modal.classList.add('open');
+// ═══════════ POPUP DATA ═══════════
+var PD = {
+'test-nedir':{tag:'// Temel Kavram',title:'Test Nedir?',color:'#f0c040',body:'<p>Yazılım testi; bir sistemin belirtilen gereksinimleri karşılayıp karşılamadığını ve hataların tespit edilip giderilmesini sağlayan sistematik süreçtir.</p><h4>Temel Amaçlar</h4><ul><li>Hataları erken aşamada bulmak</li><li>Yazılım kalitesini güvence altına almak</li><li>Son kullanıcı beklentilerini karşıladığını doğrulamak</li><li>Güvenilir ve kararlı bir ürün teslim etmek</li></ul><h4>Test Türleri (Genel)</h4><ul><li><strong>Manuel Test:</strong> İnsan gözüyle, elle yürütülen senaryolar</li><li><strong>Otomasyon Testi:</strong> Script/araçlarla otomatik yürütülen testler</li><li><strong>Statik Test:</strong> Kod çalıştırmadan yapılan inceleme</li></ul><h4>Temel İlkeler</h4><ul><li>Test hataların var olduğunu gösterir, yokluğunu değil</li><li>Kapsamlı test mümkün değildir — risk tabanlı seçim yapılır</li><li>Erken test maliyeti düşürür</li><li>Hataların büyük çoğunluğu az sayıda modülde yoğunlaşır (Pareto)</li></ul>'},
+'qa-qc-test':{tag:'// Temel Kavram',title:'QA vs QC vs Test',color:'#f0c040',body:'<p>Bu üç kavram sıkça karıştırılır; ancak birbirinden farklı sorumluluklara sahiptir.</p><h4>QA — Kalite Güvence</h4><ul><li>Süreç odaklıdır; hatayı önlemeyi hedefler</li><li>Tüm geliştirme aşamalarına dahil olur</li><li>Örnek: Kodlama standartları, review süreçleri kurmak</li></ul><h4>QC — Kalite Kontrol</h4><ul><li>Ürün odaklıdır; mevcut hataları tespit eder</li><li>Geliştirme sonrası kontrol noktalarında devreye girer</li></ul><h4>Test</h4><ul><li>QC\'nin alt kümesidir; belirli girişlere doğru yanıt verip vermediğini kontrol eder</li></ul><div class="popup-tools"><span class="popup-tool">QA → Önle</span><span class="popup-tool">QC → Bul</span><span class="popup-tool">Test → Doğrula</span></div>'},
+'sdlc':{tag:'// Temel Kavram',title:'SDLC — Yazılım Geliştirme Yaşam Döngüsü',color:'#f0c040',body:'<p>SDLC, yazılımın fikir aşamasından kullanımdan kaldırılmasına kadar tüm süreçleri tanımlar.</p><h4>Aşamalar</h4><ul><li><strong>Planlama:</strong> Kapsam, kaynak ve zaman tahmini</li><li><strong>Gereksinim Analizi:</strong> Müşteri ihtiyaçlarını yazılı hale getirme</li><li><strong>Tasarım:</strong> Sistem mimarisi ve veritabanı tasarımı</li><li><strong>Kodlama:</strong> Yazılımın geliştirilmesi</li><li><strong>Test:</strong> Hata tespiti ve kalite doğrulama</li><li><strong>Dağıtım:</strong> Canlı ortama alma</li><li><strong>Bakım:</strong> Güncelleme ve hata düzeltme</li></ul><div class="popup-tools"><span class="popup-tool">Waterfall</span><span class="popup-tool">Agile/Scrum</span><span class="popup-tool">Kanban</span><span class="popup-tool">V-Model</span></div>'},
+'stlc':{tag:'// Temel Kavram',title:'STLC — Test Yaşam Döngüsü',color:'#f0c040',body:'<p>STLC, test faaliyetlerinin nasıl planlanıp yürütüleceğini tanımlayan yapılandırılmış süreçtir.</p><h4>Aşamalar</h4><ul><li><strong>1. Gereksinim Analizi:</strong> Test edilebilir gereksinimleri belirleme</li><li><strong>2. Test Planlaması:</strong> Strateji, kapsam, araç ve kaynak belirleme</li><li><strong>3. Test Senaryosu Tasarımı:</strong> Detaylı test adımları yazma</li><li><strong>4. Test Ortamı Kurulumu:</strong> Altyapı ve veri hazırlama</li><li><strong>5. Test Yürütme:</strong> Testleri çalıştırma, hataları loglama</li><li><strong>6. Test Kapanışı:</strong> Raporlama, öğrenilen dersler</li></ul>'},
+'bug-lifecycle':{tag:'// Temel Kavram',title:'Bug (Hata) Yaşam Döngüsü',color:'#f0c040',body:'<p>Bir hatanın tespit edilmesinden kapatılmasına kadar geçen tüm aşamaları kapsar.</p><h4>Durumlar</h4><ul><li><strong>New:</strong> İlk kez raporlandı</li><li><strong>Assigned:</strong> Geliştirici atandı</li><li><strong>Open:</strong> Geliştirici inceliyor</li><li><strong>Fixed:</strong> Kod değişikliği yapıldı</li><li><strong>Retest:</strong> QA doğrulama yapıyor</li><li><strong>Verified:</strong> Hata giderildi</li><li><strong>Closed:</strong> Süreç tamamlandı</li><li><strong>Reopened:</strong> Hata tekrar oluştu</li></ul><h4>İyi Bug Raporu İçermeli</h4><ul><li>Başlık, öncelik ve şiddet bilgisi</li><li>Adım adım yeniden üretme talimatları</li><li>Beklenen vs gerçekleşen sonuç</li><li>Ekran görüntüsü/video ve ortam bilgisi</li></ul>'},
+'test-pyramid':{tag:'// Temel Kavram',title:'Test Piramidi',color:'#f0c040',body:'<p>Mike Cohn tarafından önerilen test piramidi, farklı test türlerinin oranını gösterir.</p><h4>Katmanlar (Alttan Üste)</h4><ul><li><strong>Unit Testler — %70:</strong> En hızlı, en ucuz. Tekil fonksiyon ve metodları test eder.</li><li><strong>Entegrasyon Testler — %20:</strong> Modüllerin birlikte çalışmasını doğrular.</li><li><strong>E2E Testler — %10:</strong> Kullanıcı senaryolarını tam akışıyla test eder.</li></ul><h4>Neden Önemli?</h4><ul><li>E2E testler yavaş ve kırılgandır; çok fazla yazmak sürdürülemez</li><li>Unit testler hızlı feedback sağlar ve refactoring güvenliği verir</li><li>Dengesiz piramit → "Buz Kristaline" dönüşür</li></ul><div class="popup-tools"><span class="popup-tool">Jest</span><span class="popup-tool">PyTest</span><span class="popup-tool">JUnit</span><span class="popup-tool">Cypress</span></div>'},
+'fonksiyonel-test':{tag:'// Test Türü',title:'Fonksiyonel Test',color:'#5b8fff',body:'<p>Sistemin belirtilen işlevsel gereksinimlere uygun davranıp davranmadığını doğrular.</p><h4>Kapsam</h4><ul><li>Kullanıcı arayüzü işlevleri</li><li>API endpoint davranışları</li><li>İş kuralları ve hesaplamalar</li></ul><h4>Yaklaşımlar</h4><ul><li><strong>Black-Box:</strong> İç yapıya bakılmadan giriş/çıkış testi</li><li><strong>White-Box:</strong> Kod yapısı bilinerek test</li><li><strong>Grey-Box:</strong> Kısmi iç bilgiyle test</li></ul><div class="popup-tools"><span class="popup-tool">Selenium</span><span class="popup-tool">Cypress</span><span class="popup-tool">Postman</span></div>'},
+'smoke-test':{tag:'// Test Türü',title:'Smoke Test',color:'#5b8fff',body:'<p>Yeni bir build\'in temel işlevlerinin çalışır durumda olduğunu hızlıca doğrulayan yüzeysel testlerdir.</p><h4>Özellikler</h4><ul><li>Hızlıdır — genellikle 5–15 dakika</li><li>Kritik kullanıcı yollarını kapsar</li><li>CI/CD pipeline\'ının ilk adımında çalışır</li><li>Başarısız olursa build daha ileri geçmez</li></ul><h4>Sanity Test ile Farkı</h4><ul><li><strong>Smoke:</strong> Tüm sistemin temel çalışmasını kontrol eder</li><li><strong>Sanity:</strong> Belirli bir fix\'in doğruluğunu hızlıca kontrol eder</li></ul>'},
+'regresyon':{tag:'// Test Türü',title:'Regresyon Testi',color:'#5b8fff',body:'<p>Kod değişikliklerinin mevcut işlevselliği bozmadığını doğrular. Her release öncesinde kritik öneme sahiptir.</p><h4>Neden Gerekli?</h4><ul><li>Yeni özellik eklemek eski kodu kırabilir</li><li>Hata düzeltmesi başka hataya yol açabilir (yan etki)</li></ul><h4>Stratejiler</h4><ul><li><strong>Tam Regresyon:</strong> Tüm test takımını çalıştırma</li><li><strong>Kısmi Regresyon:</strong> Etkilenen modüllerin testleri</li><li><strong>Risk Tabanlı:</strong> En kritik alanları önceliklendir</li></ul><div class="popup-tools"><span class="popup-tool">Selenium</span><span class="popup-tool">Playwright</span><span class="popup-tool">Cypress</span></div>'},
+'uat':{tag:'// Test Türü',title:'UAT — Kullanıcı Kabul Testi',color:'#5b8fff',body:'<p>Son kullanıcıların sistemi iş gereksinimlerine göre onayladığı son aşama testidir.</p><h4>Türleri</h4><ul><li><strong>Alpha Testi:</strong> Şirket içi kullanıcılarla kontrollü ortamda</li><li><strong>Beta Testi:</strong> Gerçek kullanıcılarla üretim benzeri ortamda</li><li><strong>OAT:</strong> Operasyonel hazırlık kontrolü</li></ul><h4>Başarı Kriterleri</h4><ul><li>Tüm kabul kriterleri karşılandı</li><li>Kritik P1/P2 hata bulunmuyor</li><li>Paydaş imzası alındı</li></ul>'},
+'exploratory':{tag:'// Test Türü',title:'Keşif (Exploratory) Testi',color:'#5b8fff',body:'<p>Önceden yazılı senaryo olmaksızın, test uzmanının merakına dayanarak sistemi keşfeden yaklaşımdır.</p><h4>Avantajlar</h4><ul><li>Öngörülemeyen hataları keşfeder</li><li>Kullanıcı perspektifini yansıtır</li><li>Hızlı feedback, senaryo yazımı gerektirmez</li></ul><h4>Session-Based Testing</h4><ul><li>Belirli süre (30–90 dk) ve odak alanıyla çalışılır</li><li>Her session için charter belirlenir</li></ul><h4>İpuçları</h4><ul><li>Boş değer, negatif sayı, çok uzun metin dene</li><li>Kullanıcı akışlarını geriye doğru yürüt</li><li>Çoklu sekme, ağ kesilmesi, izin reddi</li></ul>'},
+'sinir-deger':{tag:'// Test Tekniği',title:'Sınır Değer Analizi (BVA)',color:'#5b8fff',body:'<p>Hataların en çok sınır değerlerde oluştuğu prensibine dayanan teknik.</p><h4>Nasıl Çalışır?</h4><ul><li>Alt sınır, üst sınır ve komşu değerler test edilir</li><li>Örnek: Yaş 18–65 → 17, 18, 19, 64, 65, 66 test edilir</li></ul><h4>Pratik Örnekler</h4><ul><li>Parola uzunluğu (min 8, max 20 karakter)</li><li>Form sayısal giriş alanları</li><li>Tarih seçiciler</li></ul>'},
+'performans-test':{tag:'// Test Türü',title:'Performans Testi',color:'#5b8fff',body:'<p>Sistemin hız, ölçeklenebilirlik, kararlılık ve kaynak kullanımını ölçen test türü.</p><h4>Alt Türler</h4><ul><li><strong>Yük Testi:</strong> Beklenen kullanıcı yüküyle davranış</li><li><strong>Stres Testi:</strong> Sistemin kırılma noktası</li><li><strong>Soak Testi:</strong> Uzun süre yük altında hafıza sızıntısı vb.</li><li><strong>Spike Testi:</strong> Ani trafik artışlarına tepki</li></ul><h4>Temel Metrikler</h4><ul><li>Response Time, Throughput (RPS/TPS), Error Rate, CPU/Memory</li></ul><div class="popup-tools"><span class="popup-tool">JMeter</span><span class="popup-tool">k6</span><span class="popup-tool">Gatling</span><span class="popup-tool">Locust</span></div>'},
+'yuk-test':{tag:'// Test Türü',title:'Yük Testi',color:'#5b8fff',body:'<p>Sistemin beklenen kullanıcı yükü altında nasıl performans gösterdiğini ölçer.</p><h4>Hedefler</h4><ul><li>Kaç eşzamanlı kullanıcıya dayanabileceğini belirlemek</li><li>SLA gereksinimlerini doğrulamak</li><li>Dar boğazları tespit etmek</li></ul><h4>Senaryo Örneği</h4><ul><li>Ramp-up: 0→1000 kullanıcı, 10 dk</li><li>Steady-state: 1000 kullanıcı, 30 dk</li><li>Ramp-down: Yavaşça sıfıra inme</li></ul>'},
+'guvenlik-test':{tag:'// Test Türü',title:'Güvenlik Testi',color:'#5b8fff',body:'<p>Sistemdeki güvenlik açıklarını ve zafiyetleri tespit eden test türü.</p><h4>Kapsam</h4><ul><li>Authentication & Authorization zafiyetleri</li><li>SQL Injection, XSS, CSRF</li><li>Hassas veri ifşası</li><li>Güvenlik yanlış yapılandırmaları</li></ul><h4>Yaklaşımlar</h4><ul><li><strong>SAST:</strong> Statik kod analizi</li><li><strong>DAST:</strong> Dinamik analiz (çalışan uygulamada)</li><li><strong>Pentest:</strong> Etik hacker yaklaşımı</li></ul>'},
+'kullanilabilirlik':{tag:'// Test Türü',title:'Kullanılabilirlik Testi',color:'#5b8fff',body:'<p>Gerçek kullanıcıların ürünü ne kadar kolay kullandığını değerlendirir.</p><h4>Yöntemler</h4><ul><li><strong>Moderasyonlu:</strong> Gözlemci eşliğinde test</li><li><strong>Moderasyonsuz:</strong> Uzaktan, otomatik kayıtla</li><li><strong>A/B Testi:</strong> İki tasarımı karşılaştırma</li><li><strong>Heatmap:</strong> Tıklama ve kaydırma analizi</li></ul><div class="popup-tools"><span class="popup-tool">Hotjar</span><span class="popup-tool">Maze</span><span class="popup-tool">UserTesting</span></div>'},
+'test-plani':{tag:'// Test Tasarımı',title:'Test Planı',color:'#ff6b6b',body:'<p>Test faaliyetlerinin kapsamını, yaklaşımını ve kaynaklarını tanımlayan resmi belgedir.</p><h4>İçermesi Gerekenler</h4><ul><li><strong>Test Kapsamı:</strong> Neyin test edileceği, neyin dışarıda bırakılacağı</li><li><strong>Test Stratejisi:</strong> Hangi test türleri, hangi sırayla</li><li><strong>Giriş/Çıkış Kriterleri:</strong> Başlatma ve bitirme koşulları</li><li><strong>Kaynaklar:</strong> Ekip, araç, ortam, veri</li><li><strong>Risk & Azaltma:</strong> Olası sorunlar ve planlar</li></ul>'},
+'test-senaryosu':{tag:'// Test Tasarımı',title:'Test Senaryosu (Test Case)',color:'#ff6b6b',body:'<p>Belirli bir işlevselliği doğrulamak için hazırlanan adım adım prosedür.</p><h4>Bileşenler</h4><ul><li><strong>ID:</strong> Benzersiz tanımlayıcı (TC_001)</li><li><strong>Başlık:</strong> Ne test edildiğini açıklayan tanım</li><li><strong>Ön Koşullar:</strong> Test öncesi gerekli durum</li><li><strong>Adımlar:</strong> Sıralı yürütme adımları</li><li><strong>Beklenen Sonuç:</strong> Doğru davranış nedir?</li><li><strong>Durum:</strong> Geçti / Kaldı / Engellendi</li></ul><h4>Pozitif vs Negatif</h4><ul><li><strong>Pozitif:</strong> Geçerli veriyle doğru akış</li><li><strong>Negatif:</strong> Hatalı veriyle sistem tepkisi</li></ul>'},
+'esdegerlik':{tag:'// Test Tekniği',title:'Eşdeğerlik Bölümleme (EP)',color:'#ff6b6b',body:'<p>Giriş verilerini aynı davranışı sergileyecek gruplara ayırarak test sayısını azaltır.</p><h4>Nasıl Çalışır?</h4><ul><li>Her bölümden yalnızca bir değer test edilir</li><li>Geçerli ve geçersiz bölümler belirlenir</li><li>Örnek: 1–100 arası alan → geçerli (50), geçersiz (-5, 150)</li></ul>'},
+'karar-tablosu':{tag:'// Test Tekniği',title:'Karar Tablosu Testi',color:'#ff6b6b',body:'<p>Birden fazla koşulun kombinasyonlarına göre sistem davranışını test eder.</p><h4>Yapısı</h4><ul><li>Satırlar: Koşullar ve eylemler</li><li>Sütunlar: Test kuralları (farklı kombinasyonlar)</li><li>Her kural: Koşulların değerleri (E/H) + beklenen eylem</li></ul><h4>Kullanım Alanları</h4><ul><li>Karmaşık iş kuralları içeren sistemler</li><li>Örnek: İndirim hesaplama (üyelik + sepet + kampanya)</li></ul>'},
+'durum-gecis':{tag:'// Test Tekniği',title:'Durum Geçiş Testi',color:'#ff6b6b',body:'<p>Sistemin farklı durumlarda nasıl davrandığını test eder.</p><h4>Kavramlar</h4><ul><li><strong>Durum (State):</strong> Sistemin bulunduğu koşul</li><li><strong>Geçiş:</strong> Bir durumdan diğerine geçiş</li><li><strong>Tetikleyici:</strong> Geçişi başlatan olay</li></ul><h4>Örnek: Kullanıcı Hesabı</h4><ul><li>Aktif → yanlış şifre ×3 → Kilitli</li><li>Kilitli → admin unlock → Aktif</li><li>Aktif → kullanıcı sil → Kapalı</li></ul>'},
+'risk-tabanli':{tag:'// Test Tekniği',title:'Risk Tabanlı Test',color:'#ff6b6b',body:'<p>Test kaynaklarını en yüksek risk taşıyan alanlara yönlendirir.</p><h4>Risk = Olasılık × Etki</h4><ul><li><strong>Olasılık:</strong> Hatanın oluşma ihtimali</li><li><strong>Etki:</strong> İş/kullanıcı üzerindeki etki</li></ul><h4>Adımlar</h4><ul><li>Risk alanlarını tanımla (ödeme, güvenlik, veri kaybı)</li><li>Her alana risk skoru ata</li><li>Yüksek riskli alanlara daha fazla test yoğunlaştır</li></ul>'},
+'python-js':{tag:'// Otomasyon',title:'Python & JavaScript',color:'#4ecdc4',body:'<h4>Python ile Test</h4><ul><li><code>pytest</code> — en popüler Python test framework\'ü</li><li><code>selenium + python</code> — web otomasyon</li><li><code>requests</code> — API test kütüphanesi</li><li><code>behave</code> — BDD framework\'ü</li></ul><h4>JavaScript ile Test</h4><ul><li><code>Jest</code> — unit test framework\'ü</li><li><code>Cypress</code> — E2E test aracı</li><li><code>Playwright</code> — çapraz-tarayıcı otomasyon</li><li><code>Mocha + Chai</code> — klasik JS combo</li></ul>'},
+'java-csharp':{tag:'// Otomasyon',title:'Java & C# — Kurumsal Test',color:'#4ecdc4',body:'<h4>Java ile Test</h4><ul><li><code>JUnit 5</code> — standart Java test framework\'ü</li><li><code>TestNG</code> — paralel test, data-driven test</li><li><code>Selenium + Java</code> — en yaygın kurumsal kombo</li><li><code>REST Assured</code> — Java API test kütüphanesi</li></ul><h4>C# ile Test</h4><ul><li><code>NUnit / xUnit / MSTest</code></li><li><code>Selenium WebDriver + C#</code></li><li><code>SpecFlow</code> — .NET için BDD</li></ul>'},
+'git':{tag:'// Otomasyon',title:'Git & Versiyon Kontrolü',color:'#4ecdc4',body:'<p>Test kodlarını yönetmek ve CI/CD süreçlerine entegre olmak için temel beceridir.</p><h4>QA İçin Git Pratikleri</h4><ul><li>Test kodunu feature branch\'te geliştir</li><li>Pull Request üzerinden code review yap</li><li><code>.gitignore</code> ile hassas test verilerini dışla</li></ul><div class="popup-tools"><span class="popup-tool">GitHub</span><span class="popup-tool">GitLab</span><span class="popup-tool">Bitbucket</span></div>'},
+'selenium':{tag:'// UI Otomasyon',title:'Selenium WebDriver',color:'#4ecdc4',body:'<p>Web tarayıcısı otomasyonu için endüstri standardı, açık kaynak araç.</p><h4>Bileşenler</h4><ul><li><strong>WebDriver:</strong> Tarayıcıyı programatik kontrol eden API</li><li><strong>Grid:</strong> Paralel, dağıtık test çalıştırma</li></ul><h4>Desteklenen Tarayıcılar</h4><div class="popup-tools"><span class="popup-tool">Chrome</span><span class="popup-tool">Firefox</span><span class="popup-tool">Edge</span><span class="popup-tool">Safari</span></div><h4>Desteklenen Diller</h4><div class="popup-tools"><span class="popup-tool">Java</span><span class="popup-tool">Python</span><span class="popup-tool">C#</span><span class="popup-tool">JavaScript</span></div>'},
+'playwright':{tag:'// UI Otomasyon',title:'Playwright',color:'#4ecdc4',body:'<p>Microsoft tarafından geliştirilen modern ve hızlı çapraz-tarayıcı otomasyon kütüphanesi.</p><h4>Güçlü Yönleri</h4><ul><li>Chromium, Firefox ve WebKit — tek API\'den</li><li>Auto-wait mekanizması — manuel bekleme gerekmez</li><li>Network interception ve mock desteği</li><li>Paralel test çalıştırma (sharding)</li><li>Built-in trace viewer ve reporter</li></ul><div class="popup-tools"><span class="popup-tool">TypeScript</span><span class="popup-tool">JavaScript</span><span class="popup-tool">Python</span><span class="popup-tool">Java</span></div>'},
+'cypress':{tag:'// UI Otomasyon',title:'Cypress',color:'#4ecdc4',body:'<p>JavaScript ekosistemi için modern E2E test framework\'ü.</p><h4>Özellikler</h4><ul><li>Tarayıcıda doğrudan çalışır (WebDriver kullanmaz)</li><li>Gerçek zamanlı görsel geri bildirim ve time-travel debugging</li><li>Otomatik bekleme mekanizması</li><li>Komponent testi desteği (React, Vue, Angular)</li></ul><h4>Kısıtlamalar</h4><ul><li>Yalnızca JavaScript/TypeScript</li><li>Safari desteği kısıtlı</li></ul>'},
+'appium':{tag:'// Mobil Otomasyon',title:'Appium',color:'#4ecdc4',body:'<p>iOS ve Android native, hybrid ve web uygulamalarının otomasyon testleri için açık kaynak araç.</p><h4>Özellikler</h4><ul><li>WebDriver protokolünü kullanır — Selenium ile aynı API</li><li>Gerçek cihaz ve emülatör desteği</li><li>Native, Hybrid, Mobile Web desteği</li></ul><div class="popup-tools"><span class="popup-tool">Java</span><span class="popup-tool">Python</span><span class="popup-tool">JavaScript</span><span class="popup-tool">BrowserStack</span></div>'},
+'postman':{tag:'// API Test',title:'Postman',color:'#4ecdc4',body:'<p>API geliştirme ve test süreçlerini kolaylaştıran en yaygın kullanılan platform.</p><h4>Özellikler</h4><ul><li>HTTP isteklerini görsel arayüzle oluşturma</li><li>Collection ve Environment yönetimi</li><li>Pre-request Script ve Test Script (JavaScript)</li><li>Newman CLI ile CI/CD entegrasyonu</li><li>Mock Server desteği</li></ul><div class="popup-tools"><span class="popup-tool">REST</span><span class="popup-tool">GraphQL</span><span class="popup-tool">Newman</span><span class="popup-tool">SOAP</span></div>'},
+'rest-assured':{tag:'// API Test',title:'REST Assured',color:'#4ecdc4',body:'<p>Java tabanlı REST API testlerini sade sözdizimle yazmaya yarayan kütüphane.</p><h4>Given-When-Then Sözdizimi</h4><ul><li><code>given()</code> — header, body, auth hazırlığı</li><li><code>when()</code> — HTTP metodu ve endpoint</li><li><code>then()</code> — assertion\'lar</li></ul><div class="popup-tools"><span class="popup-tool">TestNG</span><span class="popup-tool">JUnit</span><span class="popup-tool">Maven</span><span class="popup-tool">Allure</span></div>'},
+'supertest':{tag:'// API Test',title:'SuperTest & Axios',color:'#4ecdc4',body:'<p>Node.js ekosisteminde API test ve HTTP istek kütüphaneleri.</p><h4>SuperTest</h4><ul><li>Express.js uygulamalarını doğrudan test eder</li><li>Sunucu başlatmadan istek atılabilir</li></ul><h4>Axios</h4><ul><li>Promise tabanlı, interceptor desteği var</li><li>Browser ve Node.js\'te çalışır</li></ul>'},
+'jenkins':{tag:'// CI/CD',title:'Jenkins',color:'#a88bfa',body:'<p>Açık kaynak CI/CD otomasyon sunucusu. Binlerce eklentiyle her iş akışına uyarlanabilir.</p><h4>Temel Kavramlar</h4><ul><li><strong>Pipeline:</strong> Jenkinsfile ile tanımlanan iş akışı</li><li><strong>Job:</strong> Tekil otomasyon görevi</li><li><strong>Stage:</strong> Pipeline\'ın mantıksal adımları</li></ul><h4>QA Entegrasyonu</h4><ul><li>Her PR\'da test suite otomatik çalışır</li><li>Test raporu Jenkins\'e publish edilir</li><li>Başarısız test → build fail → merge engellenir</li></ul>'},
+'github-actions':{tag:'// CI/CD',title:'GitHub Actions',color:'#a88bfa',body:'<p>GitHub\'a entegre YAML tabanlı CI/CD platformu.</p><h4>Temel Yapı</h4><ul><li><strong>Workflow:</strong> Tetikleyici + job\'lardan oluşan YAML</li><li><strong>Job:</strong> Runner üzerinde çalışan adımlar</li><li><strong>Step:</strong> Shell komutu veya Action çağrısı</li></ul><h4>QA Workflow Örneği</h4><ul><li>on: push/pull_request</li><li>Adım 1: Checkout → 2: Dependency kur → 3: Test çalıştır → 4: Rapor yükle</li></ul>'},
+'gitlab-ci':{tag:'// CI/CD',title:'GitLab CI/CD',color:'#a88bfa',body:'<p>GitLab\'a yerleşik CI/CD sistemi. .gitlab-ci.yml dosyasıyla yapılandırılır.</p><h4>Avantajları</h4><ul><li>Git, issue tracker, registry ve CI tek platformda</li><li>Review Apps ile PR başına test ortamı</li><li>JUnit raporu GitLab UI\'da gösterilir</li></ul>'},
+'docker':{tag:'// DevOps',title:'Docker',color:'#a88bfa',body:'<p>Uygulamaları ve bağımlılıklarını izole ortamlarda paketleyen platform.</p><h4>QA için Docker</h4><ul><li>Test ortamlarını tekrarlanabilir şekilde oluşturma</li><li>"Works on my machine" sorununu ortadan kaldırma</li><li>Selenium Grid\'i Docker Compose ile kolayca kurma</li></ul><div class="popup-tools"><span class="popup-tool">Dockerfile</span><span class="popup-tool">docker-compose</span><span class="popup-tool">Selenium Grid</span></div>'},
+'kubernetes':{tag:'// DevOps',title:'Kubernetes',color:'#a88bfa',body:'<p>Konteynerleri büyük ölçekte orkestre eden endüstri standardı platform.</p><h4>QA ile İlişkisi</h4><ul><li>Test ortamlarını namespace bazlı izole etme</li><li>Paralel test için pod\'ları ölçeklendirme</li><li>Canary deployment ile kademeli test</li><li>Chaos Engineering için altyapı sağlama</li></ul>'},
+'jmeter':{tag:'// Performans',title:'Apache JMeter',color:'#34d399',body:'<p>Açık kaynak, Java tabanlı performans ve yük test aracı.</p><h4>Özellikler</h4><ul><li>GUI ve CLI modu</li><li>Thread Group ile sanal kullanıcı simülasyonu</li><li>Listener\'larla gerçek zamanlı sonuç</li><li>Distributed testing (Master-Slave)</li></ul><div class="popup-tools"><span class="popup-tool">HTTP/S</span><span class="popup-tool">JDBC</span><span class="popup-tool">REST</span><span class="popup-tool">JUnit Raporu</span></div>'},
+'k6':{tag:'// Performans',title:'k6',color:'#34d399',body:'<p>Grafana Labs\'in geliştirici dostu yük testi aracı. JavaScript ile test yazılır.</p><h4>Avantajları</h4><ul><li>JS/TS ile yazılır — öğrenmesi kolay</li><li>CLI öncelikli, CI/CD dostu</li><li>Grafana ile gerçek zamanlı metrik</li><li>Threshold ile otomatik geçer/kalır kararı</li></ul>'},
+'gatling':{tag:'// Performans',title:'Gatling',color:'#34d399',body:'<p>Scala/Kotlin tabanlı, kod odaklı modern yük test framework\'ü.</p><h4>Özellikler</h4><ul><li>DSL tabanlı okunabilir senaryo yazımı</li><li>Detaylı HTML raporları (yerleşik)</li><li>HAR dosyasından senaryo oluşturma</li></ul><div class="popup-tools"><span class="popup-tool">Scala</span><span class="popup-tool">Kotlin</span><span class="popup-tool">Java</span><span class="popup-tool">Maven</span></div>'},
+'locust':{tag:'// Performans',title:'Locust',color:'#34d399',body:'<p>Python ile yazılan, dağıtık ve ölçeklenebilir yük test aracı.</p><h4>Avantajları</h4><ul><li>Saf Python ile senaryo — esneklik yüksek</li><li>Web tabanlı UI ile anlık izleme</li><li>Dağıtık mod: master + worker mimarisi</li></ul>'},
+'owasp':{tag:'// Güvenlik',title:'OWASP Top 10',color:'#fb923c',body:'<p>En kritik 10 web uygulama güvenlik riskinin listesi (2021).</p><ul><li><strong>A01:</strong> Broken Access Control</li><li><strong>A02:</strong> Cryptographic Failures</li><li><strong>A03:</strong> Injection (SQL, NoSQL, OS)</li><li><strong>A04:</strong> Insecure Design</li><li><strong>A05:</strong> Security Misconfiguration</li><li><strong>A06:</strong> Vulnerable Components</li><li><strong>A07:</strong> Auth Failures</li><li><strong>A08:</strong> Software Integrity Failures</li><li><strong>A09:</strong> Logging & Monitoring Failures</li><li><strong>A10:</strong> SSRF</li></ul>'},
+'zap':{tag:'// Güvenlik',title:'OWASP ZAP',color:'#fb923c',body:'<p>Açık kaynak web uygulama güvenlik tarayıcısı.</p><h4>Özellikler</h4><ul><li>Otomatik tarama (aktif/pasif)</li><li>Spider ile uygulama haritası</li><li>Manuel test için proxy kullanımı</li><li>REST API ile CI/CD entegrasyonu</li></ul>'},
+'burp':{tag:'// Güvenlik',title:'Burp Suite',color:'#fb923c',body:'<p>Web güvenlik testleri için endüstri standardı platform.</p><h4>Temel Modüller</h4><ul><li><strong>Proxy:</strong> Tarayıcı trafiğini yakala ve değiştir</li><li><strong>Scanner:</strong> Otomatik güvenlik taraması (Pro)</li><li><strong>Intruder:</strong> Fuzzing ve brute-force</li><li><strong>Repeater:</strong> HTTP isteklerini tekrar gönder</li></ul>'},
+'sqli-xss':{tag:'// Güvenlik',title:'SQL Injection & XSS',color:'#fb923c',body:'<h4>SQL Injection (SQLi)</h4><ul><li>Kullanıcı girdisi veritabanı sorgusuna dahil edildiğinde oluşur</li><li>Test payload: <code>\' OR \'1\'=\'1</code></li><li>Önlem: Parameterized queries, ORM, input validation</li></ul><h4>Cross-Site Scripting (XSS)</h4><ul><li>Kötü amaçlı script\'in kurban tarayıcısında çalıştırılması</li><li>Türleri: Reflected, Stored, DOM-based</li><li>Önlem: Output encoding, CSP header, HttpOnly cookie</li></ul>'},
+'jira':{tag:'// Test Yönetimi',title:'Jira',color:'#f472b6',body:'<p>Dünyada en yaygın kullanılan proje yönetimi ve hata takip platformu.</p><h4>QA için Kullanım</h4><ul><li>Bug raporu oluşturma ve takip</li><li>Sprint planlama ve story/task yönetimi</li><li>Test eklentileriyle (Zephyr, Xray) test yönetimi</li></ul><h4>Hata Raporu Alanları</h4><ul><li>Summary, Steps, Priority (P1–P4), Severity</li><li>Assignee, Labels, Fix Version, Attachment</li></ul>'},
+'testrail':{tag:'// Test Yönetimi',title:'TestRail',color:'#f472b6',body:'<p>Test senaryolarını, çalışmalarını ve sonuçlarını yönetmek için özel araç.</p><h4>Özellikler</h4><ul><li>Test Suite ve Case organizasyonu</li><li>Test Run ve Plan yönetimi</li><li>Gerçek zamanlı raporlama</li><li>Jira, GitHub, Jenkins entegrasyonları</li></ul>'},
+'agile-test':{tag:'// Metodoloji',title:'Agile Test',color:'#f472b6',body:'<p>Agile\'da QA, geliştirme döngüsünün ayrılmaz parçasıdır.</p><h4>Scrum\'da QA Rolü</h4><ul><li>Sprint planning\'de test senaryoları tahmini</li><li>Sprint boyunca geliştiriciyle birlikte çalışma (shift-left)</li><li>Sprint review\'da demo testleri</li><li>Retrospective\'de süreç iyileştirme</li></ul><h4>Definition of Done</h4><ul><li>Kod yazıldı + Code review + Unit test + QA onayı + Deploy</li></ul>'},
+'bdd':{tag:'// Metodoloji',title:'BDD — Davranış Güdümlü Geliştirme',color:'#f472b6',body:'<p>İş analistleri, geliştiriciler ve test uzmanlarının ortak dilde test yazdığı işbirlikçi yaklaşım.</p><h4>Gherkin Sözdizimi</h4><ul><li><code>Given</code> — ön koşul</li><li><code>When</code> — kullanıcı eylemi</li><li><code>Then</code> — beklenen sonuç</li></ul><h4>Örnek</h4><ul><li>Given kullanıcı login sayfasındadır</li><li>When geçerli email ve şifre girer</li><li>Then dashboard\'a yönlendirilir</li></ul><div class="popup-tools"><span class="popup-tool">Cucumber</span><span class="popup-tool">Behave</span><span class="popup-tool">SpecFlow</span></div>'},
+'ai-test':{tag:'// İleri Seviye',title:'AI Destekli Test',color:'#38bdf8',body:'<p>Yapay zekanın test süreçlerini otomatize etmek ve optimize etmek için kullanılması.</p><h4>Kullanım Alanları</h4><ul><li><strong>Test Üretimi:</strong> LLM ile otomatik senaryo oluşturma</li><li><strong>Self-Healing:</strong> Locator değiştiğinde otomatik güncellenen testler</li><li><strong>Görsel Test:</strong> AI ile screenshot karşılaştırma</li><li><strong>Anomali Tespiti:</strong> Log ve metrik analizinde</li></ul><div class="popup-tools"><span class="popup-tool">Applitools</span><span class="popup-tool">Testim</span><span class="popup-tool">Mabl</span><span class="popup-tool">Healenium</span></div>'},
+'gorsel-regresyon':{tag:'// İleri Seviye',title:'Görsel Regresyon Testi',color:'#38bdf8',body:'<p>UI\'daki görsel değişiklikleri otomatik olarak tespit eden yaklaşım.</p><h4>Nasıl Çalışır?</h4><ul><li>Baseline (referans) screenshot alınır</li><li>Her test çalışmasında yeni screenshot ile karşılaştırılır</li><li>Piksel farklılıkları raporlanır</li><li>İnsan onayı ile yeni baseline kabul edilir</li></ul><div class="popup-tools"><span class="popup-tool">Percy</span><span class="popup-tool">Applitools</span><span class="popup-tool">BackstopJS</span><span class="popup-tool">Playwright</span></div>'},
+'kaos':{tag:'// İleri Seviye',title:'Kaos Mühendisliği',color:'#38bdf8',body:'<p>Sistemlerin beklenmedik koşullara dayanıklılığını test etmek için kasıtlı hata enjekte etme disiplini.</p><h4>Deney Türleri</h4><ul><li>Servis/Pod sonlandırma</li><li>Ağ gecikmesi ve paket kaybı enjeksiyonu</li><li>CPU/Bellek baskısı oluşturma</li><li>Veritabanı bağlantısını kesme</li></ul><div class="popup-tools"><span class="popup-tool">Chaos Monkey</span><span class="popup-tool">Chaos Mesh</span><span class="popup-tool">Litmus</span><span class="popup-tool">Gremlin</span></div>'},
+'erisebilirlik':{tag:'// İleri Seviye',title:'Erişilebilirlik Testi (a11y)',color:'#38bdf8',body:'<p>Uygulamanın engelli kullanıcılar dahil herkes tarafından kullanılabilir olmasını sağlar.</p><h4>WCAG Seviyeleri</h4><ul><li><strong>A:</strong> Minimum gereksinimler</li><li><strong>AA:</strong> Yasal zorunluluk (çoğu ülke)</li><li><strong>AAA:</strong> En yüksek erişilebilirlik</li></ul><div class="popup-tools"><span class="popup-tool">Axe DevTools</span><span class="popup-tool">Lighthouse</span><span class="popup-tool">WAVE</span><span class="popup-tool">Pa11y</span></div>'}
+};
+
+function openPopup(id) {
+  var d=PD[id]; if(!d) return;
+  document.getElementById('popup-topline').style.background='linear-gradient(90deg,'+(d.color||'#00ffaa')+',#00ffaa)';
+  document.getElementById('popup-tag').textContent=d.tag;
+  document.getElementById('popup-title').textContent=d.title;
+  document.getElementById('popup-body').innerHTML=d.body;
+  document.getElementById('popup-backdrop').classList.add('open');
   document.body.style.overflow='hidden';
-  qaOpen=true;
 }
-function closeQA(){
-  document.getElementById('qaModal').classList.remove('open');
-  document.body.style.overflow='';
-  qaOpen=false;
+function closePopup(){document.getElementById('popup-backdrop').classList.remove('open');document.body.style.overflow='';}
+function handleBackdropClick(e){if(e.target===document.getElementById('popup-backdrop')||e.target.classList.contains('popup-bg'))closePopup();}
+
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closePopup();closeContact();}});
+
+// ═══════════ LANG SWITCH ═══════════
+var currentLang='tr';
+function setLang(lang){
+  currentLang=lang;
+  var c=document.getElementById('fc-canvas');
+  c.classList.remove('show-tr','show-en');
+  c.classList.add('show-'+lang);
+  document.getElementById('btn-tr').classList.toggle('active',lang==='tr');
+  document.getElementById('btn-en').classList.toggle('active',lang==='en');
+  document.querySelectorAll('.fc-legend-item .lang-tr,.fc-legend-item .lang-en').forEach(function(s){s.style.display='none';});
+  document.querySelectorAll('.fc-legend-item .lang-'+lang).forEach(function(s){s.style.display='inline';});
 }
+document.getElementById('fc-canvas').classList.add('show-tr');
+document.querySelectorAll('.fc-legend-item .lang-en').forEach(function(s){s.style.display='none';});
 
-document.addEventListener('keydown',function(e){
-  if(e.key==='Escape'){
-    if(qaOpen)closeQA();
-    else closeContact();
-  }
-});
+// ═══════════ FLOWCHART SVG ═══════════
+function getC(id,parent){var pr=parent.getBoundingClientRect(),er=document.getElementById(id).getBoundingClientRect();return{x:er.left-pr.left+er.width/2,y:er.top-pr.top+er.height/2,top:er.top-pr.top,bot:er.top-pr.top+er.height,left:er.left-pr.left,right:er.left-pr.left+er.width};}
+function mkL(svg,x1,y1,x2,y2,col,dash){var l=document.createElementNS('http://www.w3.org/2000/svg','line');l.setAttribute('x1',x1);l.setAttribute('y1',y1);l.setAttribute('x2',x2);l.setAttribute('y2',y2);l.setAttribute('stroke',col||'#1a3a22');l.setAttribute('stroke-width','2');if(dash)l.setAttribute('stroke-dasharray','6,4');l.setAttribute('marker-end','url(#arr)');svg.appendChild(l);}
+function mkP(svg,d,col){var p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',d);p.setAttribute('stroke',col||'#1a3a22');p.setAttribute('stroke-width','2');p.setAttribute('fill','none');p.setAttribute('marker-end','url(#arr)');svg.appendChild(p);}
+function mkT(svg,x,y,txt,col){var t=document.createElementNS('http://www.w3.org/2000/svg','text');t.setAttribute('x',x);t.setAttribute('y',y);t.setAttribute('fill',col||'#5a8070');t.setAttribute('font-size','10');t.setAttribute('font-family','monospace');t.setAttribute('text-anchor','middle');t.textContent=txt;svg.appendChild(t);}
 
-// ── SCROLL FADE ──
-var observer=new IntersectionObserver(function(entries){
-  entries.forEach(function(e){if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';}});
-},{threshold:0.08});
-document.querySelectorAll('.fade-in').forEach(function(el){
-  el.style.opacity='0';el.style.transform='translateY(20px)';
-  el.style.transition='opacity 0.6s ease,transform 0.6s ease';
-  observer.observe(el);
-});
+function drawLines(){
+  var svg=document.getElementById('fc-svg'); svg.innerHTML='';
+  var defs=document.createElementNS('http://www.w3.org/2000/svg','defs');
+  defs.innerHTML='<marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#2a4a30"/></marker>';
+  svg.appendChild(defs);
+  var inner=document.getElementById('fc-inner');
+  function c(id){return getC(id,inner);}
+  var cy='#00ffaa',gr='#00e676',or='#fb923c',bl='#5b8fff',tl='#4ecdc4',co='#1a3a22';
+  var s=c('n-start'),n1=c('n-1'),n2=c('n-2'),n3=c('n-3'),d1=c('n-d1');
+  var prog=c('n-prog'),manual=c('n-manual'),ui=c('n-ui'),api=c('n-api'),fw=c('n-fw');
+  var cicd=c('n-cicd'),d2=c('n-d2'),perf=c('n-perf'),sec=c('n-sec'),mob=c('n-mob');
+  var mgmt=c('n-mgmt'),agile=c('n-agile'),adv=c('n-adv'),end_=c('n-end');
+
+  mkL(svg,s.x,s.bot,n1.x,n1.top,cy);
+  mkL(svg,n1.x,n1.bot,n2.x,n2.top,co);
+  mkL(svg,n2.x,n2.bot,n3.x,n3.top,co);
+  mkL(svg,n3.x,n3.bot,d1.x,d1.top,co);
+  mkP(svg,'M'+d1.left+','+d1.y+' L'+prog.right+','+prog.y,gr);
+  mkT(svg,(d1.left+prog.right)/2,d1.y-8,currentLang==='tr'?'EVET':'YES',gr);
+  mkP(svg,'M'+d1.right+','+d1.y+' L'+manual.left+','+manual.y,or);
+  mkT(svg,(d1.right+manual.left)/2,d1.y-8,currentLang==='tr'?'HAYIR':'NO',or);
+  mkL(svg,prog.x,prog.bot,ui.x,ui.top,gr);
+  mkL(svg,ui.x,ui.bot,api.x,api.top,co);
+  mkL(svg,api.x,api.bot,fw.x,fw.top,co);
+  mkP(svg,'M'+fw.right+','+fw.y+' C'+(fw.right+90)+','+fw.y+' '+(cicd.left-50)+','+cicd.y+' '+cicd.left+','+cicd.y,bl);
+  mkP(svg,'M'+manual.x+','+manual.bot+' C'+manual.x+','+(manual.bot+50)+' '+(cicd.right+30)+','+cicd.y+' '+cicd.right+','+cicd.y,co,true);
+  mkL(svg,cicd.x,cicd.bot,d2.x,d2.top,co);
+  mkP(svg,'M'+d2.left+','+d2.y+' L'+perf.right+','+perf.y,or);
+  mkT(svg,(d2.left+perf.right)/2,d2.y-8,'Perf',or);
+  mkL(svg,d2.x,d2.bot,sec.x,sec.top,co);
+  mkT(svg,sec.x-22,(d2.bot+sec.top)/2,'Sec','#ff6b6b');
+  mkP(svg,'M'+d2.right+','+d2.y+' L'+mob.left+','+mob.y,tl);
+  mkT(svg,(d2.right+mob.left)/2,d2.y-8,'Mob',tl);
+  mkP(svg,'M'+perf.x+','+perf.bot+' C'+perf.x+','+(perf.bot+40)+' '+mgmt.x+','+(mgmt.top-30)+' '+mgmt.x+','+mgmt.top,co);
+  mkL(svg,sec.x,sec.bot,mgmt.x,mgmt.top,co);
+  mkP(svg,'M'+mob.x+','+mob.bot+' C'+mob.x+','+(mob.bot+40)+' '+mgmt.x+','+(mgmt.top-30)+' '+mgmt.x+','+mgmt.top,co);
+  mkL(svg,mgmt.x,mgmt.bot,agile.x,agile.top,co);
+  mkL(svg,agile.x,agile.bot,adv.x,adv.top,co);
+  mkL(svg,adv.x,adv.bot,end_.x,end_.top,gr);
+}
+window.addEventListener('resize',function(){if(document.getElementById('qa-flowchart').classList.contains('active'))drawLines();});
 </script>
 </body>
 </html>
