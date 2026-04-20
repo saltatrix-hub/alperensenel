@@ -1,9 +1,18 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-58Q9D5NDNS"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-58Q9D5NDNS');
+</script>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QA Yol Haritası — alperensenel.com</title>
+<title>QA Yol Haritası — Hüseyin Alperen Şenel</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -21,612 +30,490 @@
   --mono:   'Space Mono', monospace;
   --sans:   'DM Sans', sans-serif;
   --disp:   'Syne', sans-serif;
-  /* qa accent colors */
-  --qa1: #f0c040;
-  --qa2: #5b8fff;
-  --qa3: #ff6b6b;
-  --qa4: #4ecdc4;
-  --qa5: #a88bfa;
-  --qa6: #34d399;
-  --qa7: #fb923c;
-  --qa8: #f472b6;
-  --qa9: #38bdf8;
 }
+
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
 html { scroll-behavior:smooth; }
-body { background:var(--dark); color:var(--text); font-family:var(--sans); overflow-x:hidden; }
+body { background:var(--dark); color:var(--text); font-family:var(--sans); overflow-x:hidden; cursor:crosshair; }
 
-/* ── GRID BG ── */
-body::before {
-  content:''; position:fixed; inset:0;
-  background-image: linear-gradient(var(--border) 1px,transparent 1px), linear-gradient(90deg,var(--border) 1px,transparent 1px);
-  background-size:48px 48px; opacity:0.25; pointer-events:none; z-index:0;
+/* CURSOR */
+#cur-dot {
+  position:fixed; width:10px; height:10px;
+  background:var(--cyan); border-radius:50%;
+  pointer-events:none; z-index:999999; display:none;
+  box-shadow:0 0 8px var(--cyan),0 0 20px rgba(0,255,170,0.4);
+  will-change:transform; top:0; left:0;
 }
-.scanlines {
-  position:fixed; inset:0; z-index:1; pointer-events:none;
-  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.05) 3px,rgba(0,0,0,0.05) 4px);
+#cur-ring {
+  position:fixed; width:32px; height:32px;
+  border:1px solid var(--green); border-radius:50%;
+  pointer-events:none; z-index:999998; display:none;
+  will-change:transform; top:0; left:0;
 }
 
-/* ── NAV ── */
+/* GRID */
+body::before { content:''; position:fixed; inset:0; background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px); background-size:48px 48px; opacity:0.35; pointer-events:none; z-index:0; }
+
+/* SCANLINES */
+.scanlines { position:fixed; inset:0; z-index:9; pointer-events:none; background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.05) 3px,rgba(0,0,0,0.05) 4px); }
+
+/* MATRIX */
+#matrix-bg { position:fixed; inset:0; z-index:0; opacity:0.06; pointer-events:none; }
+
+/* ═══ NAV ═══ */
 nav {
-  position:sticky; top:0; z-index:200;
+  position:fixed; top:0; left:0; right:0; z-index:200;
   display:flex; align-items:center; justify-content:space-between;
-  padding:1rem 2.5rem;
-  background:rgba(6,14,8,0.92); backdrop-filter:blur(14px);
+  padding:1.1rem 3rem;
+  background:rgba(6,14,8,0.88); backdrop-filter:blur(14px);
   border-bottom:1px solid var(--border);
 }
-.nav-logo { font-family:var(--mono); font-size:0.78rem; color:var(--cyan); letter-spacing:0.12em; text-decoration:none; }
+.nav-left { display:flex; align-items:center; gap:2rem; }
+.nav-logo { font-family:var(--mono); font-size:0.82rem; color:var(--cyan); letter-spacing:0.12em; text-decoration:none; }
 .nav-logo span { color:var(--dim); }
-.nav-back {
-  font-family:var(--mono); font-size:0.72rem; color:var(--dim);
-  text-decoration:none; letter-spacing:0.08em;
-  display:flex; align-items:center; gap:0.5rem;
-  transition:color 0.2s;
-}
-.nav-back:hover { color:var(--cyan); }
+.nav-links { display:flex; gap:2rem; list-style:none; align-items:center; }
+.nav-links a { font-family:var(--mono); font-size:0.75rem; color:var(--dim); text-decoration:none; letter-spacing:0.1em; text-transform:uppercase; transition:color 0.2s; position:relative; }
+.nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:1px; background:var(--cyan); transition:width 0.3s; }
+.nav-links a:hover { color:var(--cyan); }
+.nav-links a:hover::after { width:100%; }
 
-/* ── PAGE TABS ── */
-.page-tabs {
-  position:sticky; top:57px; z-index:190;
-  background:rgba(9,20,16,0.95); backdrop-filter:blur(10px);
+/* Ana Sayfa butonu — özel */
+.btn-home {
+  display:inline-flex; align-items:center; gap:0.5rem;
+  font-family:var(--mono); font-size:0.72rem; letter-spacing:0.08em;
+  text-transform:uppercase; text-decoration:none;
+  padding:0.45rem 1rem; border-radius:2px;
+  background:rgba(0,230,118,0.08);
+  border:1px solid rgba(0,230,118,0.3);
+  color:var(--green);
+  transition:all 0.2s;
+}
+.btn-home:hover {
+  background:rgba(0,230,118,0.15);
+  border-color:var(--green);
+  color:var(--cyan);
+  transform:translateY(-1px);
+}
+.btn-home .arrow { font-size:0.9rem; }
+
+/* QA sekme indicator */
+.qa-badge {
+  font-family:var(--mono); font-size:0.68rem;
+  color:var(--green); background:rgba(0,230,118,0.07);
+  border:1px solid rgba(0,230,118,0.2);
+  padding:0.25rem 0.65rem; border-radius:2px;
+  letter-spacing:0.08em;
+}
+
+/* PAGE HERO */
+.page-hero {
+  position:relative; z-index:1;
+  padding:8rem 3rem 3rem;
+  background:var(--dark);
   border-bottom:1px solid var(--border);
-  display:flex; gap:0; padding:0 2.5rem;
 }
-.p-tab {
-  font-family:var(--mono); font-size:0.72rem; color:var(--dim);
-  padding:0.85rem 1.4rem; cursor:pointer;
-  border-bottom:2px solid transparent; transition:color 0.2s,border-color 0.2s;
-  letter-spacing:0.06em; text-transform:uppercase; user-select:none;
+.page-hero .inner { max-width:960px; margin:0 auto; }
+.page-breadcrumb {
+  font-family:var(--mono); font-size:0.7rem;
+  color:var(--dim); margin-bottom:1rem;
+  display:flex; align-items:center; gap:0.6rem;
 }
-.p-tab:hover { color:var(--text); }
-.p-tab.active { color:var(--cyan); border-bottom-color:var(--cyan); }
-
-/* ── PAGES ── */
-.page { display:none; position:relative; z-index:2; }
-.page.active { display:block; }
-
-/* ── HERO STRIP ── */
-.hero-strip {
-  padding:3rem 2.5rem 2rem;
-  max-width:1080px; margin:0 auto;
+.page-breadcrumb a { color:var(--cyan); text-decoration:none; }
+.page-breadcrumb a:hover { color:var(--white); }
+.page-breadcrumb .sep { color:var(--dim); opacity:0.4; }
+.page-hero h1 {
+  font-family:var(--disp); font-size:clamp(2rem,4vw,3.2rem);
+  font-weight:800; color:var(--white); line-height:1.1;
+  margin-bottom:0.8rem;
 }
-.hs-tag {
-  font-family:var(--mono); font-size:0.68rem; color:var(--cyan);
-  letter-spacing:0.2em; text-transform:uppercase; margin-bottom:0.7rem;
-  display:flex; align-items:center; gap:0.7rem;
+.page-hero h1 em { color:var(--green); font-style:normal; }
+.page-hero p {
+  font-size:0.95rem; color:var(--dim);
+  max-width:520px; line-height:1.8;
 }
-.hs-tag::before { content:''; width:24px; height:1px; background:var(--cyan); }
-.hero-strip h1 {
-  font-family:var(--disp); font-size:clamp(1.8rem,4vw,3rem);
-  font-weight:800; color:var(--white); line-height:1.1; margin-bottom:0.8rem;
-}
-.hero-strip h1 em { font-style:normal; color:var(--green); }
-.hero-strip p { color:var(--dim); font-size:0.92rem; max-width:560px; line-height:1.8; }
-
-/* ── LEGEND ── */
-.legend {
-  max-width:1080px; margin:0 auto 1.5rem;
-  padding:0 2.5rem;
+.hero-meta {
   display:flex; gap:1.5rem; flex-wrap:wrap;
+  margin-top:1.8rem;
 }
-.legend-item { display:flex; align-items:center; gap:0.5rem; font-size:0.72rem; color:var(--dim); font-family:var(--mono); }
-.legend-dot { width:9px; height:9px; border-radius:2px; }
-
-/* ── ROADMAP ── */
-.roadmap {
-  max-width:1080px; margin:0 auto;
-  padding:0 2.5rem 6rem;
-  position:relative;
+.hero-meta-item {
+  font-family:var(--mono); font-size:0.68rem;
+  color:var(--dim); display:flex; align-items:center; gap:0.4rem;
 }
-.roadmap::before {
-  content:''; position:absolute;
-  left:49px; top:0; bottom:6rem; width:1px;
-  background:linear-gradient(to bottom,var(--cyan),var(--green),transparent);
-  opacity:0.25;
+.hero-meta-item .dot {
+  width:6px; height:6px; border-radius:50%;
+  background:var(--green); box-shadow:0 0 6px var(--green);
 }
 
-/* ── SECTION ── */
-.rm-section { margin-bottom:3rem; position:relative; }
+/* MAIN CONTENT */
+main { position:relative; z-index:1; }
+
+/* SECTION */
+section { padding:4rem 3rem; }
+.inner { max-width:960px; margin:0 auto; }
+.sec-tag { font-family:var(--mono); font-size:0.7rem; color:var(--cyan); letter-spacing:0.2em; text-transform:uppercase; margin-bottom:0.8rem; display:flex; align-items:center; gap:0.8rem; }
+.sec-tag::before { content:''; display:inline-block; width:28px; height:1px; background:var(--cyan); }
+
+/* QA TABS */
+.qa-tabs { display:flex; gap:0; margin-bottom:2.5rem; border-bottom:1px solid var(--border); }
+.qa-tab { font-family:var(--mono); font-size:0.72rem; color:var(--dim); padding:0.7rem 1.4rem; cursor:pointer; border-bottom:2px solid transparent; transition:color 0.2s,border-color 0.2s; letter-spacing:0.06em; text-transform:uppercase; user-select:none; }
+.qa-tab:hover { color:var(--text); }
+.qa-tab.active { color:var(--green); border-bottom-color:var(--green); }
+.qa-page { display:none; }
+.qa-page.active { display:block; }
+.qa-legend { display:flex; gap:1.5rem; flex-wrap:wrap; margin-bottom:2rem; align-items:center; }
+.qa-legend-item { display:flex; align-items:center; gap:0.5rem; font-size:0.7rem; color:var(--dim); font-family:var(--mono); }
+.qa-legend-dot { width:9px; height:9px; border-radius:2px; }
+.qa-hint { margin-left:auto; font-family:var(--mono); font-size:0.62rem; color:var(--dim); opacity:0.6; }
+.qa-roadmap { position:relative; }
+.qa-roadmap::before { content:''; position:absolute; left:19px; top:0; bottom:0; width:1px; background:linear-gradient(to bottom,var(--cyan),var(--green),transparent); opacity:0.2; }
+.rm-section { margin-bottom:2.5rem; position:relative; }
 .rm-header { display:flex; align-items:center; gap:1rem; margin-bottom:1rem; }
-.rm-icon {
-  width:36px; height:36px; border-radius:8px;
-  display:flex; align-items:center; justify-content:center;
-  font-size:16px; flex-shrink:0; position:relative; z-index:1;
-}
-.rm-title { font-family:var(--disp); font-size:1.05rem; font-weight:700; }
-.rm-sub { font-size:0.7rem; color:var(--dim); margin-top:2px; }
-
-/* ── CARDS ── */
-.rm-cards {
-  margin-left:48px;
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
-  gap:8px;
-}
-.rm-divider {
-  margin-left:48px; margin-bottom:8px; margin-top:10px;
-  font-family:var(--mono); font-size:0.62rem; color:var(--dim);
-  letter-spacing:0.1em; text-transform:uppercase;
-  display:flex; align-items:center; gap:8px;
-}
+.rm-icon { width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0; position:relative; z-index:1; }
+.rm-title { font-family:var(--disp); font-size:1rem; font-weight:700; }
+.rm-sub { font-size:0.68rem; color:var(--dim); margin-top:2px; }
+.rm-divider { margin-left:48px; margin-bottom:6px; margin-top:8px; font-family:var(--mono); font-size:0.6rem; color:var(--dim); letter-spacing:0.1em; text-transform:uppercase; display:flex; align-items:center; gap:8px; }
 .rm-divider::after { content:''; flex:1; height:1px; background:var(--border); }
-
-/* ── CLICKABLE CARD ── */
+.rm-cards { margin-left:48px; display:grid; grid-template-columns:repeat(auto-fill,minmax(185px,1fr)); gap:8px; }
 .rm-card {
-  background:var(--panel);
-  border:1px solid var(--border);
+  background:var(--panel); border:1px solid var(--border);
   border-radius:8px; padding:12px 14px;
   cursor:pointer; position:relative; overflow:hidden;
-  transition:transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+  transition:transform 0.15s ease,border-color 0.15s ease,box-shadow 0.15s ease;
+  will-change:transform;
 }
-.rm-card::before {
-  content:''; position:absolute; top:0; left:0; width:3px; height:100%;
-  opacity:0; transition:opacity 0.2s;
-}
-.rm-card:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(0,230,118,0.12); }
+.rm-card::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; opacity:0; transition:opacity 0.15s; }
+.rm-card:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(0,230,118,0.1); }
 .rm-card:hover::before { opacity:1; }
-.rm-card-title { font-weight:600; font-size:0.82rem; margin-bottom:3px; }
-.rm-card-desc { font-size:0.7rem; color:var(--dim); line-height:1.5; }
-.rm-card-tag {
-  display:inline-block; font-family:var(--mono); font-size:0.58rem;
-  padding:2px 5px; border-radius:2px; margin-top:6px;
-  text-transform:uppercase; letter-spacing:0.4px;
-}
-.rm-card-hint {
-  position:absolute; bottom:6px; right:8px;
-  font-family:var(--mono); font-size:0.55rem; color:var(--dim); opacity:0.5;
-}
+.rm-card-title { font-weight:600; font-size:0.8rem; margin-bottom:3px; color:var(--text); }
+.rm-card-desc { font-size:0.68rem; color:var(--dim); line-height:1.5; }
+.rm-card-tag { display:inline-block; font-family:var(--mono); font-size:0.56rem; padding:2px 5px; border-radius:2px; margin-top:6px; text-transform:uppercase; letter-spacing:0.4px; }
+.rm-card-hint { position:absolute; bottom:5px; right:7px; font-family:var(--mono); font-size:0.52rem; color:var(--dim); opacity:0.4; }
 
-/* section color themes */
-.s1 .rm-icon{background:rgba(240,192,64,0.12)} .s1 .rm-title{color:var(--qa1)} .s1 .rm-card::before{background:var(--qa1)} .s1 .rm-card-tag{background:rgba(240,192,64,0.1);color:var(--qa1)} .s1 .rm-card:hover{border-color:rgba(240,192,64,0.35)}
-.s2 .rm-icon{background:rgba(91,143,255,0.12)} .s2 .rm-title{color:var(--qa2)} .s2 .rm-card::before{background:var(--qa2)} .s2 .rm-card-tag{background:rgba(91,143,255,0.1);color:var(--qa2)} .s2 .rm-card:hover{border-color:rgba(91,143,255,0.35)}
-.s3 .rm-icon{background:rgba(255,107,107,0.12)} .s3 .rm-title{color:var(--qa3)} .s3 .rm-card::before{background:var(--qa3)} .s3 .rm-card-tag{background:rgba(255,107,107,0.1);color:var(--qa3)} .s3 .rm-card:hover{border-color:rgba(255,107,107,0.35)}
-.s4 .rm-icon{background:rgba(78,205,196,0.12)} .s4 .rm-title{color:var(--qa4)} .s4 .rm-card::before{background:var(--qa4)} .s4 .rm-card-tag{background:rgba(78,205,196,0.1);color:var(--qa4)} .s4 .rm-card:hover{border-color:rgba(78,205,196,0.35)}
-.s5 .rm-icon{background:rgba(168,139,250,0.12)} .s5 .rm-title{color:var(--qa5)} .s5 .rm-card::before{background:var(--qa5)} .s5 .rm-card-tag{background:rgba(168,139,250,0.1);color:var(--qa5)} .s5 .rm-card:hover{border-color:rgba(168,139,250,0.35)}
-.s6 .rm-icon{background:rgba(52,211,153,0.12)} .s6 .rm-title{color:var(--qa6)} .s6 .rm-card::before{background:var(--qa6)} .s6 .rm-card-tag{background:rgba(52,211,153,0.1);color:var(--qa6)} .s6 .rm-card:hover{border-color:rgba(52,211,153,0.35)}
-.s7 .rm-icon{background:rgba(251,146,60,0.12)} .s7 .rm-title{color:var(--qa7)} .s7 .rm-card::before{background:var(--qa7)} .s7 .rm-card-tag{background:rgba(251,146,60,0.1);color:var(--qa7)} .s7 .rm-card:hover{border-color:rgba(251,146,60,0.35)}
-.s8 .rm-icon{background:rgba(244,114,182,0.12)} .s8 .rm-title{color:var(--qa8)} .s8 .rm-card::before{background:var(--qa8)} .s8 .rm-card-tag{background:rgba(244,114,182,0.1);color:var(--qa8)} .s8 .rm-card:hover{border-color:rgba(244,114,182,0.35)}
-.s9 .rm-icon{background:rgba(56,189,248,0.12)} .s9 .rm-title{color:var(--qa9)} .s9 .rm-card::before{background:var(--qa9)} .s9 .rm-card-tag{background:rgba(56,189,248,0.1);color:var(--qa9)} .s9 .rm-card:hover{border-color:rgba(56,189,248,0.35)}
+.s1 .rm-icon{background:rgba(240,192,64,0.12)} .s1 .rm-title{color:#f0c040} .s1 .rm-card::before{background:#f0c040} .s1 .rm-card-tag{background:rgba(240,192,64,0.1);color:#f0c040} .s1 .rm-card:hover{border-color:rgba(240,192,64,0.3)}
+.s2 .rm-icon{background:rgba(91,143,255,0.12)} .s2 .rm-title{color:#5b8fff} .s2 .rm-card::before{background:#5b8fff} .s2 .rm-card-tag{background:rgba(91,143,255,0.1);color:#5b8fff} .s2 .rm-card:hover{border-color:rgba(91,143,255,0.3)}
+.s3 .rm-icon{background:rgba(255,107,107,0.12)} .s3 .rm-title{color:#ff6b6b} .s3 .rm-card::before{background:#ff6b6b} .s3 .rm-card-tag{background:rgba(255,107,107,0.1);color:#ff6b6b} .s3 .rm-card:hover{border-color:rgba(255,107,107,0.3)}
+.s4 .rm-icon{background:rgba(78,205,196,0.12)} .s4 .rm-title{color:#4ecdc4} .s4 .rm-card::before{background:#4ecdc4} .s4 .rm-card-tag{background:rgba(78,205,196,0.1);color:#4ecdc4} .s4 .rm-card:hover{border-color:rgba(78,205,196,0.3)}
+.s5 .rm-icon{background:rgba(168,139,250,0.12)} .s5 .rm-title{color:#a88bfa} .s5 .rm-card::before{background:#a88bfa} .s5 .rm-card-tag{background:rgba(168,139,250,0.1);color:#a88bfa} .s5 .rm-card:hover{border-color:rgba(168,139,250,0.3)}
+.s6 .rm-icon{background:rgba(52,211,153,0.12)} .s6 .rm-title{color:#34d399} .s6 .rm-card::before{background:#34d399} .s6 .rm-card-tag{background:rgba(52,211,153,0.1);color:#34d399} .s6 .rm-card:hover{border-color:rgba(52,211,153,0.3)}
+.s7 .rm-icon{background:rgba(251,146,60,0.12)} .s7 .rm-title{color:#fb923c} .s7 .rm-card::before{background:#fb923c} .s7 .rm-card-tag{background:rgba(251,146,60,0.1);color:#fb923c} .s7 .rm-card:hover{border-color:rgba(251,146,60,0.3)}
+.s8 .rm-icon{background:rgba(244,114,182,0.12)} .s8 .rm-title{color:#f472b6} .s8 .rm-card::before{background:#f472b6} .s8 .rm-card-tag{background:rgba(244,114,182,0.1);color:#f472b6} .s8 .rm-card:hover{border-color:rgba(244,114,182,0.3)}
+.s9 .rm-icon{background:rgba(56,189,248,0.12)} .s9 .rm-title{color:#38bdf8} .s9 .rm-card::before{background:#38bdf8} .s9 .rm-card-tag{background:rgba(56,189,248,0.1);color:#38bdf8} .s9 .rm-card:hover{border-color:rgba(56,189,248,0.3)}
 
-/* ── POPUP MODAL ── */
-.popup-backdrop {
-  position:fixed; inset:0; z-index:9999;
-  display:none; align-items:center; justify-content:center;
-  padding:1.5rem;
-}
-.popup-backdrop.open { display:flex; }
-.popup-bg {
-  position:absolute; inset:0;
-  background:rgba(6,14,8,0.85); backdrop-filter:blur(12px);
-}
-.popup-box {
-  position:relative; z-index:1;
-  background:var(--panel);
-  border:1px solid rgba(0,200,100,0.35);
-  border-radius:10px; padding:2rem 2.2rem;
-  max-width:560px; width:100%; max-height:85vh; overflow-y:auto;
-  box-shadow:0 0 60px rgba(0,122,60,0.25);
-  animation:popIn 0.25s ease;
-}
-@keyframes popIn { from{opacity:0;transform:scale(0.94) translateY(10px)} to{opacity:1;transform:scale(1) translateY(0)} }
-
-.popup-topline {
-  position:absolute; top:0; left:0; right:0; height:2px;
-  border-radius:10px 10px 0 0;
-}
-.popup-close {
-  position:absolute; top:0.9rem; right:1.1rem;
-  background:none; border:none; color:var(--dim); font-size:1.1rem;
-  cursor:pointer; transition:color 0.2s; line-height:1;
-}
-.popup-close:hover { color:var(--cyan); }
-.popup-tag { font-family:var(--mono); font-size:0.62rem; color:var(--dim); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:0.6rem; }
-.popup-title { font-family:var(--disp); font-size:1.3rem; font-weight:800; color:var(--white); margin-bottom:1.5rem; line-height:1.2; }
-.popup-body { font-size:0.88rem; color:var(--dim); line-height:1.85; }
-.popup-body h4 { font-family:var(--mono); font-size:0.72rem; color:var(--cyan); text-transform:uppercase; letter-spacing:0.1em; margin:1.2rem 0 0.5rem; }
-.popup-body ul { list-style:none; padding:0; }
-.popup-body ul li { padding:0.2rem 0 0.2rem 1.1rem; position:relative; }
-.popup-body ul li::before { content:'▸'; position:absolute; left:0; color:var(--green); font-size:0.65rem; top:0.28rem; }
-.popup-body strong { color:var(--white); }
-.popup-body code {
-  background:rgba(0,230,118,0.08); border:1px solid rgba(0,200,100,0.2);
-  border-radius:3px; padding:0.1rem 0.4rem; font-family:var(--mono); font-size:0.8rem; color:var(--cyan);
-}
-.popup-tools {
-  display:flex; flex-wrap:wrap; gap:0.4rem; margin-top:0.5rem;
-}
-.popup-tool {
-  font-family:var(--mono); font-size:0.65rem; color:var(--green);
-  background:rgba(0,230,118,0.07); border:1px solid rgba(0,200,100,0.2);
-  border-radius:3px; padding:0.2rem 0.55rem;
-}
-
-/* ── FLOWCHART ── */
-.fc-wrap { max-width:1080px; margin:0 auto; padding:2rem 2.5rem 6rem; }
-.fc-head {
-  display:flex; align-items:flex-end; justify-content:space-between;
-  margin-bottom:2rem; flex-wrap:wrap; gap:1rem;
-}
-.fc-head h2 { font-family:var(--disp); font-size:1.8rem; font-weight:800; color:var(--white); }
-.fc-head h2 em { font-style:normal; color:var(--green); }
-.lang-toggle {
-  display:flex; background:var(--panel); border:1px solid var(--border); border-radius:6px; overflow:hidden;
-}
-.lang-btn {
-  font-family:var(--mono); font-size:0.7rem; padding:6px 16px;
-  cursor:pointer; color:var(--dim); transition:background 0.2s,color 0.2s;
-  letter-spacing:0.08em; user-select:none;
-}
-.lang-btn.active { background:var(--cyan); color:#000; font-weight:700; }
-
+/* FLOWCHART */
+.fc-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem; }
+.lang-toggle { display:flex; background:var(--panel); border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+.lang-btn { font-family:var(--mono); font-size:0.68rem; padding:5px 14px; cursor:pointer; color:var(--dim); transition:background 0.2s,color 0.2s; letter-spacing:0.08em; user-select:none; }
+.lang-btn.active { background:var(--green); color:#000; font-weight:700; }
 .fc-canvas { position:relative; width:100%; overflow-x:auto; }
-.fc-inner { min-width:820px; position:relative; padding:10px 0 20px; }
+.fc-inner { min-width:760px; position:relative; padding:8px 0; }
 .fc-svg { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; overflow:visible; }
-
-/* FC NODES */
-.fc-node {
-  position:absolute; border-radius:8px;
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  text-align:center; padding:9px 12px; cursor:default;
-  transition:transform 0.15s, box-shadow 0.15s; box-sizing:border-box;
-}
-.fc-node:hover { transform:scale(1.04); z-index:10; box-shadow:0 8px 28px rgba(0,0,0,0.6); }
-.fc-node .nd-title { font-family:var(--disp); font-size:11px; font-weight:700; line-height:1.3; }
-.fc-node .nd-sub { font-size:9.5px; margin-top:3px; opacity:0.75; line-height:1.3; }
-.nd-start { background:var(--cyan); color:#000; border-radius:40px; font-family:var(--disp); font-weight:800; font-size:12px; }
-.nd-phase { background:#0d1a10; border:2px solid; color:var(--text); }
-.nd-tool  { background:rgba(13,26,16,0.8); border:1px solid var(--border); color:var(--text); }
-.nd-dec   { background:#0d1a10; border:2px solid #fb923c; color:#fb923c; }
-.nd-end   { background:var(--green); color:#000; border-radius:40px; font-family:var(--disp); font-weight:800; font-size:12px; }
-
+.fc-node { position:absolute; border-radius:8px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:8px 11px; cursor:default; transition:transform 0.15s,box-shadow 0.15s; box-sizing:border-box; }
+.fc-node:hover { transform:scale(1.04); z-index:10; box-shadow:0 6px 24px rgba(0,0,0,0.5); }
+.fc-node .nd-title { font-family:var(--disp); font-size:10.5px; font-weight:700; line-height:1.3; }
+.fc-node .nd-sub { font-size:9px; margin-top:2px; opacity:0.75; line-height:1.3; }
+.nd-start { background:var(--cyan); color:#000; border-radius:40px; font-family:var(--disp); font-weight:800; font-size:11px; }
+.nd-phase { background:#0a1a0d; border:2px solid; color:var(--text); }
+.nd-tool  { background:rgba(13,26,16,0.9); border:1px solid var(--border); color:var(--text); }
+.nd-dec   { background:#0a1a0d; border:2px solid #fb923c; color:#fb923c; }
+.nd-end   { background:var(--green); color:#000; border-radius:40px; font-family:var(--disp); font-weight:800; font-size:11px; }
 .lang-tr,.lang-en { display:none; }
 .show-tr .lang-tr { display:block; }
 .show-en .lang-en { display:block; }
+.fc-legend { display:flex; gap:1.2rem; flex-wrap:wrap; margin-top:1.5rem; padding-top:1.2rem; border-top:1px solid var(--border); }
+.fc-legend-item { display:flex; align-items:center; gap:0.5rem; font-size:0.65rem; color:var(--dim); font-family:var(--mono); }
+.fc-legend-box { width:11px; height:11px; border-radius:2px; flex-shrink:0; }
 
-.fc-legend {
-  display:flex; gap:1.5rem; flex-wrap:wrap;
-  margin-top:2rem; padding-top:1.5rem; border-top:1px solid var(--border);
+/* POPUP */
+.popup-backdrop {
+  position:fixed; inset:0; z-index:9999;
+  display:flex; align-items:center; justify-content:center; padding:1.5rem;
+  visibility:hidden; opacity:0;
+  transition:opacity 0.18s ease, visibility 0.18s ease;
+  pointer-events:none;
 }
-.fc-legend-item { display:flex; align-items:center; gap:0.5rem; font-size:0.68rem; color:var(--dim); font-family:var(--mono); }
-.fc-legend-box { width:12px; height:12px; border-radius:2px; flex-shrink:0; }
-
-/* ── FOOTER ── */
-footer {
-  position:relative; z-index:2;
-  background:var(--dark2); border-top:1px solid var(--border);
-  padding:1.5rem 2.5rem;
-  display:flex; justify-content:space-between; align-items:center;
-  font-family:var(--mono); font-size:0.68rem; color:var(--dim);
+.popup-backdrop.open { visibility:visible; opacity:1; pointer-events:auto; }
+.popup-bg { position:absolute; inset:0; background:rgba(6,14,8,0.85); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); }
+.popup-box {
+  position:relative; z-index:1;
+  background:var(--panel); border:1px solid rgba(0,200,100,0.4);
+  border-radius:10px; padding:2rem 2.2rem;
+  max-width:540px; width:100%; max-height:85vh; overflow-y:auto;
+  box-shadow:0 0 60px rgba(0,122,60,0.25);
+  transform:scale(0.94) translateY(10px);
+  transition:transform 0.22s cubic-bezier(0.34,1.4,0.64,1), opacity 0.18s ease;
+  opacity:0; will-change:transform,opacity;
 }
-footer a { color:var(--cyan); text-decoration:none; }
-footer a:hover { color:var(--white); }
+.popup-backdrop.open .popup-box { transform:scale(1) translateY(0); opacity:1; }
+.popup-topline { position:absolute; top:0; left:0; right:0; height:2px; border-radius:10px 10px 0 0; }
+.popup-close { position:absolute; top:0.9rem; right:1.1rem; background:none; border:none; color:var(--dim); font-size:1.1rem; cursor:pointer; transition:color 0.2s; }
+.popup-close:hover { color:var(--cyan); }
+.popup-tag { font-family:var(--mono); font-size:0.62rem; color:var(--dim); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:0.5rem; }
+.popup-title { font-family:var(--disp); font-size:1.25rem; font-weight:800; color:var(--white); margin-bottom:1.3rem; line-height:1.2; }
+.popup-body { font-size:0.86rem; color:var(--dim); line-height:1.85; }
+.popup-body h4 { font-family:var(--mono); font-size:0.68rem; color:var(--cyan); text-transform:uppercase; letter-spacing:0.1em; margin:1.1rem 0 0.45rem; }
+.popup-body ul { list-style:none; padding:0; }
+.popup-body ul li { padding:0.18rem 0 0.18rem 1rem; position:relative; }
+.popup-body ul li::before { content:'▸'; position:absolute; left:0; color:var(--green); font-size:0.62rem; top:0.28rem; }
+.popup-body strong { color:var(--white); }
+.popup-body code { background:rgba(0,230,118,0.08); border:1px solid rgba(0,200,100,0.2); border-radius:3px; padding:0.1rem 0.38rem; font-family:var(--mono); font-size:0.78rem; color:var(--cyan); }
+.popup-body p { margin-bottom:0.4rem; }
+.popup-tools { display:flex; flex-wrap:wrap; gap:0.35rem; margin-top:0.5rem; }
+.popup-tool { font-family:var(--mono); font-size:0.62rem; color:var(--green); background:rgba(0,230,118,0.07); border:1px solid rgba(0,200,100,0.2); border-radius:3px; padding:0.18rem 0.52rem; }
 
-@media(max-width:640px){
-  nav,footer,.page-tabs,.hero-strip,.legend,.roadmap,.fc-wrap { padding-left:1.2rem; padding-right:1.2rem; }
-  .page-tabs { top:52px; }
-  .roadmap::before { left:29px; }
-  .rm-icon { width:28px; height:28px; font-size:13px; }
-  .rm-cards { margin-left:36px; }
+/* FOOTER */
+footer { position:relative; z-index:1; background:var(--dark2); border-top:1px solid var(--border); padding:1.5rem 3rem; display:flex; justify-content:space-between; align-items:center; font-family:var(--mono); font-size:0.68rem; color:var(--dim); flex-wrap:wrap; gap:0.5rem; }
+footer span { color:var(--cyan); }
+.footer-back { display:flex; align-items:center; gap:0.5rem; color:var(--dim); text-decoration:none; transition:color 0.2s; }
+.footer-back:hover { color:var(--cyan); }
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  nav{padding:1rem 1.5rem}
+  .nav-links{display:none}
+  .page-hero{padding:7rem 1.5rem 2.5rem}
+  section{padding:3rem 1.5rem}
+  footer{flex-direction:column;gap:0.5rem;text-align:center}
+  .rm-cards{margin-left:36px}
+  .qa-roadmap::before{left:13px}
 }
 </style>
 </head>
 <body>
 
+<div id="cur-dot"></div>
+<div id="cur-ring"></div>
+<canvas id="matrix-bg"></canvas>
 <div class="scanlines"></div>
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="index.html">HAS<span>::</span>portfolio</a>
-  <a class="nav-back" href="index.html">← Ana Sayfa</a>
+  <div class="nav-left">
+    <a href="index.html" class="nav-logo">HAS<span>::</span>portfolio</a>
+    <span class="qa-badge">QA Sayfası</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:1.5rem;">
+    <ul class="nav-links">
+      <li><a href="#roadmap">Yol Haritası</a></li>
+      <li><a href="#flowchart-section">Flowchart</a></li>
+    </ul>
+    <a href="index.html" class="btn-home">
+      <span class="arrow">←</span> Ana Sayfa
+    </a>
+  </div>
 </nav>
 
-<!-- TABS -->
-<div class="page-tabs">
-  <div class="p-tab active" onclick="switchTab('roadmap',this)">📚 Yol Haritası</div>
-  <div class="p-tab" onclick="switchTab('flowchart',this)">🔀 QA Flowchart</div>
-</div>
-
-<!-- ============================================================ -->
-<!-- PAGE: YOL HARİTASI -->
-<!-- ============================================================ -->
-<div class="page active" id="page-roadmap">
-
-<div class="hero-strip">
-  <div class="hs-tag">// QA Mühendisi Rehberi</div>
-  <h1>QA Mühendisi<br><em>Yol Haritası 2026</em></h1>
-  <p>Modern bir Kalite Güvence Mühendisi olmak için adım adım rehber. Her karta tıklayarak detaylı bilgi alabilirsin.</p>
-</div>
-
-<div class="legend">
-  <div class="legend-item"><div class="legend-dot" style="background:var(--qa1)"></div>Temel</div>
-  <div class="legend-item"><div class="legend-dot" style="background:var(--qa2)"></div>Orta Seviye</div>
-  <div class="legend-item"><div class="legend-dot" style="background:var(--qa4)"></div>İleri Seviye</div>
-  <div class="legend-item"><div class="legend-dot" style="background:var(--dim)"></div>İsteğe Bağlı</div>
-  <div class="legend-item" style="margin-left:auto;font-size:0.65rem;color:var(--dim);">💡 Kartlara tıkla → detay gör</div>
-</div>
-
-<div class="roadmap">
-
-<!-- S1 -->
-<div class="rm-section s1">
-  <div class="rm-header">
-    <div class="rm-icon">🧠</div>
-    <div><div class="rm-title">Temel Kavramlar</div><div class="rm-sub">QA'ya başlamadan önce bilinmesi gerekenler</div></div>
-  </div>
-  <div class="rm-cards">
-    <div class="rm-card" onclick="openPopup('test-nedir')"><div class="rm-card-title">Test Nedir?</div><div class="rm-card-desc">Yazılımın beklenen davranışı gösterip göstermediğini doğrulama süreci.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('qa-qc-test')"><div class="rm-card-title">QA vs QC vs Test</div><div class="rm-card-desc">Kalite Güvence, Kalite Kontrol ve test kavramları arasındaki farklar.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('sdlc')"><div class="rm-card-title">SDLC</div><div class="rm-card-desc">Yazılım Geliştirme Yaşam Döngüsü aşamaları ve QA'nın her aşamadaki rolü.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('stlc')"><div class="rm-card-title">Test Yaşam Döngüsü (STLC)</div><div class="rm-card-desc">Test planlama, tasarım, uygulama, raporlama aşamaları.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('bug-lifecycle')"><div class="rm-card-title">Hata (Bug) Yaşam Döngüsü</div><div class="rm-card-desc">Bir hatanın açılmasından kapatılmasına kadar geçen süreç.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('test-pyramid')"><div class="rm-card-title">Test Piramidi</div><div class="rm-card-desc">Unit, entegrasyon ve uçtan uca testlerin dengeli dağılımı.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
-  </div>
-</div>
-
-<!-- S2 -->
-<div class="rm-section s2">
-  <div class="rm-header">
-    <div class="rm-icon">🗂️</div>
-    <div><div class="rm-title">Test Türleri</div><div class="rm-sub">Farklı test yaklaşımları ve metodolojileri</div></div>
-  </div>
-  <div class="rm-divider">Fonksiyonel Testler</div>
-  <div class="rm-cards">
-    <div class="rm-card" onclick="openPopup('fonksiyonel-test')"><div class="rm-card-title">Fonksiyonel Test</div><div class="rm-card-desc">Sistemin gereksinimlerine uygun çalışıp çalışmadığını doğrulama.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('smoke-test')"><div class="rm-card-title">Smoke Test</div><div class="rm-card-desc">Temel işlevlerin çalıştığını doğrulayan hızlı testler.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('regresyon')"><div class="rm-card-title">Regresyon Testi</div><div class="rm-card-desc">Yeni değişikliklerin mevcut işlevselliği bozmadığını kontrol etme.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('uat')"><div class="rm-card-title">UAT</div><div class="rm-card-desc">Son kullanıcıların sistemi iş gereksinimlerine göre test etmesi.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('exploratory')"><div class="rm-card-title">Keşif (Exploratory) Testi</div><div class="rm-card-desc">Önceden tanımlanmış senaryolar olmadan sistemi keşfederek test etme.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('sinir-deger')"><div class="rm-card-title">Sınır Değer Analizi</div><div class="rm-card-desc">Giriş verilerinin sınır değerlerini test etme tekniği.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
-  </div>
-  <div class="rm-divider" style="margin-top:12px">Fonksiyonel Olmayan Testler</div>
-  <div class="rm-cards">
-    <div class="rm-card" onclick="openPopup('performans-test')"><div class="rm-card-title">Performans Testi</div><div class="rm-card-desc">Sistemin hız, ölçeklenebilirlik ve kararlılık testleri.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('yuk-test')"><div class="rm-card-title">Yük Testi</div><div class="rm-card-desc">Sistem belirli bir yük altında nasıl davranır?</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('guvenlik-test')"><div class="rm-card-title">Güvenlik Testi</div><div class="rm-card-desc">Güvenlik açıklarını ve zayıf noktaları tespit etme.</div><div class="rm-card-tag">İleri</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('kullanilabilirlik')"><div class="rm-card-title">Kullanılabilirlik Testi</div><div class="rm-card-desc">Arayüzün kullanıcı dostu olup olmadığını değerlendirme.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
-  </div>
-</div>
-
-<!-- S3 -->
-<div class="rm-section s3">
-  <div class="rm-header">
-    <div class="rm-icon">✏️</div>
-    <div><div class="rm-title">Test Tasarımı</div><div class="rm-sub">Etkili test senaryoları oluşturma teknikleri</div></div>
-  </div>
-  <div class="rm-cards">
-    <div class="rm-card" onclick="openPopup('test-plani')"><div class="rm-card-title">Test Planı</div><div class="rm-card-desc">Test kapsamını, yaklaşımını, kaynakları ve takvimi tanımlayan belge.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('test-senaryosu')"><div class="rm-card-title">Test Senaryosu</div><div class="rm-card-desc">Belirli bir işlevselliği doğrulamak için adım adım prosedür.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('esdegerlik')"><div class="rm-card-title">Eşdeğerlik Bölümleme</div><div class="rm-card-desc">Giriş verilerini geçerli ve geçersiz bölümlere ayırma tekniği.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('karar-tablosu')"><div class="rm-card-title">Karar Tablosu</div><div class="rm-card-desc">Birden fazla koşulun kombinasyonlarını test etme.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('durum-gecis')"><div class="rm-card-title">Durum Geçiş Testi</div><div class="rm-card-desc">Sistemin farklı durumlardaki geçişlerini test etme.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('risk-tabanli')"><div class="rm-card-title">Risk Tabanlı Test</div><div class="rm-card-desc">En yüksek riskli alanlara öncelik verme yaklaşımı.</div><div class="rm-card-tag">İleri</div><div class="rm-card-hint">tıkla →</div></div>
-  </div>
-</div>
-
-<!-- S4 -->
-<div class="rm-section s4">
-  <div class="rm-header">
-    <div class="rm-icon">🤖</div>
-    <div><div class="rm-title">Test Otomasyonu</div><div class="rm-sub">Modern QA'nın en kritik becerisi</div></div>
-  </div>
-  <div class="rm-divider">Programlama Temeli</div>
-  <div class="rm-cards">
-    <div class="rm-card" onclick="openPopup('python-js')"><div class="rm-card-title">Python / JavaScript</div><div class="rm-card-desc">Test otomasyonu için en yaygın kullanılan programlama dilleri.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('java-csharp')"><div class="rm-card-title">Java / C#</div><div class="rm-card-desc">Kurumsal ortamlarda yaygın kullanılan diller.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('git')"><div class="rm-card-title">Git & Versiyon Kontrol</div><div class="rm-card-desc">Kod yönetimi için temel araç.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
-  </div>
-  <div class="rm-divider" style="margin-top:10px">UI Test Araçları</div>
-  <div class="rm-cards">
-    <div class="rm-card" onclick="openPopup('selenium')"><div class="rm-card-title">Selenium WebDriver</div><div class="rm-card-desc">Web tarayıcısı otomasyonu için en köklü araç.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('playwright')"><div class="rm-card-title">Playwright</div><div class="rm-card-desc">Microsoft'un modern, hızlı çapraz-tarayıcı otomasyon kütüphanesi.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('cypress')"><div class="rm-card-title">Cypress</div><div class="rm-card-desc">JavaScript tabanlı modern uçtan uca test framework'ü.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('appium')"><div class="rm-card-title">Appium</div><div class="rm-card-desc">iOS ve Android mobil uygulama test otomasyonu.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
-  </div>
-  <div class="rm-divider" style="margin-top:10px">API Test Araçları</div>
-  <div class="rm-cards">
-    <div class="rm-card" onclick="openPopup('postman')"><div class="rm-card-title">Postman</div><div class="rm-card-desc">API test ve dokümantasyon için en popüler araç.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('rest-assured')"><div class="rm-card-title">REST Assured</div><div class="rm-card-desc">Java tabanlı REST API test kütüphanesi.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('supertest')"><div class="rm-card-title">SuperTest / Axios</div><div class="rm-card-desc">Node.js ile API testleri için yaygın kütüphaneler.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
-  </div>
-</div>
-
-<!-- S5 -->
-<div class="rm-section s5">
-  <div class="rm-header">
-    <div class="rm-icon">⚙️</div>
-    <div><div class="rm-title">CI/CD & DevOps</div><div class="rm-sub">Testleri geliştirme sürecine entegre etme</div></div>
-  </div>
-  <div class="rm-cards">
-    <div class="rm-card" onclick="openPopup('jenkins')"><div class="rm-card-title">Jenkins</div><div class="rm-card-desc">Açık kaynak CI/CD otomasyon sunucusu.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('github-actions')"><div class="rm-card-title">GitHub Actions</div><div class="rm-card-desc">GitHub içinde entegre CI/CD pipeline'ları oluşturma.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('gitlab-ci')"><div class="rm-card-title">GitLab CI</div><div class="rm-card-desc">GitLab'ın yerleşik sürekli entegrasyon çözümü.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('docker')"><div class="rm-card-title">Docker</div><div class="rm-card-desc">Test ortamlarını konteynerize etme ve izole etme.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('kubernetes')"><div class="rm-card-title">Kubernetes</div><div class="rm-card-desc">Konteyner orkestrasyon ve ölçeklenebilir test ortamları.</div><div class="rm-card-tag">İleri</div><div class="rm-card-hint">tıkla →</div></div>
-  </div>
-</div>
-
-<!-- S6 -->
-<div class="rm-section s6">
-  <div class="rm-header">
-    <div class="rm-icon">⚡</div>
-    <div><div class="rm-title">Performans Testi</div><div class="rm-sub">Sistem kapasitesini ve hızını ölçme</div></div>
-  </div>
-  <div class="rm-cards">
-    <div class="rm-card" onclick="openPopup('jmeter')"><div class="rm-card-title">Apache JMeter</div><div class="rm-card-desc">Açık kaynak yük ve performans test aracı.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('k6')"><div class="rm-card-title">k6</div><div class="rm-card-desc">Geliştirici dostu modern yük testi aracı.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('gatling')"><div class="rm-card-title">Gatling</div><div class="rm-card-desc">Scala tabanlı yük test framework'ü.</div><div class="rm-card-tag">İleri</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('locust')"><div class="rm-card-title">Locust</div><div class="rm-card-desc">Python ile yazılmış dağıtık yük testi aracı.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
-  </div>
-</div>
-
-<!-- S7 -->
-<div class="rm-section s7">
-  <div class="rm-header">
-    <div class="rm-icon">🔒</div>
-    <div><div class="rm-title">Güvenlik Testi</div><div class="rm-sub">Zafiyetleri tespit etme ve giderme</div></div>
-  </div>
-  <div class="rm-cards">
-    <div class="rm-card" onclick="openPopup('owasp')"><div class="rm-card-title">OWASP Top 10</div><div class="rm-card-desc">En yaygın web uygulama güvenlik açıkları listesi.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('zap')"><div class="rm-card-title">OWASP ZAP</div><div class="rm-card-desc">Açık kaynak web uygulama güvenlik tarayıcısı.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('burp')"><div class="rm-card-title">Burp Suite</div><div class="rm-card-desc">Web güvenlik testi için endüstri standardı platform.</div><div class="rm-card-tag">İleri</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('sqli-xss')"><div class="rm-card-title">SQL Injection & XSS</div><div class="rm-card-desc">Yaygın güvenlik açıklarını tespit etme ve test etme yöntemleri.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
-  </div>
-</div>
-
-<!-- S8 -->
-<div class="rm-section s8">
-  <div class="rm-header">
-    <div class="rm-icon">📋</div>
-    <div><div class="rm-title">Test Yönetimi</div><div class="rm-sub">Testleri organize etme ve raporlama</div></div>
-  </div>
-  <div class="rm-cards">
-    <div class="rm-card" onclick="openPopup('jira')"><div class="rm-card-title">Jira</div><div class="rm-card-desc">Hata takibi ve proje yönetimi için lider platform.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('testrail')"><div class="rm-card-title">TestRail</div><div class="rm-card-desc">Test senaryolarını yönetmek için özel araç.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('agile-test')"><div class="rm-card-title">Çevik (Agile) Test</div><div class="rm-card-desc">Scrum ve Kanban süreçlerinde QA rolü ve pratikleri.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('bdd')"><div class="rm-card-title">BDD</div><div class="rm-card-desc">Cucumber ile Gherkin dili kullanarak test yazma yaklaşımı.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
-  </div>
-</div>
-
-<!-- S9 -->
-<div class="rm-section s9">
-  <div class="rm-header">
-    <div class="rm-icon">🚀</div>
-    <div><div class="rm-title">İleri Seviye Konular</div><div class="rm-sub">Kariyer gelişimi için uzmanlaşma alanları</div></div>
-  </div>
-  <div class="rm-cards">
-    <div class="rm-card" onclick="openPopup('ai-test')"><div class="rm-card-title">AI Destekli Test</div><div class="rm-card-desc">Yapay zeka ile test senaryosu oluşturma ve kendi kendini iyileştiren testler.</div><div class="rm-card-tag">İleri</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('gorsel-regresyon')"><div class="rm-card-title">Görsel Regresyon Testi</div><div class="rm-card-desc">Percy, Applitools gibi araçlarla görsel değişiklikleri tespit etme.</div><div class="rm-card-tag">İleri</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('kaos')"><div class="rm-card-title">Kaos Mühendisliği</div><div class="rm-card-desc">Kasıtlı hatalar enjekte ederek sistemin dayanıklılığını test etme.</div><div class="rm-card-tag">İleri</div><div class="rm-card-hint">tıkla →</div></div>
-    <div class="rm-card" onclick="openPopup('erisebilirlik')"><div class="rm-card-title">Erişilebilirlik Testi</div><div class="rm-card-desc">WCAG standartlarına uygunluğu Axe ve Lighthouse ile kontrol etme.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
-  </div>
-</div>
-
-</div><!-- /roadmap -->
-</div><!-- /page-roadmap -->
-
-<!-- ============================================================ -->
-<!-- PAGE: FLOWCHART -->
-<!-- ============================================================ -->
-<div class="page" id="page-flowchart">
-<div class="fc-wrap">
-  <div class="fc-head">
-    <div>
-      <div style="font-family:var(--mono);font-size:0.65rem;color:var(--cyan);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:0.5rem;">// akış şeması</div>
-      <h2>QA <em>FLOWCHART</em></h2>
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="inner">
+    <div class="page-breadcrumb">
+      <a href="index.html">HAS::portfolio</a>
+      <span class="sep">/</span>
+      <span>QA Mühendisi Yol Haritası</span>
     </div>
-    <div class="lang-toggle">
-      <div class="lang-btn active" id="btn-tr" onclick="setLang('tr')">TR</div>
-      <div class="lang-btn" id="btn-en" onclick="setLang('en')">EN</div>
+    <h1>QA Mühendisi <em>Yol Haritası</em></h1>
+    <p>Yazılım kalite güvencesi alanında sıfırdan kıdemli seviyeye giden öğrenme yolu. Temel kavramlardan test otomasyonuna, CI/CD entegrasyonundan ileri seviye konulara kadar tüm adımlar.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><span class="dot"></span>9 Ana Kategori</div>
+      <div class="hero-meta-item"><span class="dot"></span>40+ Konu Kartı</div>
+      <div class="hero-meta-item"><span class="dot"></span>13 Aşamalı Flowchart</div>
+    </div>
+  </div>
+</div>
+
+<main>
+<!-- ROADMAP -->
+<section id="roadmap" style="background:var(--dark);">
+<div class="inner">
+  <div class="sec-tag">Yol Haritası</div>
+
+  <div class="qa-tabs">
+    <div class="qa-tab active" onclick="switchTab('roadmap-page','flowchart-page',this)">📚 Yol Haritası</div>
+    <div class="qa-tab" onclick="switchTab('flowchart-page','roadmap-page',this)">🔀 Flowchart</div>
+  </div>
+
+  <!-- ROADMAP PAGE -->
+  <div class="qa-page active" id="roadmap-page">
+    <div class="qa-legend">
+      <div class="qa-legend-item"><div class="qa-legend-dot" style="background:#f0c040"></div>Temel</div>
+      <div class="qa-legend-item"><div class="qa-legend-dot" style="background:#5b8fff"></div>Orta</div>
+      <div class="qa-legend-item"><div class="qa-legend-dot" style="background:#4ecdc4"></div>İleri</div>
+      <div class="qa-legend-item"><div class="qa-legend-dot" style="background:#5a8070"></div>Opsiyonel</div>
+      <span class="qa-hint">💡 Kartlara tıkla → detay</span>
+    </div>
+    <div class="qa-roadmap">
+
+      <div class="rm-section s1">
+        <div class="rm-header"><div class="rm-icon">🧠</div><div><div class="rm-title">Temel Kavramlar</div><div class="rm-sub">QA'ya başlamadan önce bilinmesi gerekenler</div></div></div>
+        <div class="rm-cards">
+          <div class="rm-card" onclick="openPopup('test-nedir')"><div class="rm-card-title">Test Nedir?</div><div class="rm-card-desc">Yazılımın beklenen davranışı gösterip göstermediğini doğrulama süreci.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('qa-qc-test')"><div class="rm-card-title">QA vs QC vs Test</div><div class="rm-card-desc">Kalite Güvence, Kalite Kontrol ve test arasındaki farklar.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('sdlc')"><div class="rm-card-title">SDLC</div><div class="rm-card-desc">Yazılım geliştirme yaşam döngüsü aşamaları ve QA'nın rolü.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('stlc')"><div class="rm-card-title">Test Yaşam Döngüsü</div><div class="rm-card-desc">Planlama, tasarım, uygulama ve raporlama aşamaları.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('bug-lifecycle')"><div class="rm-card-title">Bug Yaşam Döngüsü</div><div class="rm-card-desc">Bir hatanın açılmasından kapatılmasına kadar geçen süreç.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('test-pyramid')"><div class="rm-card-title">Test Piramidi</div><div class="rm-card-desc">Unit, entegrasyon ve E2E testlerin dengeli dağılımı.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+        </div>
+      </div>
+
+      <div class="rm-section s2">
+        <div class="rm-header"><div class="rm-icon">🗂️</div><div><div class="rm-title">Test Türleri</div><div class="rm-sub">Farklı test yaklaşımları ve metodolojileri</div></div></div>
+        <div class="rm-divider">Fonksiyonel</div>
+        <div class="rm-cards">
+          <div class="rm-card" onclick="openPopup('fonksiyonel-test')"><div class="rm-card-title">Fonksiyonel Test</div><div class="rm-card-desc">Sistemin gereksinimlerine uygun çalışıp çalışmadığını doğrulama.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('smoke-test')"><div class="rm-card-title">Smoke Test</div><div class="rm-card-desc">Temel işlevlerin çalıştığını doğrulayan hızlı kontrol.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('regresyon')"><div class="rm-card-title">Regresyon Testi</div><div class="rm-card-desc">Değişikliklerin mevcut işlevselliği bozmadığını kontrol etme.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('uat')"><div class="rm-card-title">UAT</div><div class="rm-card-desc">Son kullanıcıların iş gereksinimlerine göre test etmesi.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('exploratory')"><div class="rm-card-title">Keşif Testi</div><div class="rm-card-desc">Senaryosuz, sezgisel sistem keşfi.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('sinir-deger')"><div class="rm-card-title">Sınır Değer Analizi</div><div class="rm-card-desc">Giriş değerlerinin sınırlarını test etme tekniği.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+        </div>
+        <div class="rm-divider" style="margin-top:10px">Fonksiyonel Olmayan</div>
+        <div class="rm-cards">
+          <div class="rm-card" onclick="openPopup('performans-test')"><div class="rm-card-title">Performans Testi</div><div class="rm-card-desc">Hız, ölçeklenebilirlik ve kararlılık testleri.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('yuk-test')"><div class="rm-card-title">Yük Testi</div><div class="rm-card-desc">Sistem yük altında nasıl davranır?</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('guvenlik-test')"><div class="rm-card-title">Güvenlik Testi</div><div class="rm-card-desc">Güvenlik açıklarını ve zafiyetleri tespit etme.</div><div class="rm-card-tag">İleri</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('kullanilabilirlik')"><div class="rm-card-title">Kullanılabilirlik</div><div class="rm-card-desc">Arayüzün kullanıcı dostu olup olmadığını değerlendirme.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+        </div>
+      </div>
+
+      <div class="rm-section s3">
+        <div class="rm-header"><div class="rm-icon">✏️</div><div><div class="rm-title">Test Tasarımı</div><div class="rm-sub">Etkili test senaryoları oluşturma teknikleri</div></div></div>
+        <div class="rm-cards">
+          <div class="rm-card" onclick="openPopup('test-plani')"><div class="rm-card-title">Test Planı</div><div class="rm-card-desc">Kapsam, yaklaşım, kaynak ve takvimi tanımlayan belge.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('test-senaryosu')"><div class="rm-card-title">Test Senaryosu</div><div class="rm-card-desc">İşlevselliği doğrulayan adım adım prosedür.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('esdegerlik')"><div class="rm-card-title">Eşdeğerlik Bölümleme</div><div class="rm-card-desc">Giriş verilerini geçerli/geçersiz gruplara ayırma.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('karar-tablosu')"><div class="rm-card-title">Karar Tablosu</div><div class="rm-card-desc">Birden fazla koşulun kombinasyonlarını test etme.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('durum-gecis')"><div class="rm-card-title">Durum Geçiş Testi</div><div class="rm-card-desc">Farklı durumlardaki geçişleri test etme.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('risk-tabanli')"><div class="rm-card-title">Risk Tabanlı Test</div><div class="rm-card-desc">En yüksek riskli alanlara öncelik verme yaklaşımı.</div><div class="rm-card-tag">İleri</div><div class="rm-card-hint">tıkla →</div></div>
+        </div>
+      </div>
+
+      <div class="rm-section s4">
+        <div class="rm-header"><div class="rm-icon">🤖</div><div><div class="rm-title">Test Otomasyonu</div><div class="rm-sub">Modern QA'nın en kritik becerisi</div></div></div>
+        <div class="rm-divider">Programlama</div>
+        <div class="rm-cards">
+          <div class="rm-card" onclick="openPopup('python-js')"><div class="rm-card-title">Python / JavaScript</div><div class="rm-card-desc">Test otomasyonu için en yaygın diller.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('java-csharp')"><div class="rm-card-title">Java / C#</div><div class="rm-card-desc">Kurumsal ortamlarda yaygın kullanılan diller.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('git')"><div class="rm-card-title">Git & Versiyon Kontrol</div><div class="rm-card-desc">Test kodları için temel araç.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+        </div>
+        <div class="rm-divider" style="margin-top:10px">UI Test Araçları</div>
+        <div class="rm-cards">
+          <div class="rm-card" onclick="openPopup('selenium')"><div class="rm-card-title">Selenium WebDriver</div><div class="rm-card-desc">Web otomasyon için endüstri standardı.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('playwright')"><div class="rm-card-title">Playwright</div><div class="rm-card-desc">Microsoft'un hızlı çapraz-tarayıcı kütüphanesi.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('cypress')"><div class="rm-card-title">Cypress</div><div class="rm-card-desc">JS tabanlı modern E2E test framework'ü.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('appium')"><div class="rm-card-title">Appium</div><div class="rm-card-desc">iOS ve Android test otomasyonu.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+        </div>
+        <div class="rm-divider" style="margin-top:10px">API Test Araçları</div>
+        <div class="rm-cards">
+          <div class="rm-card" onclick="openPopup('postman')"><div class="rm-card-title">Postman</div><div class="rm-card-desc">API test ve dokümantasyonu için popüler araç.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('rest-assured')"><div class="rm-card-title">REST Assured</div><div class="rm-card-desc">Java tabanlı REST API test kütüphanesi.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('supertest')"><div class="rm-card-title">SuperTest / Axios</div><div class="rm-card-desc">Node.js API testleri için yaygın kütüphaneler.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+        </div>
+      </div>
+
+      <div class="rm-section s5">
+        <div class="rm-header"><div class="rm-icon">⚙️</div><div><div class="rm-title">CI/CD & DevOps</div><div class="rm-sub">Testleri geliştirme sürecine entegre etme</div></div></div>
+        <div class="rm-cards">
+          <div class="rm-card" onclick="openPopup('jenkins')"><div class="rm-card-title">Jenkins</div><div class="rm-card-desc">Açık kaynak CI/CD otomasyon sunucusu.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('github-actions')"><div class="rm-card-title">GitHub Actions</div><div class="rm-card-desc">GitHub'a entegre CI/CD pipeline'ları.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('gitlab-ci')"><div class="rm-card-title">GitLab CI</div><div class="rm-card-desc">GitLab'ın yerleşik CI/CD çözümü.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('docker')"><div class="rm-card-title">Docker</div><div class="rm-card-desc">Test ortamlarını konteynerize etme.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('kubernetes')"><div class="rm-card-title">Kubernetes</div><div class="rm-card-desc">Ölçeklenebilir test ortamları ve orkestrasyon.</div><div class="rm-card-tag">İleri</div><div class="rm-card-hint">tıkla →</div></div>
+        </div>
+      </div>
+
+      <div class="rm-section s6">
+        <div class="rm-header"><div class="rm-icon">⚡</div><div><div class="rm-title">Performans Testi</div><div class="rm-sub">Sistem kapasitesini ve hızını ölçme</div></div></div>
+        <div class="rm-cards">
+          <div class="rm-card" onclick="openPopup('jmeter')"><div class="rm-card-title">Apache JMeter</div><div class="rm-card-desc">Açık kaynak yük ve performans test aracı.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('k6')"><div class="rm-card-title">k6</div><div class="rm-card-desc">Geliştirici dostu modern yük testi aracı.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('gatling')"><div class="rm-card-title">Gatling</div><div class="rm-card-desc">Scala tabanlı yük test framework'ü.</div><div class="rm-card-tag">İleri</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('locust')"><div class="rm-card-title">Locust</div><div class="rm-card-desc">Python tabanlı dağıtık yük testi aracı.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+        </div>
+      </div>
+
+      <div class="rm-section s7">
+        <div class="rm-header"><div class="rm-icon">🔒</div><div><div class="rm-title">Güvenlik Testi</div><div class="rm-sub">Zafiyetleri tespit etme ve giderme</div></div></div>
+        <div class="rm-cards">
+          <div class="rm-card" onclick="openPopup('owasp')"><div class="rm-card-title">OWASP Top 10</div><div class="rm-card-desc">En yaygın web güvenlik açıkları listesi.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('zap')"><div class="rm-card-title">OWASP ZAP</div><div class="rm-card-desc">Açık kaynak web güvenlik tarayıcısı.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('burp')"><div class="rm-card-title">Burp Suite</div><div class="rm-card-desc">Web güvenlik testi için endüstri standardı.</div><div class="rm-card-tag">İleri</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('sqli-xss')"><div class="rm-card-title">SQL Injection & XSS</div><div class="rm-card-desc">En yaygın güvenlik açıklarını test etme.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+        </div>
+      </div>
+
+      <div class="rm-section s8">
+        <div class="rm-header"><div class="rm-icon">📋</div><div><div class="rm-title">Test Yönetimi</div><div class="rm-sub">Testleri organize etme ve raporlama</div></div></div>
+        <div class="rm-cards">
+          <div class="rm-card" onclick="openPopup('jira')"><div class="rm-card-title">Jira</div><div class="rm-card-desc">Hata takibi ve proje yönetimi platformu.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('testrail')"><div class="rm-card-title">TestRail</div><div class="rm-card-desc">Test senaryolarını yönetmek için özel araç.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('agile-test')"><div class="rm-card-title">Agile Test</div><div class="rm-card-desc">Scrum ve Kanban'da QA rolü ve pratikleri.</div><div class="rm-card-tag">Temel</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('bdd')"><div class="rm-card-title">BDD</div><div class="rm-card-desc">Cucumber ile Gherkin tabanlı test yaklaşımı.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+        </div>
+      </div>
+
+      <div class="rm-section s9">
+        <div class="rm-header"><div class="rm-icon">🚀</div><div><div class="rm-title">İleri Seviye</div><div class="rm-sub">Kariyer gelişimi için uzmanlaşma alanları</div></div></div>
+        <div class="rm-cards">
+          <div class="rm-card" onclick="openPopup('ai-test')"><div class="rm-card-title">AI Destekli Test</div><div class="rm-card-desc">Yapay zeka ile test üretme ve self-healing testler.</div><div class="rm-card-tag">İleri</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('gorsel-regresyon')"><div class="rm-card-title">Görsel Regresyon</div><div class="rm-card-desc">Percy, Applitools ile görsel değişiklikleri tespit.</div><div class="rm-card-tag">İleri</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('kaos')"><div class="rm-card-title">Kaos Mühendisliği</div><div class="rm-card-desc">Kasıtlı hata enjeksiyonuyla sistem dayanıklılığı testi.</div><div class="rm-card-tag">İleri</div><div class="rm-card-hint">tıkla →</div></div>
+          <div class="rm-card" onclick="openPopup('erisebilirlik')"><div class="rm-card-title">Erişilebilirlik (a11y)</div><div class="rm-card-desc">WCAG standartlarına uygunluk testi.</div><div class="rm-card-tag">Orta</div><div class="rm-card-hint">tıkla →</div></div>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <div class="fc-canvas" id="fc-canvas">
-    <div class="fc-inner" id="fc-inner" style="height:2440px;">
-      <svg class="fc-svg" id="fc-svg"></svg>
-
-      <div class="fc-node nd-start" id="n-start" style="left:330px;top:10px;width:180px;height:44px;"><span class="lang-tr">QA Kariyerine Başla</span><span class="lang-en">Start QA Career</span></div>
-
-      <div class="fc-node nd-phase" id="n-1" style="left:220px;top:100px;width:400px;height:56px;border-color:#f0c040;">
-        <div class="nd-title" style="color:#f0c040;"><span class="lang-tr">① Temel Kavramlar</span><span class="lang-en">① Fundamentals</span></div>
-        <div class="nd-sub"><span class="lang-tr">Test nedir · SDLC · STLC · Hata Yaşam Döngüsü · Test Piramidi</span><span class="lang-en">What is testing · SDLC · STLC · Bug Life Cycle · Test Pyramid</span></div>
+  <!-- FLOWCHART PAGE -->
+  <div class="qa-page" id="flowchart-page">
+    <div class="fc-head">
+      <div style="font-family:var(--mono);font-size:0.65rem;color:var(--dim);">// 13 aşamalı kariyer akış şeması</div>
+      <div class="lang-toggle">
+        <div class="lang-btn active" id="btn-tr" onclick="setLang('tr')">TR</div>
+        <div class="lang-btn" id="btn-en" onclick="setLang('en')">EN</div>
       </div>
-
-      <div class="fc-node nd-phase" id="n-2" style="left:220px;top:210px;width:400px;height:56px;border-color:#5b8fff;">
-        <div class="nd-title" style="color:#5b8fff;"><span class="lang-tr">② Test Türleri</span><span class="lang-en">② Types of Testing</span></div>
-        <div class="nd-sub"><span class="lang-tr">Fonksiyonel · Regresyon · Smoke · UAT · Keşif · Performans</span><span class="lang-en">Functional · Regression · Smoke · UAT · Exploratory · Performance</span></div>
+    </div>
+    <div class="fc-canvas" id="fc-canvas">
+      <div class="fc-inner" id="fc-inner" style="height:2300px;">
+        <svg class="fc-svg" id="fc-svg"></svg>
+        <div class="fc-node nd-start" id="n-start" style="left:300px;top:10px;width:180px;height:42px;"><span class="lang-tr">QA Kariyerine Başla</span><span class="lang-en">Start QA Career</span></div>
+        <div class="fc-node nd-phase" id="n-1" style="left:195px;top:96px;width:390px;height:54px;border-color:#f0c040;"><div class="nd-title" style="color:#f0c040;"><span class="lang-tr">① Temel Kavramlar</span><span class="lang-en">① Fundamentals</span></div><div class="nd-sub"><span class="lang-tr">Test · SDLC · STLC · Bug Döngüsü · Test Piramidi</span><span class="lang-en">Testing · SDLC · STLC · Bug Lifecycle · Test Pyramid</span></div></div>
+        <div class="fc-node nd-phase" id="n-2" style="left:195px;top:200px;width:390px;height:54px;border-color:#5b8fff;"><div class="nd-title" style="color:#5b8fff;"><span class="lang-tr">② Test Türleri</span><span class="lang-en">② Types of Testing</span></div><div class="nd-sub"><span class="lang-tr">Fonksiyonel · Regresyon · Smoke · UAT · Keşif</span><span class="lang-en">Functional · Regression · Smoke · UAT · Exploratory</span></div></div>
+        <div class="fc-node nd-phase" id="n-3" style="left:195px;top:304px;width:390px;height:54px;border-color:#ff6b6b;"><div class="nd-title" style="color:#ff6b6b;"><span class="lang-tr">③ Test Tasarımı</span><span class="lang-en">③ Test Design</span></div><div class="nd-sub"><span class="lang-tr">Test Planı · Senaryo · Eşdeğerlik · Sınır Değer</span><span class="lang-en">Test Plan · Cases · Equivalence · Boundary Value</span></div></div>
+        <div class="fc-node nd-dec" id="n-d1" style="left:260px;top:408px;width:260px;height:48px;"><div class="nd-title"><span class="lang-tr">Otomasyon Öğren?</span><span class="lang-en">Learn Automation?</span></div></div>
+        <div class="fc-node nd-tool" id="n-prog" style="left:20px;top:510px;width:195px;height:56px;border-color:#34d399;"><div class="nd-title" style="color:#34d399;"><span class="lang-tr">Programlama Dili</span><span class="lang-en">Programming Language</span></div><div class="nd-sub">Python · JS · Java · C#</div></div>
+        <div class="fc-node nd-tool" id="n-manual" style="left:560px;top:510px;width:195px;height:56px;border-color:#5a8070;"><div class="nd-title" style="color:#9ca3af;"><span class="lang-tr">Manuel Test Uzmanı</span><span class="lang-en">Manual Testing Expert</span></div><div class="nd-sub">Test Mgmt · BDD · Agile</div></div>
+        <div class="fc-node nd-phase" id="n-ui" style="left:0px;top:624px;width:230px;height:54px;border-color:#4ecdc4;"><div class="nd-title" style="color:#4ecdc4;"><span class="lang-tr">④ UI Test Araçları</span><span class="lang-en">④ UI Test Tools</span></div><div class="nd-sub">Selenium · Playwright · Cypress</div></div>
+        <div class="fc-node nd-phase" id="n-api" style="left:0px;top:728px;width:230px;height:54px;border-color:#a88bfa;"><div class="nd-title" style="color:#a88bfa;"><span class="lang-tr">⑤ API Test Araçları</span><span class="lang-en">⑤ API Test Tools</span></div><div class="nd-sub">Postman · REST Assured · SuperTest</div></div>
+        <div class="fc-node nd-tool" id="n-fw" style="left:0px;top:832px;width:230px;height:54px;border-color:#f472b6;"><div class="nd-title" style="color:#f472b6;"><span class="lang-tr">⑥ Test Framework</span><span class="lang-en">⑥ Test Framework</span></div><div class="nd-sub">Jest · PyTest · JUnit · TestNG</div></div>
+        <div class="fc-node nd-phase" id="n-cicd" style="left:195px;top:950px;width:390px;height:54px;border-color:#38bdf8;"><div class="nd-title" style="color:#38bdf8;"><span class="lang-tr">⑦ CI/CD Entegrasyonu</span><span class="lang-en">⑦ CI/CD Integration</span></div><div class="nd-sub">Jenkins · GitHub Actions · Docker · K8s</div></div>
+        <div class="fc-node nd-dec" id="n-d2" style="left:260px;top:1054px;width:260px;height:48px;"><div class="nd-title"><span class="lang-tr">Uzmanlık Alanı?</span><span class="lang-en">Specialization?</span></div></div>
+        <div class="fc-node nd-tool" id="n-perf" style="left:10px;top:1158px;width:182px;height:64px;border-color:#fb923c;"><div class="nd-title" style="color:#fb923c;"><span class="lang-tr">⑧ Performans</span><span class="lang-en">⑧ Performance</span></div><div class="nd-sub">JMeter · k6 · Gatling</div></div>
+        <div class="fc-node nd-tool" id="n-sec" style="left:219px;top:1158px;width:182px;height:64px;border-color:#ff6b6b;"><div class="nd-title" style="color:#ff6b6b;"><span class="lang-tr">⑨ Güvenlik</span><span class="lang-en">⑨ Security</span></div><div class="nd-sub">OWASP · ZAP · Burp</div></div>
+        <div class="fc-node nd-tool" id="n-mob" style="left:428px;top:1158px;width:182px;height:64px;border-color:#4ecdc4;"><div class="nd-title" style="color:#4ecdc4;"><span class="lang-tr">⑩ Mobil Test</span><span class="lang-en">⑩ Mobile Testing</span></div><div class="nd-sub">Appium · BrowserStack</div></div>
+        <div class="fc-node nd-phase" id="n-mgmt" style="left:195px;top:1282px;width:390px;height:54px;border-color:#f472b6;"><div class="nd-title" style="color:#f472b6;"><span class="lang-tr">⑪ Test Yönetimi & Raporlama</span><span class="lang-en">⑪ Test Mgmt & Reporting</span></div><div class="nd-sub">Jira · TestRail · Allure · Metrikler</div></div>
+        <div class="fc-node nd-phase" id="n-agile" style="left:195px;top:1386px;width:390px;height:54px;border-color:#34d399;"><div class="nd-title" style="color:#34d399;"><span class="lang-tr">⑫ Agile & BDD</span><span class="lang-en">⑫ Agile & BDD</span></div><div class="nd-sub">Scrum · Kanban · Cucumber · Gherkin</div></div>
+        <div class="fc-node nd-phase" id="n-adv" style="left:195px;top:1490px;width:390px;height:62px;border-color:#f0c040;"><div class="nd-title" style="color:#f0c040;"><span class="lang-tr">⑬ İleri Seviye</span><span class="lang-en">⑬ Advanced Topics</span></div><div class="nd-sub"><span class="lang-tr">AI Test · Görsel Regresyon · Kaos Mühendisliği · a11y</span><span class="lang-en">AI Testing · Visual Regression · Chaos Engineering · a11y</span></div></div>
+        <div class="fc-node nd-end" id="n-end" style="left:295px;top:1610px;width:190px;height:42px;"><span class="lang-tr">🎯 Kıdemli QA Mühendisi</span><span class="lang-en">🎯 Senior QA Engineer</span></div>
       </div>
-
-      <div class="fc-node nd-phase" id="n-3" style="left:220px;top:320px;width:400px;height:56px;border-color:#ff6b6b;">
-        <div class="nd-title" style="color:#ff6b6b;"><span class="lang-tr">③ Test Tasarımı</span><span class="lang-en">③ Test Design</span></div>
-        <div class="nd-sub"><span class="lang-tr">Test Planı · Senaryo · Eşdeğerlik · Sınır Değer · Risk Tabanlı</span><span class="lang-en">Test Plan · Test Cases · Equivalence · Boundary Value · Risk-Based</span></div>
-      </div>
-
-      <div class="fc-node nd-dec" id="n-d1" style="left:280px;top:432px;width:280px;height:50px;">
-        <div class="nd-title"><span class="lang-tr">Otomasyon Öğren?</span><span class="lang-en">Learn Automation?</span></div>
-      </div>
-
-      <div class="fc-node nd-tool" id="n-prog" style="left:40px;top:540px;width:200px;height:58px;border-color:#34d399;">
-        <div class="nd-title" style="color:#34d399;"><span class="lang-tr">Programlama Dili</span><span class="lang-en">Programming Language</span></div>
-        <div class="nd-sub">Python · JavaScript · Java · C#</div>
-      </div>
-
-      <div class="fc-node nd-tool" id="n-manual" style="left:600px;top:540px;width:200px;height:58px;border-color:#6b7280;">
-        <div class="nd-title" style="color:#9ca3af;"><span class="lang-tr">Manuel Test Uzmanı</span><span class="lang-en">Manual Testing Expert</span></div>
-        <div class="nd-sub"><span class="lang-tr">Test Yönetimi · BDD · Agile</span><span class="lang-en">Test Mgmt · BDD · Agile</span></div>
-      </div>
-
-      <div class="fc-node nd-phase" id="n-ui" style="left:0px;top:660px;width:280px;height:56px;border-color:#4ecdc4;">
-        <div class="nd-title" style="color:#4ecdc4;"><span class="lang-tr">④ UI Test Araçları</span><span class="lang-en">④ UI Test Tools</span></div>
-        <div class="nd-sub">Selenium · Playwright · Cypress · Appium</div>
-      </div>
-
-      <div class="fc-node nd-phase" id="n-api" style="left:0px;top:772px;width:280px;height:56px;border-color:#a88bfa;">
-        <div class="nd-title" style="color:#a88bfa;"><span class="lang-tr">⑤ API Test Araçları</span><span class="lang-en">⑤ API Test Tools</span></div>
-        <div class="nd-sub">Postman · REST Assured · SuperTest</div>
-      </div>
-
-      <div class="fc-node nd-tool" id="n-fw" style="left:0px;top:884px;width:280px;height:56px;border-color:#f472b6;">
-        <div class="nd-title" style="color:#f472b6;"><span class="lang-tr">⑥ Test Framework</span><span class="lang-en">⑥ Test Framework</span></div>
-        <div class="nd-sub">Jest · PyTest · JUnit · TestNG</div>
-      </div>
-
-      <div class="fc-node nd-phase" id="n-cicd" style="left:220px;top:1010px;width:400px;height:56px;border-color:#38bdf8;">
-        <div class="nd-title" style="color:#38bdf8;"><span class="lang-tr">⑦ CI/CD Entegrasyonu</span><span class="lang-en">⑦ CI/CD Integration</span></div>
-        <div class="nd-sub">Jenkins · GitHub Actions · GitLab CI · Docker · Kubernetes</div>
-      </div>
-
-      <div class="fc-node nd-dec" id="n-d2" style="left:280px;top:1120px;width:280px;height:50px;">
-        <div class="nd-title"><span class="lang-tr">Uzmanlık Alanı?</span><span class="lang-en">Specialization?</span></div>
-      </div>
-
-      <div class="fc-node nd-tool" id="n-perf" style="left:20px;top:1230px;width:188px;height:66px;border-color:#fb923c;">
-        <div class="nd-title" style="color:#fb923c;"><span class="lang-tr">⑧ Performans</span><span class="lang-en">⑧ Performance</span></div>
-        <div class="nd-sub">JMeter · k6 · Gatling · Locust</div>
-      </div>
-
-      <div class="fc-node nd-tool" id="n-sec" style="left:236px;top:1230px;width:188px;height:66px;border-color:#ff6b6b;">
-        <div class="nd-title" style="color:#ff6b6b;"><span class="lang-tr">⑨ Güvenlik</span><span class="lang-en">⑨ Security</span></div>
-        <div class="nd-sub">OWASP · ZAP · Burp · SQLi</div>
-      </div>
-
-      <div class="fc-node nd-tool" id="n-mob" style="left:452px;top:1230px;width:188px;height:66px;border-color:#4ecdc4;">
-        <div class="nd-title" style="color:#4ecdc4;"><span class="lang-tr">⑩ Mobil Test</span><span class="lang-en">⑩ Mobile Testing</span></div>
-        <div class="nd-sub">Appium · XCUITest · BrowserStack</div>
-      </div>
-
-      <div class="fc-node nd-phase" id="n-mgmt" style="left:220px;top:1360px;width:400px;height:56px;border-color:#f472b6;">
-        <div class="nd-title" style="color:#f472b6;"><span class="lang-tr">⑪ Test Yönetimi & Raporlama</span><span class="lang-en">⑪ Test Mgmt & Reporting</span></div>
-        <div class="nd-sub">Jira · TestRail · Zephyr · Allure · Metrikler</div>
-      </div>
-
-      <div class="fc-node nd-phase" id="n-agile" style="left:220px;top:1472px;width:400px;height:56px;border-color:#34d399;">
-        <div class="nd-title" style="color:#34d399;"><span class="lang-tr">⑫ Agile & BDD</span><span class="lang-en">⑫ Agile & BDD</span></div>
-        <div class="nd-sub"><span class="lang-tr">Scrum · Kanban · Cucumber · Gherkin</span><span class="lang-en">Scrum · Kanban · Cucumber · Gherkin</span></div>
-      </div>
-
-      <div class="fc-node nd-phase" id="n-adv" style="left:220px;top:1588px;width:400px;height:64px;border-color:#f0c040;">
-        <div class="nd-title" style="color:#f0c040;"><span class="lang-tr">⑬ İleri Seviye Konular</span><span class="lang-en">⑬ Advanced Topics</span></div>
-        <div class="nd-sub"><span class="lang-tr">AI Test · Görsel Regresyon · Kaos Mühendisliği · Erişilebilirlik</span><span class="lang-en">AI Testing · Visual Regression · Chaos Engineering · Accessibility</span></div>
-      </div>
-
-      <div class="fc-node nd-end" id="n-end" style="left:320px;top:1714px;width:200px;height:44px;">
-        <span class="lang-tr">🎯 Kıdemli QA Mühendisi</span><span class="lang-en">🎯 Senior QA Engineer</span>
-      </div>
+    </div>
+    <div class="fc-legend">
+      <div class="fc-legend-item"><div class="fc-legend-box" style="background:var(--cyan)"></div><span class="lang-tr">Başlangıç/Bitiş</span><span class="lang-en">Start/End</span></div>
+      <div class="fc-legend-item"><div class="fc-legend-box" style="background:#0a1a0d;border:2px solid #5b8fff"></div><span class="lang-tr">Ana Aşama</span><span class="lang-en">Main Phase</span></div>
+      <div class="fc-legend-item"><div class="fc-legend-box" style="background:rgba(13,26,16,0.9);border:1px solid rgba(0,200,100,0.2)"></div><span class="lang-tr">Araç</span><span class="lang-en">Tool</span></div>
+      <div class="fc-legend-item"><div class="fc-legend-box" style="background:#0a1a0d;border:2px solid #fb923c"></div><span class="lang-tr">Karar Noktası</span><span class="lang-en">Decision</span></div>
     </div>
   </div>
 
-  <div class="fc-legend">
-    <div class="fc-legend-item"><div class="fc-legend-box" style="background:var(--cyan)"></div><span class="lang-tr">Başlangıç/Bitiş</span><span class="lang-en">Start/End</span></div>
-    <div class="fc-legend-item"><div class="fc-legend-box" style="background:rgba(13,26,16,1);border:2px solid #5b8fff"></div><span class="lang-tr">Ana Aşama</span><span class="lang-en">Main Phase</span></div>
-    <div class="fc-legend-item"><div class="fc-legend-box" style="background:rgba(13,26,16,0.8);border:1px solid rgba(0,200,100,0.2)"></div><span class="lang-tr">Araç/Teknoloji</span><span class="lang-en">Tool/Technology</span></div>
-    <div class="fc-legend-item"><div class="fc-legend-box" style="background:rgba(13,26,16,1);border:2px solid #fb923c"></div><span class="lang-tr">Karar Noktası</span><span class="lang-en">Decision Point</span></div>
-  </div>
 </div>
-</div><!-- /page-flowchart -->
+</section>
+</main>
 
-<!-- ============================================================ -->
-<!-- POPUP MODAL -->
-<!-- ============================================================ -->
+<footer>
+  <div>© 2025 <span>Hüseyin Alperen Şenel</span> — QA Yol Haritası</div>
+  <a href="index.html" class="footer-back">← Ana Sayfaya Dön</a>
+</footer>
+
+<!-- POPUP -->
 <div class="popup-backdrop" id="popup-backdrop" onclick="handleBackdropClick(event)">
   <div class="popup-bg"></div>
   <div class="popup-box" id="popup-box">
@@ -638,628 +525,54 @@ footer a:hover { color:var(--white); }
   </div>
 </div>
 
-<footer>
-  <div>© 2025 <a href="index.html">alperensenel.com</a> — QA Yol Haritası</div>
-  <div style="font-size:0.62rem;color:var(--dim)">Kaynak: <a href="https://roadmap.sh/qa" target="_blank">roadmap.sh/qa</a></div>
-</footer>
-
 <script>
-// ============================================================
-// TAB SWITCHING
-// ============================================================
-function switchTab(id, el) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.p-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
+// CURSOR
+var dot=document.getElementById('cur-dot'),ring=document.getElementById('cur-ring');
+var mx=0,my=0,rx=0,ry=0,active=false;
+window.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;if(!active){active=true;dot.style.display='block';ring.style.display='block';rx=mx;ry=my;}dot.style.transform='translate('+(mx-5)+'px,'+(my-5)+'px)';},{passive:true});
+(function animRing(){rx+=(mx-rx)*0.13;ry+=(my-ry)*0.13;ring.style.transform='translate('+(rx-16)+'px,'+(ry-16)+'px)';requestAnimationFrame(animRing);})();
+
+// MATRIX
+var mc=document.getElementById('matrix-bg'),mctx=mc.getContext('2d');
+function resizeMc(){mc.width=window.innerWidth;mc.height=window.innerHeight;}resizeMc();window.addEventListener('resize',resizeMc,{passive:true});
+var mchars='アイウエオカ01ABCDEFGHIJKLMNOPQRSTUVWXYZｦｧ<>{}[]';
+var mfs=13,mdrops=[];
+function initDrops(){mdrops=Array(Math.floor(mc.width/mfs)).fill(1);}initDrops();
+window.addEventListener('resize',initDrops,{passive:true});
+var lastMatrix=0;
+function drawMatrix(ts){if(ts-lastMatrix>33){lastMatrix=ts;mctx.fillStyle='rgba(6,14,8,0.05)';mctx.fillRect(0,0,mc.width,mc.height);mctx.fillStyle='#00e676';mctx.font=mfs+'px monospace';for(var i=0;i<mdrops.length;i++){mctx.fillText(mchars[Math.floor(Math.random()*mchars.length)],i*mfs,mdrops[i]*mfs);if(mdrops[i]*mfs>mc.height&&Math.random()>0.975)mdrops[i]=0;mdrops[i]++;}}requestAnimationFrame(drawMatrix);}
+requestAnimationFrame(drawMatrix);
+
+// TABS
+function switchTab(showId,hideId,el){
+  document.getElementById(showId).classList.add('active');
+  document.getElementById(hideId).classList.remove('active');
+  document.querySelectorAll('.qa-tab').forEach(function(t){t.classList.remove('active');});
   el.classList.add('active');
-  if (id === 'flowchart') setTimeout(drawLines, 80);
+  if(showId==='flowchart-page') setTimeout(drawLines,60);
 }
 
-// ============================================================
 // POPUP DATA
-// ============================================================
-var POPUP_DATA = {
-  'test-nedir': {
-    tag:'// Temel Kavram', title:'Test Nedir?', color:'#f0c040',
-    body:`<p>Yazılım testi, bir sistemin ya da uygulamanın belirtilen gereksinimleri karşılayıp karşılamadığını, hataların tespit edilip giderilmesini sağlayan sistematik bir süreçtir.</p>
-    <h4>Temel Amaçlar</h4>
-    <ul><li>Hataları ve açıkları erken aşamada bulmak</li><li>Yazılım kalitesini güvence altına almak</li><li>Son kullanıcı beklentilerini karşıladığını doğrulamak</li><li>Güvenilir ve kararlı bir ürün teslim etmek</li></ul>
-    <h4>Test Türleri (Genel)</h4>
-    <ul><li><strong>Manuel Test:</strong> İnsan gözüyle, elle yürütülen senaryolar</li><li><strong>Otomasyon Testi:</strong> Script/araçlarla otomatik yürütülen testler</li><li><strong>Statik Test:</strong> Kod çalıştırmadan yapılan inceleme (code review)</li></ul>
-    <h4>Temel İlkeler</h4>
-    <ul><li>Test hataların var olduğunu gösterir, yokluğunu değil</li><li>Kapsamlı test mümkün değildir — risk tabanlı seçim yapılır</li><li>Erken test, maliyeti düşürür</li><li>Hataların büyük çoğunluğu az sayıda modülde yoğunlaşır (Pareto)</li></ul>`
-  },
-  'qa-qc-test': {
-    tag:'// Temel Kavram', title:'QA vs QC vs Test', color:'#f0c040',
-    body:`<p>Bu üç kavram sıkça karıştırılır; ancak birbirinden farklı sorumluluklara sahiptir.</p>
-    <h4>QA — Kalite Güvence (Quality Assurance)</h4>
-    <ul><li>Süreç odaklıdır; hatayı önlemeyi hedefler</li><li>Geliştirme sürecinin tüm aşamalarına dahil olur</li><li>Örnek: Kodlama standartları tanımlamak, review süreçleri kurmak</li></ul>
-    <h4>QC — Kalite Kontrol (Quality Control)</h4>
-    <ul><li>Ürün odaklıdır; mevcut hataları tespit eder</li><li>Geliştirme sonrası kontrol noktalarında devreye girer</li><li>Örnek: Test raporları, hata listeleri</li></ul>
-    <h4>Test</h4>
-    <ul><li>QC'nin alt kümesidir; sistemin belirli girişlere doğru yanıt verip vermediğini kontrol eder</li><li>Birim, entegrasyon, sistem ve kabul testleri bu kapsamdadır</li></ul>
-    <div class="popup-tools"><span class="popup-tool">QA → Önle</span><span class="popup-tool">QC → Bul</span><span class="popup-tool">Test → Doğrula</span></div>`
-  },
-  'sdlc': {
-    tag:'// Temel Kavram', title:'SDLC — Yazılım Geliştirme Yaşam Döngüsü', color:'#f0c040',
-    body:`<p>SDLC (Software Development Life Cycle), yazılımın fikir aşamasından kullanımdan kaldırılmasına kadar geçen tüm süreçleri tanımlar.</p>
-    <h4>Aşamalar</h4>
-    <ul><li><strong>Planlama:</strong> Kapsam, kaynak ve zaman tahmini</li><li><strong>Gereksinim Analizi:</strong> Müşteri ihtiyaçlarını yazılı hale getirme</li><li><strong>Tasarım:</strong> Sistem mimarisi ve veritabanı tasarımı</li><li><strong>Kodlama:</strong> Yazılımın geliştirilmesi</li><li><strong>Test:</strong> Hata tespiti ve kalite doğrulama</li><li><strong>Dağıtım:</strong> Canlı ortama alma</li><li><strong>Bakım:</strong> Güncelleme ve hata düzeltme</li></ul>
-    <h4>QA'nın SDLC'deki Rolü</h4>
-    <ul><li>Gereksinim aşamasında belirsizlikleri sorgular</li><li>Tasarım aşamasında test edilebilirliği değerlendirir</li><li>Kodlama aşamasında birim ve entegrasyon testleri yürütür</li><li>Dağıtım öncesinde sistem ve kabul testlerini tamamlar</li></ul>
-    <div class="popup-tools"><span class="popup-tool">Waterfall</span><span class="popup-tool">Agile/Scrum</span><span class="popup-tool">Kanban</span><span class="popup-tool">V-Model</span></div>`
-  },
-  'stlc': {
-    tag:'// Temel Kavram', title:'STLC — Test Yaşam Döngüsü', color:'#f0c040',
-    body:`<p>STLC (Software Testing Life Cycle), test faaliyetlerinin nasıl planlanıp yürütüleceğini tanımlayan yapılandırılmış bir süreçtir.</p>
-    <h4>Aşamalar</h4>
-    <ul><li><strong>1. Gereksinim Analizi:</strong> Test edilebilir gereksinimleri belirleme</li><li><strong>2. Test Planlaması:</strong> Strateji, kapsam, araç ve kaynak belirleme</li><li><strong>3. Test Senaryosu Tasarımı:</strong> Detaylı test adımları yazma</li><li><strong>4. Test Ortamı Kurulumu:</strong> Gerekli altyapı ve veri hazırlama</li><li><strong>5. Test Yürütme:</strong> Testleri çalıştırma, hataları loglama</li><li><strong>6. Test Kapanışı:</strong> Raporlama, öğrenilen dersler</li></ul>
-    <h4>Çıktılar</h4>
-    <ul><li>Test planı belgesi</li><li>Test senaryosu ve vaka listesi</li><li>Hata (bug) raporları</li><li>Test özet raporu</li></ul>`
-  },
-  'bug-lifecycle': {
-    tag:'// Temel Kavram', title:'Hata (Bug) Yaşam Döngüsü', color:'#f0c040',
-    body:`<p>Bir hatanın tespit edilmesinden kapatılmasına kadar geçen tüm aşamaları kapsar.</p>
-    <h4>Durumlar</h4>
-    <ul><li><strong>New (Yeni):</strong> Test tarafından ilk kez raporlandı</li><li><strong>Assigned (Atandı):</strong> İlgili geliştirici atandı</li><li><strong>Open (Açık):</strong> Geliştirici hatayı inceliyor</li><li><strong>Fixed (Düzeltildi):</strong> Kod değişikliği yapıldı</li><li><strong>Retest (Yeniden Test):</strong> QA tarafından doğrulama yapılıyor</li><li><strong>Verified (Doğrulandı):</strong> Hata başarıyla giderildi</li><li><strong>Closed (Kapatıldı):</strong> Süreç tamamlandı</li><li><strong>Reopened (Yeniden Açıldı):</strong> Hata tekrar oluştu</li><li><strong>Rejected / Deferred:</strong> Reddedildi veya ertelendi</li></ul>
-    <h4>İyi Bug Raporu İçermeli</h4>
-    <ul><li>Başlık, öncelik ve şiddet bilgisi</li><li>Adım adım yeniden üretme talimatları</li><li>Beklenen vs gerçekleşen sonuç</li><li>Ekran görüntüsü veya video</li><li>Ortam bilgisi (OS, tarayıcı, versiyon)</li></ul>`
-  },
-  'test-pyramid': {
-    tag:'// Temel Kavram', title:'Test Piramidi', color:'#f0c040',
-    body:`<p>Mike Cohn tarafından önerilen test piramidi, farklı test türlerinin ne kadar yazılması gerektiğini gösterir.</p>
-    <h4>Katmanlar (Alttan Üste)</h4>
-    <ul><li><strong>Unit (Birim) Testler — %70:</strong> En hızlı, en ucuz. Tekil fonksiyon ve metodları test eder. Jest, PyTest, JUnit kullanılır.</li><li><strong>Integration (Entegrasyon) Testler — %20:</strong> Modüllerin birlikte çalışmasını doğrular. API testleri bu katmana girer.</li><li><strong>E2E (Uçtan Uca) Testler — %10:</strong> Kullanıcı senaryolarını tam akışıyla test eder. Selenium, Cypress, Playwright kullanılır.</li></ul>
-    <h4>Neden Önemli?</h4>
-    <ul><li>E2E testler yavaş ve kırılgandır; çok fazla yazmak sürdürülemez hale getirir</li><li>Unit testler hızlı feedback sağlar ve refactoring güvenliği verir</li><li>Dengesiz piramit (çok fazla E2E) "Buz Kristaline" dönüşür — yavaş ve güvenilmez</li></ul>
-    <div class="popup-tools"><span class="popup-tool">Jest</span><span class="popup-tool">PyTest</span><span class="popup-tool">JUnit</span><span class="popup-tool">Cypress</span><span class="popup-tool">Selenium</span></div>`
-  },
-  'fonksiyonel-test': {
-    tag:'// Test Türü', title:'Fonksiyonel Test', color:'#5b8fff',
-    body:`<p>Sistemin belirtilen işlevsel gereksinimlere uygun davranıp davranmadığını doğrular. "Ne yapıyor?" sorusunu yanıtlar.</p>
-    <h4>Kapsam</h4>
-    <ul><li>Kullanıcı arayüzü işlevleri</li><li>API endpoint davranışları</li><li>Veritabanı işlemleri</li><li>İş kuralları ve hesaplamalar</li></ul>
-    <h4>Yaklaşımlar</h4>
-    <ul><li><strong>Black-Box:</strong> İç yapıya bakılmadan, sadece giriş/çıkış test edilir</li><li><strong>White-Box:</strong> Kod yapısı bilinerek test edilir</li><li><strong>Grey-Box:</strong> Kısmi iç bilgiyle test edilir</li></ul>
-    <h4>Araçlar</h4>
-    <div class="popup-tools"><span class="popup-tool">Selenium</span><span class="popup-tool">Cypress</span><span class="popup-tool">Postman</span><span class="popup-tool">TestNG</span></div>`
-  },
-  'smoke-test': {
-    tag:'// Test Türü', title:'Smoke Test', color:'#5b8fff',
-    body:`<p>Yeni bir build'in temel işlevlerinin çalışır durumda olduğunu hızlıca doğrulayan yüzeysel testlerdir. "Bu build test edilebilir mi?" sorusunu yanıtlar.</p>
-    <h4>Özellikler</h4>
-    <ul><li>Hızlıdır — genellikle 5–15 dakika sürer</li><li>Kritik kullanıcı yollarını kapsar (login, ana sayfa, checkout vb.)</li><li>CI/CD pipeline'ının ilk adımında çalışır</li><li>Başarısız olursa build daha ileri test aşamalarına geçmez</li></ul>
-    <h4>Sanity Test ile Farkı</h4>
-    <ul><li><strong>Smoke:</strong> Tüm sistemin temel çalışmasını kontrol eder</li><li><strong>Sanity:</strong> Belirli bir hata düzeltmesinin veya özelliğin doğruluğunu hızlıca kontrol eder</li></ul>`
-  },
-  'regresyon': {
-    tag:'// Test Türü', title:'Regresyon Testi', color:'#5b8fff',
-    body:`<p>Kod değişikliklerinin mevcut işlevselliği bozmadığını doğrulayan testlerdir. Her release öncesinde kritik öneme sahiptir.</p>
-    <h4>Neden Gerekli?</h4>
-    <ul><li>Yeni bir özellik eklemek eski kodu kırabilir</li><li>Hata düzeltmesi başka bir hataya yol açabilir (yan etki)</li><li>Bağımlılıklar ve entegrasyon noktaları değiştiğinde risk artar</li></ul>
-    <h4>Stratejiler</h4>
-    <ul><li><strong>Tam Regresyon:</strong> Tüm test takımını çalıştırma (uzun, kapsamlı)</li><li><strong>Kısmi Regresyon:</strong> Etkilenen modüllerin testleri</li><li><strong>Risk Tabanlı:</strong> En kritik ve değişime yakın alanları önceliklendir</li></ul>
-    <h4>Otomasyon Önemi</h4>
-    <p>Regresyon testleri otomasyona en uygun adaydır; tekrarlayan, kararlı ve geniş kapsamlıdır.</p>
-    <div class="popup-tools"><span class="popup-tool">Selenium</span><span class="popup-tool">Playwright</span><span class="popup-tool">Cypress</span><span class="popup-tool">TestNG</span></div>`
-  },
-  'uat': {
-    tag:'// Test Türü', title:'UAT — Kullanıcı Kabul Testi', color:'#5b8fff',
-    body:`<p>Son kullanıcıların veya müşterilerin sistemi iş gereksinimlerine göre onayladığı son aşama testidir.</p>
-    <h4>Amaç</h4>
-    <ul><li>Sistemin gerçek dünya kullanımına hazır olduğunu doğrulamak</li><li>Müşteri onayı almak ve canlıya geçiş yetkisi kazanmak</li></ul>
-    <h4>Türleri</h4>
-    <ul><li><strong>Alpha Testi:</strong> Şirket içi kullanıcılarla kontrollü ortamda</li><li><strong>Beta Testi:</strong> Gerçek kullanıcılarla üretim benzeri ortamda</li><li><strong>OAT (Operational Acceptance):</strong> Operasyonel hazırlık kontrolü</li></ul>
-    <h4>Başarı Kriterleri</h4>
-    <ul><li>Tüm kabul kriterleri karşılandı</li><li>Kritik P1/P2 hata bulunmuyor</li><li>Paydaş imzası alındı</li></ul>`
-  },
-  'exploratory': {
-    tag:'// Test Türü', title:'Keşif (Exploratory) Testi', color:'#5b8fff',
-    body:`<p>Önceden yazılı senaryo olmaksızın, test uzmanının merakı ve deneyimine dayanarak sistemi keşfeden test yaklaşımıdır.</p>
-    <h4>Avantajlar</h4>
-    <ul><li>Öngörülemeyen hataları keşfeder</li><li>Kullanıcı perspektifini yansıtır</li><li>Hızlı feedback sağlar, senaryo yazımı gerektirmez</li><li>Yeni özellikler için idealdir</li></ul>
-    <h4>Session-Based Testing</h4>
-    <ul><li>Belirli bir süre (30–90 dk) ve odak alanıyla çalışılır</li><li>Her session için charter (amaç) belirlenir</li><li>Bulgular debrief ile paylaşılır</li></ul>
-    <h4>İpuçları</h4>
-    <ul><li>Hata modlarını düşün: boş değer, negatif sayı, çok uzun metin</li><li>Kullanıcı akışlarını geriye doğru yürüt</li><li>Çoklu sekme, ağ kesilmesi, izin reddi senaryolarını dene</li></ul>`
-  },
-  'sinir-deger': {
-    tag:'// Test Tekniği', title:'Sınır Değer Analizi (BVA)', color:'#5b8fff',
-    body:`<p>Hataların en çok sınır değerlerde oluştuğu prensibine dayanan test tasarım tekniğidir.</p>
-    <h4>Nasıl Çalışır?</h4>
-    <ul><li>Geçerli aralığın alt sınırı, üst sınırı ve bu sınırlara komşu değerler test edilir</li><li>Örnek: Yaş alanı 18–65 kabul ediyorsa → 17, 18, 19, 64, 65, 66 test edilir</li></ul>
-    <h4>Eşdeğerlik Bölümleme ile Birlikte Kullanım</h4>
-    <ul><li>EP bölümleri tanımlar, BVA her bölümün sınırlarını test eder</li><li>İkisi birlikte kullanıldığında test kapsamı optimize edilir</li></ul>
-    <h4>Pratik Örnekler</h4>
-    <ul><li>Parola uzunluğu (min 8, max 20 karakter)</li><li>Form'daki sayısal giriş alanları</li><li>Tarih seçiciler (geçmiş/gelecek sınırları)</li></ul>`
-  },
-  'performans-test': {
-    tag:'// Test Türü', title:'Performans Testi', color:'#5b8fff',
-    body:`<p>Sistemin hız, ölçeklenebilirlik, kararlılık ve kaynak kullanımını belirli koşullar altında ölçen test türüdür.</p>
-    <h4>Alt Türler</h4>
-    <ul><li><strong>Yük Testi:</strong> Beklenen kullanıcı yüküyle davranış</li><li><strong>Stres Testi:</strong> Sistemin kırılma noktası</li><li><strong>Soak/Dayanıklılık Testi:</strong> Uzun süre yük altında hafıza sızıntısı vb.</li><li><strong>Spike Testi:</strong> Ani trafik artışlarına tepki</li><li><strong>Hacim Testi:</strong> Büyük veri miktarıyla davranış</li></ul>
-    <h4>Temel Metrikler</h4>
-    <ul><li><strong>Response Time:</strong> İstek-yanıt süresi</li><li><strong>Throughput:</strong> Saniyede işlenen istek sayısı (RPS/TPS)</li><li><strong>Error Rate:</strong> Hatalı istek yüzdesi</li><li><strong>CPU/Memory:</strong> Kaynak kullanımı</li></ul>
-    <div class="popup-tools"><span class="popup-tool">JMeter</span><span class="popup-tool">k6</span><span class="popup-tool">Gatling</span><span class="popup-tool">Locust</span></div>`
-  },
-  'yuk-test': {
-    tag:'// Test Türü', title:'Yük Testi', color:'#5b8fff',
-    body:`<p>Sistemin beklenen kullanıcı yükü altında nasıl performans gösterdiğini ölçer.</p>
-    <h4>Hedefler</h4>
-    <ul><li>Sistemin kaç eşzamanlı kullanıcıya dayanabileceğini belirlemek</li><li>SLA (Hizmet Seviyesi Anlaşması) gereksinimlerini doğrulamak</li><li>Dar boğazları (bottleneck) tespit etmek</li></ul>
-    <h4>Senaryo Örneği</h4>
-    <ul><li>Ramp-up: 0→1000 kullanıcı, 10 dakikada</li><li>Steady-state: 1000 kullanıcı, 30 dakika sabit yük</li><li>Ramp-down: Yavaşça sıfıra inme</li></ul>
-    <div class="popup-tools"><span class="popup-tool">JMeter</span><span class="popup-tool">k6</span><span class="popup-tool">Locust</span><span class="popup-tool">Gatling</span></div>`
-  },
-  'guvenlik-test': {
-    tag:'// Test Türü', title:'Güvenlik Testi', color:'#5b8fff',
-    body:`<p>Sistemdeki güvenlik açıklarını, zafiyetleri ve güvenlik politikası ihlallerini tespit eden test türüdür.</p>
-    <h4>Kapsamı</h4>
-    <ul><li>Authentication & Authorization zafiyetleri</li><li>SQL Injection, XSS, CSRF saldırıları</li><li>Hassas veri ifşası</li><li>Güvensiz direkt nesne referansları</li><li>Güvenlik yanlış yapılandırmaları</li></ul>
-    <h4>Yaklaşımlar</h4>
-    <ul><li><strong>SAST:</strong> Statik kod analizi (çalıştırmadan)</li><li><strong>DAST:</strong> Dinamik analiz (çalışan uygulamada)</li><li><strong>Penetrasyon Testi:</strong> Etik hacker yaklaşımı</li></ul>
-    <div class="popup-tools"><span class="popup-tool">OWASP ZAP</span><span class="popup-tool">Burp Suite</span><span class="popup-tool">Snyk</span><span class="popup-tool">SonarQube</span></div>`
-  },
-  'kullanilabilirlik': {
-    tag:'// Test Türü', title:'Kullanılabilirlik Testi', color:'#5b8fff',
-    body:`<p>Gerçek kullanıcıların ürünü ne kadar kolay ve etkili kullanabildiğini değerlendiren test türüdür.</p>
-    <h4>Amaç</h4>
-    <ul><li>UX sorunlarını erken tespit etmek</li><li>Kullanıcı memnuniyetini ölçmek</li><li>Görev tamamlama oranlarını analiz etmek</li></ul>
-    <h4>Yöntemler</h4>
-    <ul><li><strong>Moderasyonlu:</strong> Gözlemci eşliğinde kullanıcı testi</li><li><strong>Moderasyonsuz:</strong> Uzaktan, otomatik kayıtla</li><li><strong>A/B Testi:</strong> İki tasarımı karşılaştırma</li><li><strong>Heatmap:</strong> Tıklama ve kaydırma analizi</li></ul>
-    <div class="popup-tools"><span class="popup-tool">Hotjar</span><span class="popup-tool">Maze</span><span class="popup-tool">UserTesting</span><span class="popup-tool">Lookback</span></div>`
-  },
-  'test-plani': {
-    tag:'// Test Tasarımı', title:'Test Planı', color:'#ff6b6b',
-    body:`<p>Test faaliyetlerinin kapsamını, yaklaşımını, kaynaklarını ve takviminini tanımlayan resmi belgedir.</p>
-    <h4>İçermesi Gereken Bölümler (IEEE 829)</h4>
-    <ul><li><strong>Test Kapsamı:</strong> Neyin test edileceği, neyin dışarıda bırakılacağı</li><li><strong>Test Stratejisi:</strong> Hangi test türleri, hangi sırayla</li><li><strong>Giriş/Çıkış Kriterleri:</strong> Testi başlatma ve bitirme koşulları</li><li><strong>Kaynaklar:</strong> Ekip, araç, ortam, veri</li><li><strong>Takvim:</strong> Milestones ve teslim tarihleri</li><li><strong>Risk & Azaltma:</strong> Olası sorunlar ve planlar</li></ul>
-    <h4>Agile'da Test Planı</h4>
-    <ul><li>Daha kısa ve yaşayan belgeler tercih edilir</li><li>Sprint bazlı güncellenir</li><li>Definition of Done ile ilişkilendirilir</li></ul>`
-  },
-  'test-senaryosu': {
-    tag:'// Test Tasarımı', title:'Test Senaryosu (Test Case)', color:'#ff6b6b',
-    body:`<p>Belirli bir işlevselliği doğrulamak için hazırlanan adım adım prosedürdür.</p>
-    <h4>İyi Test Senaryosu Bileşenleri</h4>
-    <ul><li><strong>ID:</strong> Benzersiz tanımlayıcı (TC_001)</li><li><strong>Başlık:</strong> Ne test edildiğini açıklayan kısa tanım</li><li><strong>Ön Koşullar:</strong> Test öncesi gerekli durum</li><li><strong>Adımlar:</strong> Sıralı, açık yürütme adımları</li><li><strong>Test Verisi:</strong> Kullanılacak giriş değerleri</li><li><strong>Beklenen Sonuç:</strong> Doğru davranış nedir?</li><li><strong>Gerçek Sonuç:</strong> Ne oldu?</li><li><strong>Durum:</strong> Geçti / Kaldı / Engellendi</li></ul>
-    <h4>Pozitif vs Negatif Senaryolar</h4>
-    <ul><li><strong>Pozitif:</strong> Geçerli veriyle doğru akış</li><li><strong>Negatif:</strong> Hatalı veriyle sistem tepkisi</li></ul>`
-  },
-  'esdegerlik': {
-    tag:'// Test Tekniği', title:'Eşdeğerlik Bölümleme (EP)', color:'#ff6b6b',
-    body:`<p>Giriş verilerini, aynı davranışı sergileyecek gruplara (bölümlere) ayırarak test sayısını azaltan tekniktir.</p>
-    <h4>Nasıl Çalışır?</h4>
-    <ul><li>Her bölümden yalnızca bir değer test edilir</li><li>Geçerli ve geçersiz bölümler belirlenir</li><li>Örnek: 1–100 arası sayı kabul eden alan için → geçerli (50), geçersiz (<1 için -5, >100 için 150)</li></ul>
-    <h4>Avantajları</h4>
-    <ul><li>Test sayısını önemli ölçüde azaltır</li><li>Kapsamı korurken verimliliği artırır</li><li>Sınır Değer Analizi ile birlikte kullanılır</li></ul>`
-  },
-  'karar-tablosu': {
-    tag:'// Test Tekniği', title:'Karar Tablosu Testi', color:'#ff6b6b',
-    body:`<p>Birden fazla koşulun farklı kombinasyonlarına göre sistemin nasıl davranacağını test etmek için kullanılan tablolardır.</p>
-    <h4>Yapısı</h4>
-    <ul><li>Satırlar: Koşullar ve eylemler</li><li>Sütunlar: Test kuralları (farklı kombinasyonlar)</li><li>Her kural: Koşulların değerleri (E/H) + beklenen eylem</li></ul>
-    <h4>Kullanım Alanları</h4>
-    <ul><li>İş kuralları karmaşık mantık içerdiğinde</li><li>Birden fazla girişin birlikte etki ettiği sistemlerde</li><li>Örnek: İndirim hesaplama (üyelik tipi + sepet tutarı + kampanya kodu)</li></ul>`
-  },
-  'durum-gecis': {
-    tag:'// Test Tekniği', title:'Durum Geçiş Testi', color:'#ff6b6b',
-    body:`<p>Sistemin farklı durumlarda olduğunda ve durumlar arasında geçiş yaparken nasıl davrandığını test eder.</p>
-    <h4>Kavramlar</h4>
-    <ul><li><strong>Durum (State):</strong> Sistemin bulunduğu koşul (Bekleme, Aktif, Kilitli)</li><li><strong>Geçiş (Transition):</strong> Bir durumdan diğerine geçiş</li><li><strong>Tetikleyici (Trigger):</strong> Geçişi başlatan olay veya koşul</li><li><strong>Eylem (Action):</strong> Geçiş sırasında gerçekleşen işlem</li></ul>
-    <h4>Örnek: Kullanıcı Hesabı</h4>
-    <ul><li>Aktif → yanlış şifre × 3 → Kilitli</li><li>Kilitli → admin unlock → Aktif</li><li>Aktif → kullanıcı sil → Kapalı</li></ul>`
-  },
-  'risk-tabanli': {
-    tag:'// Test Tekniği', title:'Risk Tabanlı Test', color:'#ff6b6b',
-    body:`<p>Test kaynaklarını en yüksek risk taşıyan alanlara yönlendiren yaklaşımdır.</p>
-    <h4>Risk = Olasılık × Etki</h4>
-    <ul><li><strong>Olasılık:</strong> Hatanın oluşma ihtimali</li><li><strong>Etki:</strong> Hatanın iş/kullanıcı üzerindeki etkisi</li></ul>
-    <h4>Adımlar</h4>
-    <ul><li>Risk alanlarını tanımla (ödeme, güvenlik, veri kaybı)</li><li>Her alana risk skoru ata</li><li>Yüksek riskli alanlara daha fazla test yoğunlaştır</li><li>Düşük riskli alanları hafif test veya atlayabilirsin</li></ul>
-    <h4>Ne Zaman Kullanılır?</h4>
-    <ul><li>Zaman ve kaynak kısıtlı olduğunda</li><li>Release tarihi yaklaştığında önceliklendirme için</li></ul>`
-  },
-  'python-js': {
-    tag:'// Otomasyon', title:'Python & JavaScript — Test için Programlama', color:'#4ecdc4',
-    body:`<p>Test otomasyonunda en yaygın kullanılan iki dildir. Her biri farklı ekosistemlerle güçlüdür.</p>
-    <h4>Python ile Test</h4>
-    <ul><li><code>pytest</code> — en popüler Python test framework'ü</li><li><code>selenium + python</code> — web otomasyon</li><li><code>requests</code> — API test kütüphanesi</li><li><code>behave</code> — BDD framework'ü</li></ul>
-    <h4>JavaScript ile Test</h4>
-    <ul><li><code>Jest</code> — Facebook'un test framework'ü (unit)</li><li><code>Cypress</code> — E2E test aracı</li><li><code>Playwright</code> — Microsoft'un otomasyon kütüphanesi</li><li><code>Mocha + Chai</code> — klasik JS test combo'su</li></ul>
-    <h4>Hangisini Seçmeli?</h4>
-    <ul><li>Python: veri bilimi, AI, backend ağırlıklı projeler</li><li>JavaScript: full-stack, frontend ağırlıklı projeler</li></ul>`
-  },
-  'java-csharp': {
-    tag:'// Otomasyon', title:'Java & C# — Kurumsal Test', color:'#4ecdc4',
-    body:`<p>Büyük ölçekli kurumsal projelerde test otomasyonu için tercih edilen dillerdir.</p>
-    <h4>Java ile Test</h4>
-    <ul><li><code>JUnit 5</code> — standart Java test framework'ü</li><li><code>TestNG</code> — paralel test, data-driven test</li><li><code>Selenium + Java</code> — en yaygın kurumsal kombo</li><li><code>REST Assured</code> — Java API test kütüphanesi</li><li><code>Cucumber-JVM</code> — BDD desteği</li></ul>
-    <h4>C# ile Test</h4>
-    <ul><li><code>NUnit / xUnit / MSTest</code> — .NET test framework'leri</li><li><code>Selenium WebDriver + C#</code></li><li><code>SpecFlow</code> — .NET için BDD</li></ul>
-    <div class="popup-tools"><span class="popup-tool">Maven</span><span class="popup-tool">Gradle</span><span class="popup-tool">NuGet</span><span class="popup-tool">IntelliJ</span><span class="popup-tool">Visual Studio</span></div>`
-  },
-  'git': {
-    tag:'// Otomasyon', title:'Git & Versiyon Kontrolü', color:'#4ecdc4',
-    body:`<p>Test kodlarını yönetmek, takımla işbirliği yapmak ve CI/CD süreçlerine entegre olmak için temel beceridir.</p>
-    <h4>Temel Komutlar</h4>
-    <ul><li><code>git clone</code> — repo'yu indir</li><li><code>git pull</code> — değişiklikleri çek</li><li><code>git add / commit / push</code> — değişiklikleri kaydet ve gönder</li><li><code>git branch / checkout</code> — dal yönetimi</li><li><code>git merge / rebase</code> — dalları birleştir</li></ul>
-    <h4>QA İçin Git Pratikleri</h4>
-    <ul><li>Test kodunu feature branch'te geliştir</li><li>Pull Request üzerinden code review yap</li><li>Test başarısız olduğunda commit mesajında belirt</li><li><code>.gitignore</code> ile hassas test verilerini dışarıda bırak</li></ul>
-    <div class="popup-tools"><span class="popup-tool">GitHub</span><span class="popup-tool">GitLab</span><span class="popup-tool">Bitbucket</span><span class="popup-tool">Git CLI</span></div>`
-  },
-  'selenium': {
-    tag:'// UI Otomasyon', title:'Selenium WebDriver', color:'#4ecdc4',
-    body:`<p>Web tarayıcısı otomasyonu için endüstri standardı, açık kaynak araçtır. 2004'ten bu yana aktif kullanımda.</p>
-    <h4>Bileşenler</h4>
-    <ul><li><strong>WebDriver:</strong> Tarayıcıyı programatik kontrol eden API</li><li><strong>Grid:</strong> Paralel, dağıtık test çalıştırma</li><li><strong>IDE:</strong> Kayıt-oynatma aracı (başlangıç için)</li></ul>
-    <h4>Desteklenen Tarayıcılar</h4>
-    <div class="popup-tools"><span class="popup-tool">Chrome</span><span class="popup-tool">Firefox</span><span class="popup-tool">Edge</span><span class="popup-tool">Safari</span></div>
-    <h4>Desteklenen Diller</h4>
-    <div class="popup-tools"><span class="popup-tool">Java</span><span class="popup-tool">Python</span><span class="popup-tool">C#</span><span class="popup-tool">JavaScript</span><span class="popup-tool">Ruby</span></div>
-    <h4>Dezavantajları</h4>
-    <ul><li>Async işlemler için bekleme stratejisi gerekir (Explicit Wait)</li><li>Playwright ve Cypress'e kıyasla daha fazla setup gerekir</li><li>Yerleşik raporlama yok — Allure gibi araçlarla tamamlanır</li></ul>`
-  },
-  'playwright': {
-    tag:'// UI Otomasyon', title:'Playwright', color:'#4ecdc4',
-    body:`<p>Microsoft tarafından geliştirilen, modern ve hızlı çapraz-tarayıcı otomasyon kütüphanesidir.</p>
-    <h4>Güçlü Yönleri</h4>
-    <ul><li>Chromium, Firefox ve WebKit desteği tek API'den</li><li>Auto-wait mekanizması — manuel bekleme gerekmez</li><li>Network interception ve mock desteği</li><li>Paralel test çalıştırma (sharding)</li><li>Built-in test reporter ve trace viewer</li><li>Codegen ile otomatik kod üretimi</li></ul>
-    <h4>Desteklenen Diller</h4>
-    <div class="popup-tools"><span class="popup-tool">TypeScript</span><span class="popup-tool">JavaScript</span><span class="popup-tool">Python</span><span class="popup-tool">Java</span><span class="popup-tool">C#</span></div>
-    <h4>Selenium'a Göre Avantajı</h4>
-    <ul><li>Daha az flaky test</li><li>İframe, shadow DOM desteği daha iyi</li><li>CI/CD entegrasyonu daha kolay</li></ul>`
-  },
-  'cypress': {
-    tag:'// UI Otomasyon', title:'Cypress', color:'#4ecdc4',
-    body:`<p>JavaScript ekosistemi için tasarlanmış, geliştirici deneyimine odaklanan modern E2E test framework'üdür.</p>
-    <h4>Özellikler</h4>
-    <ul><li>Tarayıcıda doğrudan çalışır (WebDriver kullanmaz)</li><li>Gerçek zamanlı görsel geri bildirim ve time-travel debugging</li><li>Otomatik bekleme mekanizması</li><li>Dashboard ile test video ve screenshot kayıt</li><li>Komponent testi desteği (React, Vue, Angular)</li></ul>
-    <h4>Kısıtlamalar</h4>
-    <ul><li>Yalnızca JavaScript/TypeScript</li><li>Safari desteği kısıtlı (Experimental)</li><li>Çoklu sekme desteği yok (native)</li></ul>
-    <div class="popup-tools"><span class="popup-tool">JavaScript</span><span class="popup-tool">TypeScript</span><span class="popup-tool">Mocha</span><span class="popup-tool">Chai</span></div>`
-  },
-  'appium': {
-    tag:'// Mobil Otomasyon', title:'Appium', color:'#4ecdc4',
-    body:`<p>iOS ve Android platformlarındaki native, hybrid ve web uygulamaların otomasyon testleri için kullanılan açık kaynak araçtır.</p>
-    <h4>Özellikler</h4>
-    <ul><li>WebDriver protokolünü kullanır — Selenium ile aynı API</li><li>Gerçek cihaz ve emülatör desteği</li><li>Birden fazla uygulama tipini destekler: Native, Hybrid, Mobile Web</li></ul>
-    <h4>Desteklenen Diller</h4>
-    <div class="popup-tools"><span class="popup-tool">Java</span><span class="popup-tool">Python</span><span class="popup-tool">JavaScript</span><span class="popup-tool">Ruby</span><span class="popup-tool">C#</span></div>
-    <h4>Araçlarla Kullanım</h4>
-    <ul><li><strong>Appium Inspector:</strong> Element bulma aracı</li><li><strong>BrowserStack / Sauce Labs:</strong> Bulut cihaz farmları</li></ul>`
-  },
-  'postman': {
-    tag:'// API Test', title:'Postman', color:'#4ecdc4',
-    body:`<p>API geliştirme ve test süreçlerini kolaylaştıran, en yaygın kullanılan API platformudur.</p>
-    <h4>Özellikler</h4>
-    <ul><li>HTTP isteklerini görsel arayüzle oluşturma ve gönderme</li><li>Collection ve Environment yönetimi</li><li>Pre-request Script ve Test Script yazma (JavaScript)</li><li>Newman CLI ile CI/CD entegrasyonu</li><li>Mock Server ile gerçek API olmadan test</li><li>API dokümantasyonu oluşturma</li></ul>
-    <h4>Test Script Örneği</h4>
-    <ul><li><code>pm.test("Status 200", () => pm.response.to.have.status(200))</code></li><li><code>pm.test("Token var", () => pm.expect(pm.response.json().token).to.exist)</code></li></ul>
-    <div class="popup-tools"><span class="popup-tool">REST</span><span class="popup-tool">GraphQL</span><span class="popup-tool">SOAP</span><span class="popup-tool">WebSocket</span><span class="popup-tool">Newman</span></div>`
-  },
-  'rest-assured': {
-    tag:'// API Test', title:'REST Assured', color:'#4ecdc4',
-    body:`<p>Java tabanlı REST API testlerini sade ve okunabilir sözdizimle yazmaya yarayan kütüphanedir.</p>
-    <h4>Sözdizimi (Given-When-Then)</h4>
-    <ul><li><code>given()</code> — istek hazırlığı (header, body, auth)</li><li><code>when()</code> — HTTP metodu ve endpoint</li><li><code>then()</code> — assertion'lar</li></ul>
-    <h4>Örnek</h4>
-    <ul><li><code>given().header("Auth","token").when().get("/users").then().statusCode(200);</code></li></ul>
-    <h4>Entegrasyon</h4>
-    <div class="popup-tools"><span class="popup-tool">TestNG</span><span class="popup-tool">JUnit</span><span class="popup-tool">Maven</span><span class="popup-tool">Gradle</span><span class="popup-tool">Allure</span></div>`
-  },
-  'supertest': {
-    tag:'// API Test', title:'SuperTest & Axios', color:'#4ecdc4',
-    body:`<p>Node.js ekosisteminde API test ve HTTP istek kütüphaneleridir.</p>
-    <h4>SuperTest</h4>
-    <ul><li>Express.js uygulamalarını doğrudan test eder</li><li>Jest veya Mocha ile birlikte kullanılır</li><li>Sunucu başlatmadan istek atılabilir</li></ul>
-    <h4>Axios</h4>
-    <ul><li>Browser ve Node.js'te çalışan HTTP istemcisi</li><li>Promise tabanlı, interceptor desteği var</li><li>Test senaryolarında API çağrısı için ideal</li></ul>
-    <div class="popup-tools"><span class="popup-tool">Node.js</span><span class="popup-tool">Jest</span><span class="popup-tool">Mocha</span><span class="popup-tool">Express</span></div>`
-  },
-  'jenkins': {
-    tag:'// CI/CD', title:'Jenkins', color:'#a88bfa',
-    body:`<p>Açık kaynak, en köklü CI/CD otomasyon sunucusudur. Binlerce eklentiyle neredeyse her iş akışına uyarlanabilir.</p>
-    <h4>Temel Kavramlar</h4>
-    <ul><li><strong>Pipeline:</strong> Jenkinsfile ile tanımlanan iş akışı (Declarative / Scripted)</li><li><strong>Job:</strong> Tekil otomasyon görevi</li><li><strong>Agent:</strong> İşi çalıştıran makine/konteyner</li><li><strong>Stage:</strong> Pipeline'ın mantıksal adımları</li></ul>
-    <h4>QA ile Entegrasyon</h4>
-    <ul><li>Her PR'da test suite otomatik çalışır</li><li>Test raporu (JUnit XML) Jenkins'e publish edilir</li><li>Başarısız test → build fail → merge engellenir</li></ul>
-    <div class="popup-tools"><span class="popup-tool">Jenkinsfile</span><span class="popup-tool">Blue Ocean</span><span class="popup-tool">JUnit Plugin</span><span class="popup-tool">Allure Plugin</span></div>`
-  },
-  'github-actions': {
-    tag:'// CI/CD', title:'GitHub Actions', color:'#a88bfa',
-    body:`<p>GitHub'a entegre, YAML tabanlı CI/CD platformudur. Repo'da .github/workflows/ altındaki dosyalarla tanımlanır.</p>
-    <h4>Temel Yapı</h4>
-    <ul><li><strong>Workflow:</strong> Tetikleyici + job'lardan oluşan YAML dosyası</li><li><strong>Job:</strong> Runner üzerinde çalışan adımlar dizisi</li><li><strong>Step:</strong> Shell komutu veya Action çağrısı</li><li><strong>Action:</strong> Yeniden kullanılabilir otomasyon birimi</li></ul>
-    <h4>QA Örnek Workflow</h4>
-    <ul><li>on: push/pull_request</li><li>Adım 1: Checkout kodu</li><li>Adım 2: Dependency kur</li><li>Adım 3: Testleri çalıştır</li><li>Adım 4: Raporu yükle (artifact)</li></ul>
-    <div class="popup-tools"><span class="popup-tool">YAML</span><span class="popup-tool">ubuntu-latest</span><span class="popup-tool">actions/checkout</span><span class="popup-tool">Playwright Action</span></div>`
-  },
-  'gitlab-ci': {
-    tag:'// CI/CD', title:'GitLab CI/CD', color:'#a88bfa',
-    body:`<p>GitLab'a yerleşik CI/CD sistemi. .gitlab-ci.yml dosyasıyla yapılandırılır.</p>
-    <h4>Avantajları</h4>
-    <ul><li>Git, issue tracker, registry ve CI tek platformda</li><li>Auto DevOps ile sıfır yapılandırma başlangıcı</li><li>Review Apps ile PR başına test ortamı</li></ul>
-    <h4>Test Entegrasyonu</h4>
-    <ul><li>JUnit raporu GitLab UI'da gösterilir</li><li>Merge request pipeline'a bağlanır</li><li>Cache ve artifact yönetimi kolaydır</li></ul>
-    <div class="popup-tools"><span class="popup-tool">.gitlab-ci.yml</span><span class="popup-tool">Runner</span><span class="popup-tool">Artifacts</span><span class="popup-tool">Environments</span></div>`
-  },
-  'docker': {
-    tag:'// DevOps', title:'Docker — Test için Konteynerler', color:'#a88bfa',
-    body:`<p>Uygulamaları ve bağımlılıklarını izole ortamlarda (konteyner) paketleyen platformdur.</p>
-    <h4>QA için Docker Kullanımı</h4>
-    <ul><li>Test ortamlarını tekrarlanabilir şekilde oluşturma</li><li>"Works on my machine" sorununu ortadan kaldırma</li><li>Selenium Grid'i Docker Compose ile kolayca kurma</li><li>CI/CD'de test containerlarını çalıştırma</li></ul>
-    <h4>Temel Komutlar</h4>
-    <ul><li><code>docker build -t mytest .</code></li><li><code>docker run --rm mytest pytest</code></li><li><code>docker-compose up --abort-on-container-exit</code></li></ul>
-    <div class="popup-tools"><span class="popup-tool">Dockerfile</span><span class="popup-tool">docker-compose</span><span class="popup-tool">Selenium Grid</span><span class="popup-tool">Docker Hub</span></div>`
-  },
-  'kubernetes': {
-    tag:'// DevOps', title:'Kubernetes — K8s', color:'#a88bfa',
-    body:`<p>Konteynerleri büyük ölçekte orkestre eden, endüstri standardı platformdur.</p>
-    <h4>QA ile İlişkisi</h4>
-    <ul><li>Test ortamlarını namespace bazlı izole etme</li><li>Paralel test çalıştırma için pod'ları ölçeklendirme</li><li>Canary deployment ile yeni sürümleri kademeli test etme</li><li>Chaos Engineering için altyapı sağlama</li></ul>
-    <h4>Temel Kavramlar</h4>
-    <ul><li><strong>Pod:</strong> En küçük çalışma birimi</li><li><strong>Deployment:</strong> Pod'ların istenen sayıda çalışmasını sağlar</li><li><strong>Service:</strong> Pod'lara erişim katmanı</li><li><strong>Namespace:</strong> Mantıksal izolasyon birimi</li></ul>`
-  },
-  'jmeter': {
-    tag:'// Performans', title:'Apache JMeter', color:'#34d399',
-    body:`<p>Açık kaynak, Java tabanlı performans ve yük test aracıdır. Web servisleri, veritabanları ve FTP dahil birçok protokolü destekler.</p>
-    <h4>Özellikler</h4>
-    <ul><li>GUI ve CLI modu</li><li>Thread Group ile sanal kullanıcı simülasyonu</li><li>Listener'larla gerçek zamanlı sonuç görüntüleme</li><li>Assertion'larla yanıt doğrulama</li><li>Distributed testing (Master-Slave mimarisi)</li></ul>
-    <h4>CI/CD Entegrasyonu</h4>
-    <ul><li>Jenkins JMeter eklentisi ile sonuçları publish etme</li><li>CLI ile headless çalıştırma: <code>jmeter -n -t test.jmx -l results.jtl</code></li></ul>
-    <div class="popup-tools"><span class="popup-tool">HTTP/S</span><span class="popup-tool">JDBC</span><span class="popup-tool">SOAP/REST</span><span class="popup-tool">JUnit Raporu</span></div>`
-  },
-  'k6': {
-    tag:'// Performans', title:'k6 — Modern Yük Testi', color:'#34d399',
-    body:`<p>Grafana Labs tarafından geliştirilen, geliştirici dostu açık kaynak yük testi aracıdır. JavaScript ile test yazılır.</p>
-    <h4>Avantajları</h4>
-    <ul><li>JavaScript/TypeScript ile yazılır — öğrenmesi kolay</li><li>CLI öncelikli, CI/CD dostu</li><li>Grafana ile gerçek zamanlı metrik görselleştirme</li><li>k6 Cloud ile dağıtık yük testi</li><li>Threshold (eşik) tanımlayarak otomatik geçer/kalır kararı</li></ul>
-    <h4>Örnek Script</h4>
-    <ul><li><code>export const options = &#123; vus: 100, duration: '30s' &#125;;</code></li><li><code>export default function() &#123; http.get('https://api.example.com'); &#125;</code></li></ul>
-    <div class="popup-tools"><span class="popup-tool">JavaScript</span><span class="popup-tool">Grafana</span><span class="popup-tool">InfluxDB</span><span class="popup-tool">k6 Cloud</span></div>`
-  },
-  'gatling': {
-    tag:'// Performans', title:'Gatling', color:'#34d399',
-    body:`<p>Scala/Kotlin tabanlı, kod odaklı modern yük test framework'üdür. Yüksek performanslı simülasyon için Akka ve Netty kullanır.</p>
-    <h4>Özellikler</h4>
-    <ul><li>DSL tabanlı okunabilir senaryo yazımı</li><li>Detaylı HTML raporları (yerleşik)</li><li>HAR (HTTP Archive) dosyasından senaryo oluşturma</li><li>Maven/Gradle eklentisi ile CI entegrasyonu</li></ul>
-    <h4>Ne Zaman Tercih Edilir?</h4>
-    <ul><li>Java ekosisteminde çalışıyorsanız</li><li>Kod tabanlı, versiyon kontrollü test senaryoları istiyorsanız</li></ul>
-    <div class="popup-tools"><span class="popup-tool">Scala</span><span class="popup-tool">Kotlin</span><span class="popup-tool">Java</span><span class="popup-tool">Maven</span></div>`
-  },
-  'locust': {
-    tag:'// Performans', title:'Locust', color:'#34d399',
-    body:`<p>Python ile yazılan, dağıtık ve ölçeklenebilir yük test aracıdır.</p>
-    <h4>Avantajları</h4>
-    <ul><li>Saf Python ile senaryo yazımı — esneklik yüksek</li><li>Web tabanlı UI ile anlık sonuç izleme</li><li>Dağıtık mod: master + worker mimarisi</li><li>Komut satırından headless çalıştırma</li></ul>
-    <h4>Kullanım Alanı</h4>
-    <ul><li>Python ekosistemindeki projeler için ideal</li><li>Karmaşık kullanıcı davranışı modellemesi gereken senaryolar</li></ul>
-    <div class="popup-tools"><span class="popup-tool">Python</span><span class="popup-tool">FastHTTP</span><span class="popup-tool">Docker</span><span class="popup-tool">Grafana</span></div>`
-  },
-  'owasp': {
-    tag:'// Güvenlik', title:'OWASP Top 10', color:'#fb923c',
-    body:`<p>Open Web Application Security Project tarafından yayınlanan, en kritik 10 web uygulama güvenlik riskinin listesidir.</p>
-    <h4>Top 10 (2021)</h4>
-    <ul><li><strong>A01:</strong> Broken Access Control — yetkilendirme hataları</li><li><strong>A02:</strong> Cryptographic Failures — zayıf şifreleme</li><li><strong>A03:</strong> Injection — SQL, NoSQL, OS injection</li><li><strong>A04:</strong> Insecure Design — tasarım zafiyetleri</li><li><strong>A05:</strong> Security Misconfiguration</li><li><strong>A06:</strong> Vulnerable Components — güncel olmayan bağımlılıklar</li><li><strong>A07:</strong> Auth Failures — kimlik doğrulama sorunları</li><li><strong>A08:</strong> Software Integrity Failures</li><li><strong>A09:</strong> Logging & Monitoring Failures</li><li><strong>A10:</strong> Server-Side Request Forgery (SSRF)</li></ul>`
-  },
-  'zap': {
-    tag:'// Güvenlik', title:'OWASP ZAP', color:'#fb923c',
-    body:`<p>Açık kaynak web uygulama güvenlik tarayıcısıdır. Hem başlangıç hem de profesyonel seviyede kullanılabilir.</p>
-    <h4>Özellikler</h4>
-    <ul><li>Otomatik tarama (aktif/pasif)</li><li>Spider ile uygulama haritası çıkarma</li><li>Manuel test için proxy olarak kullanım</li><li>REST API ile CI/CD entegrasyonu (ZAP Docker)</li><li>AJAX Spider ile SPA uygulamalarını tarama</li></ul>
-    <h4>CI/CD Entegrasyonu</h4>
-    <ul><li><code>docker run -t zaproxy/zap-stable zap-baseline.py -t https://app.com</code></li><li>GitHub Actions ve Jenkins için hazır entegrasyonlar var</li></ul>
-    <div class="popup-tools"><span class="popup-tool">DAST</span><span class="popup-tool">Docker</span><span class="popup-tool">REST API</span><span class="popup-tool">Proxy</span></div>`
-  },
-  'burp': {
-    tag:'// Güvenlik', title:'Burp Suite', color:'#fb923c',
-    body:`<p>Web güvenlik testleri için endüstri standardı platform. PortSwigger tarafından geliştirilen profesyonel araçtır.</p>
-    <h4>Temel Modüller</h4>
-    <ul><li><strong>Proxy:</strong> Tarayıcı trafiğini yakala ve değiştir</li><li><strong>Scanner:</strong> Otomatik güvenlik açığı taraması (Pro)</li><li><strong>Intruder:</strong> Fuzzing ve brute-force saldırıları</li><li><strong>Repeater:</strong> HTTP isteklerini tekrar gönder ve analiz et</li><li><strong>Decoder:</strong> Encoding/decoding aracı</li></ul>
-    <h4>Sürümler</h4>
-    <ul><li><strong>Community:</strong> Ücretsiz, temel özellikler</li><li><strong>Professional:</strong> Otomatik scanner, kolaborasyon</li></ul>`
-  },
-  'sqli-xss': {
-    tag:'// Güvenlik', title:'SQL Injection & XSS', color:'#fb923c',
-    body:`<p>En yaygın iki web uygulama güvenlik açığıdır ve her QA'nın temel düzeyde bilmesi gerekir.</p>
-    <h4>SQL Injection (SQLi)</h4>
-    <ul><li>Kullanıcı girdisi veritabanı sorgusuna dahil edildiğinde oluşur</li><li>Test payload: <code>' OR '1'='1</code>, <code>'; DROP TABLE users; --</code></li><li>Önlem: Parameterized queries, ORM kullanımı, input validation</li></ul>
-    <h4>Cross-Site Scripting (XSS)</h4>
-    <ul><li>Kötü amaçlı script'in kurban tarayıcısında çalıştırılması</li><li>Türleri: Reflected, Stored, DOM-based</li><li>Test payload: <code>&lt;script&gt;alert('XSS')&lt;/script&gt;</code></li><li>Önlem: Output encoding, CSP header, HttpOnly cookie</li></ul>
-    <div class="popup-tools"><span class="popup-tool">Burp Suite</span><span class="popup-tool">OWASP ZAP</span><span class="popup-tool">SQLMap</span><span class="popup-tool">XSSer</span></div>`
-  },
-  'jira': {
-    tag:'// Test Yönetimi', title:'Jira', color:'#f472b6',
-    body:`<p>Atlassian tarafından geliştirilen, dünyada en yaygın kullanılan proje yönetimi ve hata takip platformudur.</p>
-    <h4>QA için Jira Kullanımı</h4>
-    <ul><li>Bug raporu oluşturma ve takip etme</li><li>Sprint planlama ve story/task yönetimi</li><li>Test eklentileriyle (Zephyr, Xray) test yönetimi</li><li>Dashboard ve raporlarla metrik izleme</li></ul>
-    <h4>Hata Raporu Alanları</h4>
-    <ul><li>Summary, Description, Steps to Reproduce</li><li>Priority (P1–P4) ve Severity (Critical/Major/Minor/Trivial)</li><li>Assignee, Reporter, Labels, Fix Version</li><li>Attachment (screenshot, video, log)</li></ul>
-    <div class="popup-tools"><span class="popup-tool">Zephyr</span><span class="popup-tool">Xray</span><span class="popup-tool">Confluence</span><span class="popup-tool">Jira API</span></div>`
-  },
-  'testrail': {
-    tag:'// Test Yönetimi', title:'TestRail', color:'#f472b6',
-    body:`<p>Test senaryolarını, çalışmalarını ve sonuçlarını yönetmek için tasarlanmış özel test yönetim aracıdır.</p>
-    <h4>Özellikler</h4>
-    <ul><li>Test Suite ve Case organizasyonu</li><li>Test Run ve Plan yönetimi</li><li>Gerçek zamanlı raporlama ve metrikler</li><li>Jira, GitHub, Jenkins entegrasyonları</li><li>REST API ile otomasyon sonuçlarını otomatik güncelleme</li></ul>
-    <h4>Workflow</h4>
-    <ul><li>Test case yaz → Test Run oluştur → Execute et → Sonuçları güncelle → Rapor al</li></ul>
-    <div class="popup-tools"><span class="popup-tool">Test Cases</span><span class="popup-tool">Milestones</span><span class="popup-tool">Reports</span><span class="popup-tool">API</span></div>`
-  },
-  'agile-test': {
-    tag:'// Metodoloji', title:'Agile Test', color:'#f472b6',
-    body:`<p>Agile süreçlerde QA, geliştirme döngüsünün ayrılmaz bir parçasıdır — ayrı bir aşama değil.</p>
-    <h4>Scrum'da QA Rolü</h4>
-    <ul><li>Sprint planning'de test senaryolarını tahmin etme</li><li>Sprint boyunca geliştiriciyle birlikte çalışma (shift-left)</li><li>Sprint review'da demo testleri</li><li>Retrospective'de süreç iyileştirme</li></ul>
-    <h4>Agile Test Quadrants</h4>
-    <ul><li><strong>Q1:</strong> Unit & Component testleri (teknolojiyi destekler)</li><li><strong>Q2:</strong> Fonksiyonel testler (iş kurallarını destekler)</li><li><strong>Q3:</strong> Keşif, UAT, kullanılabilirlik (ürünü eleştirir)</li><li><strong>Q4:</strong> Performans, güvenlik (ürünü eleştirir)</li></ul>
-    <h4>Definition of Done (DoD)</h4>
-    <ul><li>Kod yazıldı + Code review geçti + Unit test yazıldı + QA onayladı + Deploy edildi</li></ul>`
-  },
-  'bdd': {
-    tag:'// Metodoloji', title:'BDD — Davranış Güdümlü Geliştirme', color:'#f472b6',
-    body:`<p>İş analistleri, geliştiriciler ve test uzmanlarının ortak dilde (Gherkin) test senaryoları yazdığı işbirlikçi yaklaşımdır.</p>
-    <h4>Gherkin Sözdizimi</h4>
-    <ul><li><code>Feature:</code> Test edilecek özellik</li><li><code>Scenario:</code> Belirli bir kullanım durumu</li><li><code>Given:</code> Ön koşul</li><li><code>When:</code> Kullanıcı eylemi</li><li><code>Then:</code> Beklenen sonuç</li><li><code>And / But:</code> Ek adımlar</li></ul>
-    <h4>Örnek</h4>
-    <ul><li>Given kullanıcı login sayfasındadır</li><li>When geçerli email ve şifre girer</li><li>Then dashboard sayfasına yönlendirilir</li></ul>
-    <div class="popup-tools"><span class="popup-tool">Cucumber</span><span class="popup-tool">Behave (Python)</span><span class="popup-tool">SpecFlow (.NET)</span><span class="popup-tool">Gherkin</span></div>`
-  },
-  'ai-test': {
-    tag:'// İleri Seviye', title:'AI Destekli Test', color:'#38bdf8',
-    body:`<p>Yapay zekanın test süreçlerini otomatize etmek, optimize etmek ve genişletmek için kullanılması.</p>
-    <h4>Kullanım Alanları</h4>
-    <ul><li><strong>Test Üretimi:</strong> LLM ile otomatik test senaryosu oluşturma</li><li><strong>Self-Healing Tests:</strong> Locator değiştiğinde otomatik güncellenen testler (Healenium, Applitools)</li><li><strong>Görsel Test:</strong> AI ile screenshot karşılaştırma</li><li><strong>Anomali Tespiti:</strong> Log ve metrik analizinde anomali bulma</li><li><strong>Test Optimizasyonu:</strong> Hangi testlerin çalıştırılacağını AI ile seçme</li></ul>
-    <h4>Araçlar</h4>
-    <div class="popup-tools"><span class="popup-tool">Applitools</span><span class="popup-tool">Testim</span><span class="popup-tool">Mabl</span><span class="popup-tool">Healenium</span><span class="popup-tool">Copilot</span></div>`
-  },
-  'gorsel-regresyon': {
-    tag:'// İleri Seviye', title:'Görsel Regresyon Testi', color:'#38bdf8',
-    body:`<p>UI'daki görsel değişiklikleri (piksel farklılıkları, layout kayması, renk değişimi) otomatik olarak tespit eden test yaklaşımıdır.</p>
-    <h4>Nasıl Çalışır?</h4>
-    <ul><li>Baseline (referans) ekran görüntüsü alınır</li><li>Her test çalışmasında yeni screenshot ile karşılaştırılır</li><li>Piksel farklılıkları raporlanır</li><li>İnsan onayı ile yeni baseline kabul edilir</li></ul>
-    <h4>Araçlar</h4>
-    <div class="popup-tools"><span class="popup-tool">Percy (BrowserStack)</span><span class="popup-tool">Applitools Eyes</span><span class="popup-tool">BackstopJS</span><span class="popup-tool">Playwright snapshots</span></div>
-    <h4>Ne Zaman Kullanılır?</h4>
-    <ul><li>Design system değişikliklerinde</li><li>CSS/layout güncellemelerinde</li><li>Çoklu tarayıcı/cihaz testlerinde</li></ul>`
-  },
-  'kaos': {
-    tag:'// İleri Seviye', title:'Kaos Mühendisliği', color:'#38bdf8',
-    body:`<p>Sistemlerin beklenmedik koşullara karşı dayanıklılığını test etmek için kasıtlı olarak hata enjekte etme disiplinidir. Netflix'in Chaos Monkey projesiyle popüler olmuştur.</p>
-    <h4>Prensip</h4>
-    <ul><li>"Üretimde olmadan önce üretim koşullarını simüle et"</li><li>Kontrollü ortamda kaos yarat → sistemin nasıl tepki verdiğini gözlemle</li></ul>
-    <h4>Deney Türleri</h4>
-    <ul><li>Servis/Pod sonlandırma</li><li>Ağ gecikmesi ve paket kaybı enjeksiyonu</li><li>CPU/Bellek baskı oluşturma</li><li>Veritabanı bağlantısını kesme</li></ul>
-    <div class="popup-tools"><span class="popup-tool">Chaos Monkey</span><span class="popup-tool">Chaos Mesh</span><span class="popup-tool">Litmus</span><span class="popup-tool">Gremlin</span></div>`
-  },
-  'erisebilirlik': {
-    tag:'// İleri Seviye', title:'Erişilebilirlik Testi (a11y)', color:'#38bdf8',
-    body:`<p>Uygulamanın engelli kullanıcılar dahil herkes tarafından kullanılabilir olmasını sağlamak için yapılan testlerdir.</p>
-    <h4>WCAG Standartları</h4>
-    <ul><li><strong>Algılanabilir:</strong> Görsel içerik için alternatif metin, caption</li><li><strong>Çalıştırılabilir:</strong> Klavye navigasyonu, odak yönetimi</li><li><strong>Anlaşılabilir:</strong> Net dil, tutarlı navigasyon</li><li><strong>Sağlam:</strong> AT (Assistive Technology) uyumluluğu</li></ul>
-    <h4>Uyumluluk Seviyeleri</h4>
-    <ul><li><strong>A:</strong> Minimum gereksinimler</li><li><strong>AA:</strong> Yasal zorunluluk (çoğu ülke)</li><li><strong>AAA:</strong> En yüksek erişilebilirlik</li></ul>
-    <div class="popup-tools"><span class="popup-tool">Axe DevTools</span><span class="popup-tool">Lighthouse</span><span class="popup-tool">WAVE</span><span class="popup-tool">Screen Reader</span><span class="popup-tool">Pa11y</span></div>`
-  }
-};
+var PD={'test-nedir':{tag:'// Temel Kavram',title:'Test Nedir?',color:'#f0c040',body:'<p>Yazılım testi; bir sistemin belirtilen gereksinimleri karşılayıp karşılamadığını ve hataların tespit edilip giderilmesini sağlayan sistematik süreçtir.</p><h4>Temel Amaçlar</h4><ul><li>Hataları erken aşamada bulmak</li><li>Yazılım kalitesini güvence altına almak</li><li>Son kullanıcı beklentilerini karşıladığını doğrulamak</li><li>Güvenilir ve kararlı bir ürün teslim etmek</li></ul><h4>Test Türleri (Genel)</h4><ul><li><strong>Manuel Test:</strong> İnsan gözüyle, elle yürütülen senaryolar</li><li><strong>Otomasyon Testi:</strong> Script/araçlarla otomatik yürütülen testler</li><li><strong>Statik Test:</strong> Kod çalıştırmadan yapılan inceleme</li></ul><h4>Temel İlkeler</h4><ul><li>Test hataların var olduğunu gösterir, yokluğunu değil</li><li>Kapsamlı test mümkün değildir — risk tabanlı seçim yapılır</li><li>Erken test maliyeti düşürür</li></ul>'},'qa-qc-test':{tag:'// Temel Kavram',title:'QA vs QC vs Test',color:'#f0c040',body:'<p>Bu üç kavram sıkça karıştırılır; ancak birbirinden farklı sorumluluklara sahiptir.</p><h4>QA — Kalite Güvence</h4><ul><li>Süreç odaklıdır; hatayı önlemeyi hedefler</li><li>Tüm geliştirme aşamalarına dahil olur</li></ul><h4>QC — Kalite Kontrol</h4><ul><li>Ürün odaklıdır; mevcut hataları tespit eder</li></ul><h4>Test</h4><ul><li>QC\'nin alt kümesidir; belirli girişlere doğru yanıt verip vermediğini kontrol eder</li></ul><div class="popup-tools"><span class="popup-tool">QA → Önle</span><span class="popup-tool">QC → Bul</span><span class="popup-tool">Test → Doğrula</span></div>'},'sdlc':{tag:'// Temel Kavram',title:'SDLC',color:'#f0c040',body:'<h4>Aşamalar</h4><ul><li><strong>Planlama:</strong> Kapsam, kaynak ve zaman tahmini</li><li><strong>Gereksinim Analizi:</strong> Müşteri ihtiyaçlarını yazılı hale getirme</li><li><strong>Tasarım:</strong> Sistem mimarisi ve veritabanı tasarımı</li><li><strong>Kodlama:</strong> Yazılımın geliştirilmesi</li><li><strong>Test:</strong> Hata tespiti ve kalite doğrulama</li><li><strong>Dağıtım:</strong> Canlı ortama alma</li><li><strong>Bakım:</strong> Güncelleme ve hata düzeltme</li></ul><div class="popup-tools"><span class="popup-tool">Waterfall</span><span class="popup-tool">Agile/Scrum</span><span class="popup-tool">V-Model</span></div>'},'stlc':{tag:'// Temel Kavram',title:'STLC',color:'#f0c040',body:'<h4>Aşamalar</h4><ul><li><strong>1.</strong> Gereksinim Analizi</li><li><strong>2.</strong> Test Planlaması</li><li><strong>3.</strong> Test Senaryosu Tasarımı</li><li><strong>4.</strong> Test Ortamı Kurulumu</li><li><strong>5.</strong> Test Yürütme</li><li><strong>6.</strong> Test Kapanışı</li></ul>'},'bug-lifecycle':{tag:'// Temel Kavram',title:'Bug Yaşam Döngüsü',color:'#f0c040',body:'<h4>Durumlar</h4><ul><li>New → Assigned → Open → Fixed → Retest → Verified → Closed</li><li>Kapatılmamış hata: Reopened</li></ul><h4>İyi Bug Raporu</h4><ul><li>Başlık, öncelik ve şiddet bilgisi</li><li>Yeniden üretme adımları</li><li>Beklenen vs gerçekleşen sonuç</li><li>Ekran görüntüsü ve ortam bilgisi</li></ul>'},'test-pyramid':{tag:'// Temel Kavram',title:'Test Piramidi',color:'#f0c040',body:'<h4>Katmanlar</h4><ul><li><strong>Unit — %70:</strong> En hızlı, en ucuz.</li><li><strong>Entegrasyon — %20:</strong> Modüllerin birlikte çalışması.</li><li><strong>E2E — %10:</strong> Kullanıcı senaryoları.</li></ul><div class="popup-tools"><span class="popup-tool">Jest</span><span class="popup-tool">PyTest</span><span class="popup-tool">JUnit</span><span class="popup-tool">Cypress</span></div>'},'fonksiyonel-test':{tag:'// Test Türü',title:'Fonksiyonel Test',color:'#5b8fff',body:'<p>Sistemin belirtilen işlevsel gereksinimlere uygun davranıp davranmadığını doğrular.</p><h4>Yaklaşımlar</h4><ul><li><strong>Black-Box:</strong> İç yapıya bakılmadan</li><li><strong>White-Box:</strong> Kod yapısı bilinerek</li><li><strong>Grey-Box:</strong> Kısmi iç bilgiyle</li></ul>'},'smoke-test':{tag:'// Test Türü',title:'Smoke Test',color:'#5b8fff',body:'<p>Yeni bir build\'in temel işlevlerinin çalışır durumda olduğunu hızlıca doğrular.</p><ul><li>5–15 dakika sürer</li><li>CI/CD pipeline\'ının ilk adımı</li><li>Başarısız olursa build ilerlemez</li></ul>'},'regresyon':{tag:'// Test Türü',title:'Regresyon Testi',color:'#5b8fff',body:'<p>Kod değişikliklerinin mevcut işlevselliği bozmadığını doğrular.</p><h4>Stratejiler</h4><ul><li><strong>Tam Regresyon</strong></li><li><strong>Kısmi Regresyon</strong></li><li><strong>Risk Tabanlı</strong></li></ul>'},'uat':{tag:'// Test Türü',title:'UAT',color:'#5b8fff',body:'<p>Son kullanıcıların sistemi iş gereksinimlerine göre onayladığı test.</p><h4>Türleri</h4><ul><li>Alpha — şirket içi</li><li>Beta — gerçek kullanıcılar</li></ul>'},'exploratory':{tag:'// Test Türü',title:'Keşif Testi',color:'#5b8fff',body:'<p>Önceden yazılı senaryo olmaksızın, test uzmanının merakına dayanarak sistemi keşfeder.</p><ul><li>Öngörülemeyen hataları keşfeder</li><li>Session-Based: 30–90 dk, odak alanı belirlenir</li></ul>'},'sinir-deger':{tag:'// Teknik',title:'Sınır Değer Analizi',color:'#5b8fff',body:'<p>Hataların en çok sınır değerlerde oluştuğu prensibine dayanan teknik.</p><p>Örnek: Yaş 18–65 → 17, 18, 19, 64, 65, 66 test edilir</p>'},'performans-test':{tag:'// Test Türü',title:'Performans Testi',color:'#5b8fff',body:'<h4>Alt Türler</h4><ul><li><strong>Yük:</strong> Beklenen kullanıcı yüküyle</li><li><strong>Stres:</strong> Kırılma noktası</li><li><strong>Soak:</strong> Uzun süre yük altında</li><li><strong>Spike:</strong> Ani trafik artışı</li></ul><div class="popup-tools"><span class="popup-tool">JMeter</span><span class="popup-tool">k6</span><span class="popup-tool">Gatling</span></div>'},'yuk-test':{tag:'// Test Türü',title:'Yük Testi',color:'#5b8fff',body:'<p>Sistemin beklenen kullanıcı yükü altında performansını ölçer.</p><h4>Senaryo</h4><ul><li>Ramp-up: 0→1000 kullanıcı, 10 dk</li><li>Steady-state: 30 dk sabit</li><li>Ramp-down: Yavaşça sıfır</li></ul>'},'guvenlik-test':{tag:'// Test Türü',title:'Güvenlik Testi',color:'#5b8fff',body:'<h4>Kapsam</h4><ul><li>SQL Injection, XSS, CSRF</li><li>Authentication & Authorization</li><li>Hassas veri ifşası</li></ul><div class="popup-tools"><span class="popup-tool">OWASP ZAP</span><span class="popup-tool">Burp Suite</span></div>'},'kullanilabilirlik':{tag:'// Test Türü',title:'Kullanılabilirlik',color:'#5b8fff',body:'<h4>Yöntemler</h4><ul><li>Moderasyonlu: Gözlemci eşliğinde</li><li>Moderasyonsuz: Uzaktan, otomatik</li><li>A/B Testi</li><li>Heatmap analizi</li></ul>'},'test-plani':{tag:'// Tasarım',title:'Test Planı',color:'#ff6b6b',body:'<h4>İçermeli</h4><ul><li>Test Kapsamı</li><li>Test Stratejisi</li><li>Giriş/Çıkış Kriterleri</li><li>Kaynaklar: Ekip, araç, ortam</li><li>Risk & Azaltma</li></ul>'},'test-senaryosu':{tag:'// Tasarım',title:'Test Senaryosu',color:'#ff6b6b',body:'<h4>Bileşenler</h4><ul><li>ID, Başlık, Ön Koşullar</li><li>Adımlar, Beklenen Sonuç</li><li>Durum: Geçti / Kaldı / Engellendi</li></ul>'},'esdegerlik':{tag:'// Teknik',title:'Eşdeğerlik Bölümleme',color:'#ff6b6b',body:'<p>Giriş verilerini aynı davranışı sergileyecek gruplara ayırır.</p><p>Her bölümden yalnızca bir değer test edilir.</p>'},'karar-tablosu':{tag:'// Teknik',title:'Karar Tablosu',color:'#ff6b6b',body:'<p>Birden fazla koşulun kombinasyonlarına göre davranışı test eder.</p><p>Kullanım: Karmaşık iş kuralları içeren sistemler</p>'},'durum-gecis':{tag:'// Teknik',title:'Durum Geçiş Testi',color:'#ff6b6b',body:'<h4>Örnek</h4><ul><li>Aktif → yanlış şifre ×3 → Kilitli</li><li>Kilitli → admin unlock → Aktif</li></ul>'},'risk-tabanli':{tag:'// Teknik',title:'Risk Tabanlı Test',color:'#ff6b6b',body:'<p>Risk = Olasılık × Etki</p><ul><li>Risk alanlarını tanımla</li><li>Her alana risk skoru ata</li><li>Yüksek riskli alanlara odaklan</li></ul>'},'python-js':{tag:'// Otomasyon',title:'Python & JavaScript',color:'#4ecdc4',body:'<h4>Python</h4><ul><li><code>pytest</code>, <code>selenium</code>, <code>requests</code>, <code>behave</code></li></ul><h4>JavaScript</h4><ul><li><code>Jest</code>, <code>Cypress</code>, <code>Playwright</code>, <code>Mocha</code></li></ul>'},'java-csharp':{tag:'// Otomasyon',title:'Java & C#',color:'#4ecdc4',body:'<h4>Java</h4><ul><li>JUnit 5, TestNG, Selenium + Java, REST Assured</li></ul><h4>C#</h4><ul><li>NUnit, xUnit, SpecFlow</li></ul>'},'git':{tag:'// Otomasyon',title:'Git',color:'#4ecdc4',body:'<ul><li>Feature branch\'te geliştir</li><li>PR üzerinden code review</li></ul><div class="popup-tools"><span class="popup-tool">GitHub</span><span class="popup-tool">GitLab</span><span class="popup-tool">Bitbucket</span></div>'},'selenium':{tag:'// UI Otomasyon',title:'Selenium WebDriver',color:'#4ecdc4',body:'<p>Web tarayıcısı otomasyonu için endüstri standardı.</p><div class="popup-tools"><span class="popup-tool">Chrome</span><span class="popup-tool">Firefox</span><span class="popup-tool">Edge</span><span class="popup-tool">Java/Python/C#/JS</span></div>'},'playwright':{tag:'// UI Otomasyon',title:'Playwright',color:'#4ecdc4',body:'<ul><li>Chromium, Firefox ve WebKit — tek API</li><li>Auto-wait mekanizması</li><li>Network interception ve mock</li><li>Built-in trace viewer</li></ul>'},'cypress':{tag:'// UI Otomasyon',title:'Cypress',color:'#4ecdc4',body:'<ul><li>Tarayıcıda doğrudan çalışır</li><li>Time-travel debugging</li><li>Otomatik bekleme mekanizması</li></ul>'},'appium':{tag:'// Mobil',title:'Appium',color:'#4ecdc4',body:'<p>iOS ve Android otomasyon testi.</p><ul><li>WebDriver protokolü</li><li>Gerçek cihaz ve emülatör desteği</li></ul>'},'postman':{tag:'// API',title:'Postman',color:'#4ecdc4',body:'<ul><li>HTTP isteklerini görsel arayüzle oluşturma</li><li>Collection ve Environment</li><li>Newman CLI ile CI/CD</li><li>Mock Server</li></ul>'},'rest-assured':{tag:'// API',title:'REST Assured',color:'#4ecdc4',body:'<p>Java tabanlı REST API test kütüphanesi.</p><p><code>given()</code> → <code>when()</code> → <code>then()</code></p>'},'supertest':{tag:'// API',title:'SuperTest & Axios',color:'#4ecdc4',body:'<h4>SuperTest</h4><ul><li>Express.js uygulamalarını test eder</li></ul><h4>Axios</h4><ul><li>Promise tabanlı, interceptor desteği</li></ul>'},'jenkins':{tag:'// CI/CD',title:'Jenkins',color:'#a88bfa',body:'<ul><li>Pipeline, Job, Stage kavramları</li><li>Her PR\'da test suite otomatik çalışır</li><li>Başarısız test → build fail</li></ul>'},'github-actions':{tag:'// CI/CD',title:'GitHub Actions',color:'#a88bfa',body:'<p>GitHub\'a entegre YAML tabanlı CI/CD.</p><p>on: push/pull_request → checkout → test → rapor</p>'},'gitlab-ci':{tag:'// CI/CD',title:'GitLab CI',color:'#a88bfa',body:'<ul><li>.gitlab-ci.yml ile yapılandırma</li><li>JUnit raporu GitLab UI\'da</li></ul>'},'docker':{tag:'// DevOps',title:'Docker',color:'#a88bfa',body:'<ul><li>Test ortamlarını tekrarlanabilir şekilde oluşturma</li><li>Selenium Grid\'i Docker Compose ile kur</li></ul>'},'kubernetes':{tag:'// DevOps',title:'Kubernetes',color:'#a88bfa',body:'<ul><li>Test ortamlarını namespace bazlı izole etme</li><li>Paralel test için pod ölçeklendirme</li><li>Canary deployment</li></ul>'},'jmeter':{tag:'// Performans',title:'Apache JMeter',color:'#34d399',body:'<ul><li>GUI ve CLI modu</li><li>Thread Group ile sanal kullanıcı</li><li>Distributed testing</li></ul>'},'k6':{tag:'// Performans',title:'k6',color:'#34d399',body:'<ul><li>JS ile yazılır — öğrenmesi kolay</li><li>CLI öncelikli, CI/CD dostu</li><li>Grafana entegrasyonu</li></ul>'},'gatling':{tag:'// Performans',title:'Gatling',color:'#34d399',body:'<ul><li>Scala/Kotlin DSL</li><li>Detaylı HTML raporları</li><li>HAR dosyasından senaryo</li></ul>'},'locust':{tag:'// Performans',title:'Locust',color:'#34d399',body:'<ul><li>Saf Python ile senaryo</li><li>Web tabanlı UI</li><li>Dağıtık mod: master + worker</li></ul>'},'owasp':{tag:'// Güvenlik',title:'OWASP Top 10',color:'#fb923c',body:'<ul><li>A01: Broken Access Control</li><li>A02: Cryptographic Failures</li><li>A03: Injection</li><li>A04: Insecure Design</li><li>A05: Misconfiguration</li><li>A06: Vulnerable Components</li><li>A07: Auth Failures</li><li>A08: Integrity Failures</li><li>A09: Logging Failures</li><li>A10: SSRF</li></ul>'},'zap':{tag:'// Güvenlik',title:'OWASP ZAP',color:'#fb923c',body:'<ul><li>Otomatik tarama (aktif/pasif)</li><li>Spider ile uygulama haritası</li><li>REST API ile CI/CD entegrasyonu</li></ul>'},'burp':{tag:'// Güvenlik',title:'Burp Suite',color:'#fb923c',body:'<ul><li>Proxy: trafiği yakala ve değiştir</li><li>Scanner: otomatik tarama (Pro)</li><li>Intruder: fuzzing</li><li>Repeater: istek tekrar gönder</li></ul>'},'sqli-xss':{tag:'// Güvenlik',title:'SQL Injection & XSS',color:'#fb923c',body:'<h4>SQLi</h4><ul><li>Payload: <code>\' OR \'1\'=\'1</code></li><li>Önlem: Parameterized queries</li></ul><h4>XSS</h4><ul><li>Reflected, Stored, DOM-based</li><li>Önlem: Output encoding, CSP</li></ul>'},'jira':{tag:'// Test Yönetimi',title:'Jira',color:'#f472b6',body:'<ul><li>Bug raporu ve takip</li><li>Sprint planlama</li><li>Zephyr/Xray eklentileriyle test yönetimi</li></ul>'},'testrail':{tag:'// Test Yönetimi',title:'TestRail',color:'#f472b6',body:'<ul><li>Test Suite ve Case organizasyonu</li><li>Test Run ve Plan yönetimi</li><li>Gerçek zamanlı raporlama</li></ul>'},'agile-test':{tag:'// Metodoloji',title:'Agile Test',color:'#f472b6',body:'<ul><li>Sprint planning\'de test tahmini</li><li>Shift-left: geliştiriciyle birlikte</li><li>Definition of Done\'a dahil</li></ul>'},'bdd':{tag:'// Metodoloji',title:'BDD',color:'#f472b6',body:'<h4>Gherkin</h4><ul><li><code>Given</code> — ön koşul</li><li><code>When</code> — kullanıcı eylemi</li><li><code>Then</code> — beklenen sonuç</li></ul><div class="popup-tools"><span class="popup-tool">Cucumber</span><span class="popup-tool">Behave</span><span class="popup-tool">SpecFlow</span></div>'},'ai-test':{tag:'// İleri',title:'AI Destekli Test',color:'#38bdf8',body:'<ul><li>LLM ile otomatik senaryo üretimi</li><li>Self-Healing testler</li><li>Görsel AI karşılaştırma</li></ul><div class="popup-tools"><span class="popup-tool">Applitools</span><span class="popup-tool">Testim</span><span class="popup-tool">Healenium</span></div>'},'gorsel-regresyon':{tag:'// İleri',title:'Görsel Regresyon',color:'#38bdf8',body:'<ul><li>Baseline screenshot alınır</li><li>Her çalışmada karşılaştırılır</li><li>Piksel farklılıkları raporlanır</li></ul><div class="popup-tools"><span class="popup-tool">Percy</span><span class="popup-tool">Applitools</span><span class="popup-tool">BackstopJS</span></div>'},'kaos':{tag:'// İleri',title:'Kaos Mühendisliği',color:'#38bdf8',body:'<ul><li>Servis/Pod sonlandırma</li><li>Ağ gecikmesi enjeksiyonu</li><li>CPU/Bellek baskısı</li></ul><div class="popup-tools"><span class="popup-tool">Chaos Monkey</span><span class="popup-tool">Litmus</span><span class="popup-tool">Gremlin</span></div>'},'erisebilirlik':{tag:'// İleri',title:'Erişilebilirlik (a11y)',color:'#38bdf8',body:'<h4>WCAG Seviyeleri</h4><ul><li>A: Minimum</li><li>AA: Yasal zorunluluk</li><li>AAA: En yüksek</li></ul><div class="popup-tools"><span class="popup-tool">Axe DevTools</span><span class="popup-tool">Lighthouse</span><span class="popup-tool">WAVE</span></div>'}};
 
-function openPopup(id) {
-  var data = POPUP_DATA[id];
-  if (!data) return;
-  document.getElementById('popup-topline').style.background = 'linear-gradient(90deg, ' + (data.color || '#00ffaa') + ', #00ffaa)';
-  document.getElementById('popup-tag').textContent = data.tag;
-  document.getElementById('popup-title').textContent = data.title;
-  document.getElementById('popup-body').innerHTML = data.body;
-  document.getElementById('popup-backdrop').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closePopup() {
-  document.getElementById('popup-backdrop').classList.remove('open');
-  document.body.style.overflow = '';
-}
-function handleBackdropClick(e) {
-  if (e.target === document.getElementById('popup-backdrop') || e.target.classList.contains('popup-bg')) closePopup();
-}
-document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closePopup(); });
+function openPopup(id){var d=PD[id];if(!d)return;document.getElementById('popup-topline').style.background='linear-gradient(90deg,'+(d.color||'#00ffaa')+',#00ffaa)';document.getElementById('popup-tag').textContent=d.tag;document.getElementById('popup-title').textContent=d.title;document.getElementById('popup-body').innerHTML=d.body;document.getElementById('popup-backdrop').classList.add('open');document.body.style.overflow='hidden';}
+function closePopup(){document.getElementById('popup-backdrop').classList.remove('open');document.body.style.overflow='';}
+function handleBackdropClick(e){if(e.target===document.getElementById('popup-backdrop')||e.target.classList.contains('popup-bg'))closePopup();}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closePopup();});
 
-// ============================================================
-// LANGUAGE SWITCH
-// ============================================================
-var currentLang = 'tr';
-function setLang(lang) {
-  currentLang = lang;
-  var c = document.getElementById('fc-canvas');
-  c.classList.remove('show-tr','show-en');
-  c.classList.add('show-' + lang);
-  document.getElementById('btn-tr').classList.toggle('active', lang==='tr');
-  document.getElementById('btn-en').classList.toggle('active', lang==='en');
-  // Also update legend spans
-  document.querySelectorAll('.fc-legend-item .lang-tr, .fc-legend-item .lang-en').forEach(function(s){ s.style.display='none'; });
-  document.querySelectorAll('.fc-legend-item .lang-' + lang).forEach(function(s){ s.style.display='inline'; });
-}
+// LANG
+var currentLang='tr';
+function setLang(lang){currentLang=lang;var c=document.getElementById('fc-canvas');c.classList.remove('show-tr','show-en');c.classList.add('show-'+lang);document.getElementById('btn-tr').classList.toggle('active',lang==='tr');document.getElementById('btn-en').classList.toggle('active',lang==='en');document.querySelectorAll('.fc-legend-item .lang-tr,.fc-legend-item .lang-en').forEach(function(s){s.style.display='none';});document.querySelectorAll('.fc-legend-item .lang-'+lang).forEach(function(s){s.style.display='inline';});}
 document.getElementById('fc-canvas').classList.add('show-tr');
-// Init legend
 document.querySelectorAll('.fc-legend-item .lang-en').forEach(function(s){s.style.display='none';});
 
-// ============================================================
-// FLOWCHART SVG LINES
-// ============================================================
-function getC(id, parent) {
-  var pr = parent.getBoundingClientRect(), er = document.getElementById(id).getBoundingClientRect();
-  return { x: er.left-pr.left+er.width/2, y: er.top-pr.top+er.height/2,
-    top: er.top-pr.top, bot: er.top-pr.top+er.height,
-    left: er.left-pr.left, right: er.left-pr.left+er.width };
-}
-function mkLine(svg, x1,y1,x2,y2,color,dash) {
-  var l = document.createElementNS('http://www.w3.org/2000/svg','line');
-  l.setAttribute('x1',x1);l.setAttribute('y1',y1);l.setAttribute('x2',x2);l.setAttribute('y2',y2);
-  l.setAttribute('stroke',color||'#1a3a22');l.setAttribute('stroke-width','2');
-  if(dash)l.setAttribute('stroke-dasharray','6,4');
-  l.setAttribute('marker-end','url(#arr)'); svg.appendChild(l);
-}
-function mkPath(svg, d, color) {
-  var p = document.createElementNS('http://www.w3.org/2000/svg','path');
-  p.setAttribute('d',d);p.setAttribute('stroke',color||'#1a3a22');
-  p.setAttribute('stroke-width','2');p.setAttribute('fill','none');
-  p.setAttribute('marker-end','url(#arr)'); svg.appendChild(p);
-}
-function mkLabel(svg, x, y, txt, color) {
-  var t = document.createElementNS('http://www.w3.org/2000/svg','text');
-  t.setAttribute('x',x);t.setAttribute('y',y);t.setAttribute('fill',color||'#5a8070');
-  t.setAttribute('font-size','10');t.setAttribute('font-family','monospace');
-  t.setAttribute('text-anchor','middle');t.textContent=txt; svg.appendChild(t);
-}
-
-function drawLines() {
-  var svg = document.getElementById('fc-svg');
-  svg.innerHTML='';
-  var defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
-  defs.innerHTML='<marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#2a4a30"/></marker>';
-  svg.appendChild(defs);
-  var inner = document.getElementById('fc-inner');
-  function c(id){return getC(id,inner);}
-  var cy='#00ffaa', gr='#00e676', or='#fb923c', bl='#5b8fff', tl='#4ecdc4', co='#1a3a22';
-
-  var s=c('n-start'),n1=c('n-1'),n2=c('n-2'),n3=c('n-3'),d1=c('n-d1');
-  var prog=c('n-prog'),manual=c('n-manual'),ui=c('n-ui'),api=c('n-api'),fw=c('n-fw');
-  var cicd=c('n-cicd'),d2=c('n-d2'),perf=c('n-perf'),sec=c('n-sec'),mob=c('n-mob');
-  var mgmt=c('n-mgmt'),agile=c('n-agile'),adv=c('n-adv'),end_=c('n-end');
-
-  mkLine(svg,s.x,s.bot,n1.x,n1.top,cy);
-  mkLine(svg,n1.x,n1.bot,n2.x,n2.top,co);
-  mkLine(svg,n2.x,n2.bot,n3.x,n3.top,co);
-  mkLine(svg,n3.x,n3.bot,d1.x,d1.top,co);
-
-  mkPath(svg,'M'+d1.left+','+d1.y+' L'+prog.right+','+prog.y,gr);
-  mkLabel(svg,(d1.left+prog.right)/2,d1.y-8,currentLang==='tr'?'EVET':'YES',gr);
-  mkPath(svg,'M'+d1.right+','+d1.y+' L'+manual.left+','+manual.y,or);
-  mkLabel(svg,(d1.right+manual.left)/2,d1.y-8,currentLang==='tr'?'HAYIR':'NO',or);
-
-  mkLine(svg,prog.x,prog.bot,ui.x,ui.top,gr);
-  mkLine(svg,ui.x,ui.bot,api.x,api.top,co);
-  mkLine(svg,api.x,api.bot,fw.x,fw.top,co);
-
-  mkPath(svg,'M'+fw.right+','+fw.y+' C'+(fw.right+100)+','+fw.y+' '+(cicd.left-60)+','+cicd.y+' '+cicd.left+','+cicd.y,bl);
-  mkPath(svg,'M'+manual.x+','+manual.bot+' C'+manual.x+','+(manual.bot+50)+' '+(cicd.right+30)+','+cicd.y+' '+cicd.right+','+cicd.y,co,true);
-
-  mkLine(svg,cicd.x,cicd.bot,d2.x,d2.top,co);
-
-  mkPath(svg,'M'+d2.left+','+d2.y+' L'+perf.right+','+perf.y,or);
-  mkLabel(svg,(d2.left+perf.right)/2,d2.y-8,'Perf',or);
-  mkLine(svg,d2.x,d2.bot,sec.x,sec.top,co);
-  mkLabel(svg,sec.x-22,(d2.bot+sec.top)/2,'Sec','#ff6b6b');
-  mkPath(svg,'M'+d2.right+','+d2.y+' L'+mob.left+','+mob.y,tl);
-  mkLabel(svg,(d2.right+mob.left)/2,d2.y-8,'Mob',tl);
-
-  mkPath(svg,'M'+perf.x+','+perf.bot+' C'+perf.x+','+(perf.bot+40)+' '+mgmt.x+','+(mgmt.top-30)+' '+mgmt.x+','+mgmt.top,co);
-  mkLine(svg,sec.x,sec.bot,mgmt.x,mgmt.top,co);
-  mkPath(svg,'M'+mob.x+','+mob.bot+' C'+mob.x+','+(mob.bot+40)+' '+mgmt.x+','+(mgmt.top-30)+' '+mgmt.x+','+mgmt.top,co);
-
-  mkLine(svg,mgmt.x,mgmt.bot,agile.x,agile.top,co);
-  mkLine(svg,agile.x,agile.bot,adv.x,adv.top,co);
-  mkLine(svg,adv.x,adv.bot,end_.x,end_.top,gr);
-}
-window.addEventListener('resize', function(){ if(document.getElementById('page-flowchart').classList.contains('active')) drawLines(); });
+// FLOWCHART
+function getC(id,parent){var pr=parent.getBoundingClientRect(),er=document.getElementById(id).getBoundingClientRect();return{x:er.left-pr.left+er.width/2,y:er.top-pr.top+er.height/2,top:er.top-pr.top,bot:er.top-pr.top+er.height,left:er.left-pr.left,right:er.left-pr.left+er.width};}
+function mkL(svg,x1,y1,x2,y2,col,dash){var l=document.createElementNS('http://www.w3.org/2000/svg','line');l.setAttribute('x1',x1);l.setAttribute('y1',y1);l.setAttribute('x2',x2);l.setAttribute('y2',y2);l.setAttribute('stroke',col||'#1a3a22');l.setAttribute('stroke-width','2');if(dash)l.setAttribute('stroke-dasharray','6,4');l.setAttribute('marker-end','url(#arr)');svg.appendChild(l);}
+function mkP(svg,d,col){var p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',d);p.setAttribute('stroke',col||'#1a3a22');p.setAttribute('stroke-width','2');p.setAttribute('fill','none');p.setAttribute('marker-end','url(#arr)');svg.appendChild(p);}
+function mkT(svg,x,y,txt,col){var t=document.createElementNS('http://www.w3.org/2000/svg','text');t.setAttribute('x',x);t.setAttribute('y',y);t.setAttribute('fill',col||'#5a8070');t.setAttribute('font-size','10');t.setAttribute('font-family','monospace');t.setAttribute('text-anchor','middle');t.textContent=txt;svg.appendChild(t);}
+function drawLines(){var svg=document.getElementById('fc-svg');svg.innerHTML='';var defs=document.createElementNS('http://www.w3.org/2000/svg','defs');defs.innerHTML='<marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#2a4a30"/></marker>';svg.appendChild(defs);var inner=document.getElementById('fc-inner');function c(id){return getC(id,inner);}var cy='#00ffaa',gr='#00e676',or='#fb923c',bl='#5b8fff',tl='#4ecdc4',co='#1a3a22';var s=c('n-start'),n1=c('n-1'),n2=c('n-2'),n3=c('n-3'),d1=c('n-d1');var prog=c('n-prog'),manual=c('n-manual'),ui=c('n-ui'),api=c('n-api'),fw=c('n-fw');var cicd=c('n-cicd'),d2=c('n-d2'),perf=c('n-perf'),sec=c('n-sec'),mob=c('n-mob');var mgmt=c('n-mgmt'),agile=c('n-agile'),adv=c('n-adv'),end_=c('n-end');mkL(svg,s.x,s.bot,n1.x,n1.top,cy);mkL(svg,n1.x,n1.bot,n2.x,n2.top,co);mkL(svg,n2.x,n2.bot,n3.x,n3.top,co);mkL(svg,n3.x,n3.bot,d1.x,d1.top,co);mkP(svg,'M'+d1.left+','+d1.y+' L'+prog.right+','+prog.y,gr);mkT(svg,(d1.left+prog.right)/2,d1.y-8,currentLang==='tr'?'EVET':'YES',gr);mkP(svg,'M'+d1.right+','+d1.y+' L'+manual.left+','+manual.y,or);mkT(svg,(d1.right+manual.left)/2,d1.y-8,currentLang==='tr'?'HAYIR':'NO',or);mkL(svg,prog.x,prog.bot,ui.x,ui.top,gr);mkL(svg,ui.x,ui.bot,api.x,api.top,co);mkL(svg,api.x,api.bot,fw.x,fw.top,co);mkP(svg,'M'+fw.right+','+fw.y+' C'+(fw.right+90)+','+fw.y+' '+(cicd.left-50)+','+cicd.y+' '+cicd.left+','+cicd.y,bl);mkP(svg,'M'+manual.x+','+manual.bot+' C'+manual.x+','+(manual.bot+50)+' '+(cicd.right+30)+','+cicd.y+' '+cicd.right+','+cicd.y,co,true);mkL(svg,cicd.x,cicd.bot,d2.x,d2.top,co);mkP(svg,'M'+d2.left+','+d2.y+' L'+perf.right+','+perf.y,or);mkT(svg,(d2.left+perf.right)/2,d2.y-8,'Perf',or);mkL(svg,d2.x,d2.bot,sec.x,sec.top,co);mkT(svg,sec.x-22,(d2.bot+sec.top)/2,'Sec','#ff6b6b');mkP(svg,'M'+d2.right+','+d2.y+' L'+mob.left+','+mob.y,tl);mkT(svg,(d2.right+mob.left)/2,d2.y-8,'Mob',tl);mkP(svg,'M'+perf.x+','+perf.bot+' C'+perf.x+','+(perf.bot+40)+' '+mgmt.x+','+(mgmt.top-30)+' '+mgmt.x+','+mgmt.top,co);mkL(svg,sec.x,sec.bot,mgmt.x,mgmt.top,co);mkP(svg,'M'+mob.x+','+mob.bot+' C'+mob.x+','+(mob.bot+40)+' '+mgmt.x+','+(mgmt.top-30)+' '+mgmt.x+','+mgmt.top,co);mkL(svg,mgmt.x,mgmt.bot,agile.x,agile.top,co);mkL(svg,agile.x,agile.bot,adv.x,adv.top,co);mkL(svg,adv.x,adv.bot,end_.x,end_.top,gr);}
+window.addEventListener('resize',function(){if(document.getElementById('flowchart-page').classList.contains('active'))drawLines();},{passive:true});
 </script>
 </body>
 </html>
