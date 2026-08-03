@@ -153,6 +153,7 @@ section { position:relative; z-index:1; padding:6rem 3rem; }
 .proj-card::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(0,122,60,0.07) 0%,transparent 60%); opacity:0; transition:opacity 0.3s; }
 .proj-card:hover { border-color:var(--cyan); transform:translateY(-5px); box-shadow:0 16px 50px var(--glow); }
 .proj-card:hover::after { opacity:1; }
+.proj-card .proj-img { width:72px; height:auto; display:block; margin:0 0 0.8rem 0; border-radius:6px; object-fit:contain; }
 .proj-icon { font-size:1.8rem; margin-bottom:0.9rem; }
 .proj-name { font-family:var(--disp); font-size:1.02rem; font-weight:700; color:var(--white); margin-bottom:0.6rem; }
 .proj-tag { display:inline-block; font-family:var(--mono); font-size:0.62rem; color:var(--cyan); border:1px solid rgba(0,255,170,0.25); padding:0.15rem 0.55rem; border-radius:2px; text-transform:uppercase; letter-spacing:0.07em; margin-bottom:0.8rem; }
@@ -480,7 +481,7 @@ footer span { color:var(--cyan); }
     <div class="proj-card fade-in"><div class="proj-icon">🎣</div><div class="proj-name">BalıkçıPro Mobil Uygulaması</div><span class="proj-tag">Mobil · Devam Ediyor</span><p class="proj-desc">Sportif balıkçıların ihtiyaçlarına yönelik uygulamanın fikir, konsept ve operasyonel tasarım süreçlerinde proje yöneticisi/geliştirici.</p></div>
     <div class="proj-card fade-in"><div class="proj-icon">🤖</div><div class="proj-name">YZ Destekli Süreç Otomasyonu</div><span class="proj-tag">Python · AI Destekli · YOLO · OCR</span><p class="proj-desc">Görüntü işleme (YOLO) ve OCR ile insan müdahalesi gerektiren doğrulama adımlarını otomatik çözen Python tabanlı otonom betikler.</p></div>
     <div class="proj-card fade-in"><div class="proj-icon">⚡</div><div class="proj-name">İletişim API Entegrasyonları</div><span class="proj-tag">Python · AI Destekli · Discord · Telegram</span><p class="proj-desc">Discord ticket taleplerini anlık olarak Telegram kanallarına yönlendiren otomasyon botları.</p></div>
-    <div class="proj-card fade-in"><div class="proj-icon">🌿</div><div class="proj-name"><a href="https://catalog.avente.com.tr" target="_blank">Avente Parfüm Kataloğu</a></div><span class="proj-tag">Nuxt · TypeScript · Supabase</span><p class="proj-desc">Stok ve filtreleme odaklı parfüm kataloğu — nota, karakter, performans bilgileri, "Kokunu Keşfet" testi ve yönetim paneli.</p></div>
+    <div class="proj-card fade-in"><img class="proj-img" src="assets/avente-logo.png" alt="Avente logo"><div class="proj-icon">🌿</div><div class="proj-name"><a href="https://catalog.avente.com.tr" target="_blank">Avente Parfüm Kataloğu</a></div><span class="proj-tag">Nuxt · TypeScript · Supabase</span><p class="proj-desc">Stok ve filtreleme odaklı parfüm kataloğu — nota, karakter, performans bilgileri, "Kokunu Keşfet" testi ve yönetim paneli.</p></div>
     <div class="proj-card fade-in"><div class="proj-icon">🧟</div><div class="proj-name"><a href="https://son-vardiya-eu.onrender.com/" target="_blank">Son Vardiya</a></div><span class="proj-tag">Co‑op · AI Destekli</span><p class="proj-desc">1–4 oyunculu co‑op zombi oyunu: dalga tabanlı mücadele, karakter gelişimi ve ekipman satın alma.</p></div>
   </div>
 </div>
