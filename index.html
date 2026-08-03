@@ -158,6 +158,23 @@ section { position:relative; z-index:1; padding:6rem 3rem; }
 .proj-name { font-family:var(--disp); font-size:1.02rem; font-weight:700; color:var(--white); margin-bottom:0.6rem; }
 .proj-tag { display:inline-block; font-family:var(--mono); font-size:0.62rem; color:var(--cyan); border:1px solid rgba(0,255,170,0.25); padding:0.15rem 0.55rem; border-radius:2px; text-transform:uppercase; letter-spacing:0.07em; margin-bottom:0.8rem; }
 .proj-desc { font-size:0.87rem; color:var(--dim); line-height:1.7; }
+.proj-card.clickable { cursor:pointer; }
+.project-popup-backdrop { position:fixed; inset:0; z-index:10001; display:flex; align-items:center; justify-content:center; padding:1.5rem; visibility:hidden; opacity:0; transition:opacity 0.2s ease, visibility 0.2s ease; pointer-events:none; }
+.project-popup-backdrop.open { visibility:visible; opacity:1; pointer-events:auto; }
+.project-popup-bg { position:absolute; inset:0; background:rgba(6,14,8,0.92); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); }
+.project-popup-box { position:relative; z-index:1; width:min(760px,100%); max-height:85vh; overflow:hidden; border-radius:12px; background:var(--panel); border:1px solid rgba(0,200,100,0.35); box-shadow:0 0 60px rgba(0,122,60,0.25); }
+.project-popup-header { display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; padding:1.4rem 1.6rem 0; }
+.project-popup-title { font-family:var(--disp); font-size:1.2rem; font-weight:700; color:var(--white); }
+.project-popup-message { font-family:var(--mono); font-size:0.78rem; color:var(--dim); line-height:1.6; margin-top:0.4rem; }
+.project-popup-link { display:inline-flex; align-items:center; gap:0.35rem; margin-top:0.85rem; background:rgba(0,230,118,0.08); border:1px solid rgba(0,200,100,0.2); color:var(--green); padding:0.75rem 1rem; border-radius:6px; font-family:var(--mono); font-size:0.76rem; text-decoration:none; }
+.project-popup-link:hover { background:rgba(0,255,170,0.12); color:var(--white); }
+.project-popup-content { padding:0 1.6rem 1.6rem; }
+.project-popup-image-wrap { position:relative; overflow:hidden; border-radius:8px; background:rgba(0,0,0,0.12); min-height:260px; display:flex; align-items:center; justify-content:center; }
+.project-popup-image { max-width:100%; max-height:380px; object-fit:contain; display:block; }
+.project-popup-counter { font-family:var(--mono); font-size:0.72rem; color:var(--dim); margin-top:0.75rem; text-align:right; }
+.project-popup-controls { display:flex; justify-content:space-between; gap:0.5rem; margin-top:0.75rem; }
+.project-popup-btn { flex:1; display:inline-flex; align-items:center; justify-content:center; gap:0.5rem; border:1px solid rgba(0,200,100,0.2); border-radius:999px; background:rgba(0,230,118,0.08); color:var(--green); font-family:var(--mono); font-size:0.8rem; padding:0.75rem 0.8rem; cursor:pointer; transition:background 0.2s, color 0.2s; }
+.project-popup-btn:hover { background:rgba(0,255,170,0.16); color:var(--white); }
 
 /* ABOUT */
 #about { background:var(--dark); }
@@ -482,11 +499,35 @@ footer span { color:var(--cyan); }
     <div class="proj-card fade-in"><div class="proj-icon">🎣</div><div class="proj-name">BalıkçıPro Mobil Uygulaması</div><span class="proj-tag">Mobil · Devam Ediyor</span><p class="proj-desc">Sportif balıkçıların ihtiyaçlarına yönelik uygulamanın fikir, konsept ve operasyonel tasarım süreçlerinde proje yöneticisi/geliştirici.</p></div>
     <div class="proj-card fade-in"><div class="proj-icon">🤖</div><div class="proj-name">YZ Destekli Süreç Otomasyonu</div><span class="proj-tag">Python · AI Destekli · YOLO · OCR</span><p class="proj-desc">Görüntü işleme (YOLO) ve OCR ile insan müdahalesi gerektiren doğrulama adımlarını otomatik çözen Python tabanlı otonom betikler.</p></div>
     <div class="proj-card fade-in"><div class="proj-icon">⚡</div><div class="proj-name">İletişim API Entegrasyonları</div><span class="proj-tag">Python · AI Destekli · Discord · Telegram</span><p class="proj-desc">Discord ticket taleplerini anlık olarak Telegram kanallarına yönlendiren otomasyon botları.</p></div>
-    <div class="proj-card fade-in"><img class="proj-img" src="avente/avente-logo.png" alt="Avente logo" onerror="this.style.display='none'"><div class="proj-icon">🌿</div><div class="proj-name"><a href="https://catalog.avente.com.tr" target="_blank">Avente Parfüm Kataloğu</a></div><span class="proj-tag">Nuxt · TypeScript · Supabase</span><p class="proj-desc">Stok ve filtreleme odaklı parfüm kataloğu — nota, karakter, performans bilgileri, "Kokunu Keşfet" testi ve yönetim paneli.</p></div>
-    <div class="proj-card fade-in"><div class="proj-icon">🧟</div><div class="proj-name"><a href="https://son-vardiya-eu.onrender.com/" target="_blank">Son Vardiya</a></div><span class="proj-tag">Co‑op · AI Destekli</span><p class="proj-desc">1–4 oyunculu co‑op zombi oyunu: dalga tabanlı mücadele, karakter gelişimi ve ekipman satın alma.</p></div>
+    <div class="proj-card fade-in clickable" data-project="avente"><img class="proj-img" src="avente/avente-logo.png" alt="Avente logo" onerror="this.style.display='none'"><div class="proj-icon">🌿</div><div class="proj-name">Avente Parfüm Kataloğu</div><span class="proj-tag">Nuxt · TypeScript · Supabase</span><p class="proj-desc">Stok ve filtreleme odaklı parfüm kataloğu — nota, karakter, performans bilgileri, "Kokunu Keşfet" testi ve yönetim paneli.</p></div>
+    <div class="proj-card fade-in clickable" data-project="sonvardiya"><div class="proj-icon">🧟</div><div class="proj-name">Son Vardiya</div><span class="proj-tag">Co‑op · AI Destekli</span><p class="proj-desc">1–4 oyunculu co‑op zombi oyunu: dalga tabanlı mücadele, karakter gelişimi ve ekipman satın alma.</p></div>
   </div>
 </div>
 </section>
+
+<div id="projectPopupBackdrop" class="project-popup-backdrop" onclick="handleProjectBackdropClick(event)">
+  <div class="project-popup-bg"></div>
+  <div class="project-popup-box">
+    <button class="popup-close" style="top:1rem;right:1rem;">✕</button>
+    <div class="project-popup-header">
+      <div>
+        <div class="project-popup-title" id="projectPopupTitle"></div>
+        <div class="project-popup-message" id="projectPopupMessage"></div>
+        <a id="projectPopupLink" href="#" class="project-popup-link" target="_blank" rel="noreferrer">Siteyi Aç</a>
+      </div>
+      <div class="project-popup-counter" id="projectPopupCounter"></div>
+    </div>
+    <div class="project-popup-content">
+      <div class="project-popup-image-wrap">
+        <img id="projectPopupImage" class="project-popup-image" src="" alt="Proje görseli">
+      </div>
+      <div class="project-popup-controls">
+        <button class="project-popup-btn" id="projectPopupPrev">← Önceki</button>
+        <button class="project-popup-btn" id="projectPopupNext">Sonraki →</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- QA TEASER -->
 <section id="qa" style="background:var(--dark2);">
@@ -755,7 +796,16 @@ function openPopup(id) {
 function closePopup(){document.getElementById('popup-backdrop').classList.remove('open');document.body.style.overflow='';}
 function handleBackdropClick(e){if(e.target===document.getElementById('popup-backdrop')||e.target.classList.contains('popup-bg'))closePopup();}
 
-document.addEventListener('keydown',function(e){if(e.key==='Escape'){closePopup();closeContact();}});
+var projectGalleries={avente:{title:'Avente Parfüm Kataloğu',message:'Avente proje görsellerini inceleyin. Linkten canlı siteye geçebilirsiniz.',link:'https://catalog.avente.com.tr',linkLabel:'Siteyi Aç',slides:['avente/01.png','avente/02.png','avente/03.png']},sonvardiya:{title:'Son Vardiya',message:'Son Vardiya oyun ekran görüntüleri ve proje detayları.',link:'https://son-vardiya-eu.onrender.com/',linkLabel:'Siteyi Aç',slides:['SonVardiya/01.png','SonVardiya/02.png','SonVardiya/03.png']}};
+var currentProjectPopup=null;var currentProjectSlide=0;
+function openProjectPopup(id){var g=projectGalleries[id]; if(!g)return; currentProjectPopup=g; currentProjectSlide=0; document.getElementById('projectPopupTitle').textContent=g.title; document.getElementById('projectPopupMessage').textContent=g.message; var link=document.getElementById('projectPopupLink'); link.href=g.link; link.textContent=g.linkLabel; renderProjectSlide(); document.getElementById('projectPopupBackdrop').classList.add('open'); document.body.style.overflow='hidden';}
+function renderProjectSlide(){var img=document.getElementById('projectPopupImage'); if(!currentProjectPopup)return; var src=currentProjectPopup.slides[currentProjectSlide]; img.src=src; img.style.display='block'; img.onerror=function(){img.style.display='none';}; document.getElementById('projectPopupCounter').textContent=(currentProjectSlide+1)+' / '+currentProjectPopup.slides.length;}
+function closeProjectPopup(){document.getElementById('projectPopupBackdrop').classList.remove('open');document.body.style.overflow='';}
+function handleProjectBackdropClick(e){if(e.target===document.getElementById('projectPopupBackdrop')||e.target.classList.contains('project-popup-bg'))closeProjectPopup();}
+function showPrevSlide(){if(currentProjectPopup&&currentProjectSlide>0){currentProjectSlide--;renderProjectSlide();}}
+function showNextSlide(){if(currentProjectPopup&&currentProjectSlide<currentProjectPopup.slides.length-1){currentProjectSlide++;renderProjectSlide();}}
+document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.proj-card.clickable').forEach(function(c){c.addEventListener('click',function(){openProjectPopup(c.dataset.project);});});document.getElementById('projectPopupPrev').addEventListener('click',showPrevSlide);document.getElementById('projectPopupNext').addEventListener('click',showNextSlide);document.querySelector('#projectPopupBackdrop .popup-close').addEventListener('click',closeProjectPopup);});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closePopup();closeProjectPopup();closeContact();}});
 
 // QA sayfası qa.html'e taşındı
 </script>
