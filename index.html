@@ -391,6 +391,25 @@ section { position:relative; z-index:1; padding:6rem 3rem; }
 .modal-linkedin { display:flex; align-items:center; justify-content:center; gap:0.6rem; width:100%; padding:0.8rem; margin-top:0.5rem; background:rgba(0,122,60,0.12); border:1px solid rgba(0,200,100,0.3); border-radius:4px; color:var(--text); font-family:var(--mono); font-size:0.73rem; text-decoration:none; letter-spacing:0.06em; transition:all 0.2s; }
 .modal-linkedin:hover { background:rgba(0,200,100,0.2); border-color:var(--green); color:var(--white); }
 
+/* CERTIFICATE MODAL */
+.certificate-backdrop { position:fixed; inset:0; z-index:10002; display:flex; align-items:center; justify-content:center; padding:1.5rem; visibility:hidden; opacity:0; transition:opacity 0.2s ease,visibility 0.2s ease; pointer-events:none; }
+.certificate-backdrop.open { visibility:visible; opacity:1; pointer-events:auto; }
+.certificate-bg { position:absolute; inset:0; background:rgba(6,14,8,0.92); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); }
+.certificate-box { position:relative; z-index:1; width:min(1100px,100%); max-height:90vh; overflow:auto; padding:2rem; background:var(--panel); border:1px solid rgba(0,200,100,0.4); border-radius:6px; box-shadow:0 0 60px rgba(0,122,60,0.3); }
+.certificate-box::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--gdim),var(--cyan)); }
+.certificate-heading { margin-bottom:1.5rem; padding-right:2rem; }
+.certificate-tag { font-family:var(--mono); font-size:0.68rem; color:var(--cyan); letter-spacing:0.2em; text-transform:uppercase; margin-bottom:0.6rem; }
+.certificate-title { font-family:var(--disp); font-size:1.45rem; font-weight:700; color:var(--white); }
+.certificate-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; }
+.certificate-item { min-width:0; padding:0.8rem; background:rgba(0,0,0,0.25); border:1px solid var(--border); border-radius:4px; }
+.certificate-item-title { min-height:2.3rem; font-family:var(--mono); font-size:0.7rem; line-height:1.5; color:var(--green); margin-bottom:0.7rem; }
+.certificate-item img,.certificate-item object { display:block; width:100%; height:340px; border:0; border-radius:2px; background:#fff; object-fit:contain; }
+.certificate-item object { background:#252525; }
+.certificate-open-link { display:inline-block; margin-top:0.6rem; color:var(--cyan); font-family:var(--mono); font-size:0.66rem; text-decoration:none; }
+.certificate-open-link:hover { color:var(--white); }
+.certificate-close { position:absolute; top:1rem; right:1.2rem; z-index:2; background:none; border:0; color:var(--dim); font-size:1.2rem; cursor:pointer; }
+.certificate-close:hover { color:var(--cyan); }
+
 /* FOOTER */
 footer { position:relative; z-index:1; background:var(--dark2); border-top:1px solid var(--border); padding:1.8rem 3rem; display:flex; justify-content:space-between; align-items:center; font-family:var(--mono); font-size:0.7rem; color:var(--dim); }
 footer span { color:var(--cyan); }
@@ -407,6 +426,9 @@ footer span { color:var(--cyan); }
   .hero{padding:7rem 1.5rem 3rem}
   .hero-stats{gap:2rem;flex-wrap:wrap}
   .about-grid{grid-template-columns:1fr;gap:2rem}
+  .certificate-grid{grid-template-columns:1fr}
+  .certificate-box{padding:1.5rem}
+  .certificate-item img,.certificate-item object{height:300px}
   footer{flex-direction:column;gap:0.5rem;text-align:center}
   .hero-profile-img{width:120px;height:120px}
   .rm-cards{margin-left:36px}
@@ -445,8 +467,9 @@ footer span { color:var(--cyan); }
     <p class="hero-desc">İstanbul merkezli IT & Helpdesk uzmanı. Kurumsal ağ altyapıları, teknik destek ve yapay zeka destekli otomasyon geliştirme alanlarında 3.5+ yıllık deneyim.</p>
     <div class="hero-actions">
       <button class="btn btn-primary" onclick="openContact()">✉ İletişime Geç</button>
-      <a href="cv.pdf" download="Huseyin_Alperen_Senel_CV.pdf" class="btn btn-outline">📥 CV İndir</a>
+      <a href="Huseyin_Alperen_Senel_CV_Final_v3.pdf" download="Huseyin_Alperen_Senel_CV_Final_v3.pdf" class="btn btn-outline">📥 CV İndir</a>
       <a href="https://linkedin.com/in/alperensenel" target="_blank" class="btn btn-outline">🔗 LinkedIn</a>
+      <button class="btn btn-outline" type="button" onclick="openCertificates()">▣ Sertifikalar</button>
     </div>
     <div class="hero-stats">
       <div><div class="stat-num">3.5<span>+</span></div><div class="stat-label">Yıl Deneyim</div></div>
@@ -629,6 +652,41 @@ footer span { color:var(--cyan); }
 </footer>
 
 <!-- CONTACT MODAL -->
+<div id="certificateModal" class="certificate-backdrop" onclick="handleCertificateBackdropClick(event)">
+  <div class="certificate-bg"></div>
+  <div class="certificate-box">
+    <button class="certificate-close" type="button" onclick="closeCertificates()" aria-label="Sertifika penceresini kapat">✕</button>
+    <div class="certificate-heading">
+      <div class="certificate-tag">// belgeler</div>
+      <div class="certificate-title">Sertifikalar</div>
+    </div>
+    <div class="certificate-grid">
+      <article class="certificate-item">
+        <div class="certificate-item-title">innova_ccna</div>
+        <img src="innova_ccna.jpg" alt="innova_ccna sertifikası">
+      </article>
+      <article class="certificate-item">
+        <div class="certificate-item-title">innova_cisco</div>
+        <img src="innova_cisco.jpg" alt="innova_cisco sertifikası">
+      </article>
+      <article class="certificate-item">
+        <div class="certificate-item-title">Bilgi Teknolojileri giriş sertifikası</div>
+        <object data="Bilgi_Teknolojilerine_Giriş_Sertifika.pdf" type="application/pdf" aria-label="Bilgi Teknolojilerine Giriş sertifikası">
+          <a class="certificate-open-link" href="Bilgi_Teknolojilerine_Giriş_Sertifika.pdf" target="_blank" rel="noreferrer">PDF'yi aç ↗</a>
+        </object>
+        <a class="certificate-open-link" href="Bilgi_Teknolojilerine_Giriş_Sertifika.pdf" target="_blank" rel="noreferrer">Yeni sekmede aç ↗</a>
+      </article>
+      <article class="certificate-item">
+        <div class="certificate-item-title">iu programcılık sertifikası</div>
+        <object data="iu_programcılık_sertifika.pdf" type="application/pdf" aria-label="IU programcılık sertifikası">
+          <a class="certificate-open-link" href="iu_programcılık_sertifika.pdf" target="_blank" rel="noreferrer">PDF'yi aç ↗</a>
+        </object>
+        <a class="certificate-open-link" href="iu_programcılık_sertifika.pdf" target="_blank" rel="noreferrer">Yeni sekmede aç ↗</a>
+      </article>
+    </div>
+  </div>
+</div>
+
 <div id="contactModal" class="modal-backdrop">
   <div class="modal-bg" onclick="closeContact()"></div>
   <div class="modal-box">
@@ -722,6 +780,11 @@ function openContact(){document.getElementById('contactModal').classList.add('op
 function closeContact(){document.getElementById('contactModal').classList.remove('open');}
 function copyText(text,btn){navigator.clipboard.writeText(text).then(function(){var o=btn.textContent;btn.textContent='✓ KOPYALANDI';btn.style.color='#00ffaa';setTimeout(function(){btn.textContent=o;btn.style.color='';},2000);});}
 
+// ═══════════ CERTIFICATES ═══════════
+function openCertificates(){document.getElementById('certificateModal').classList.add('open');document.body.style.overflow='hidden';}
+function closeCertificates(){document.getElementById('certificateModal').classList.remove('open');document.body.style.overflow='';}
+function handleCertificateBackdropClick(e){if(e.target===document.getElementById('certificateModal')||e.target.classList.contains('certificate-bg'))closeCertificates();}
+
 // ═══════════ SCROLL FADE ═══════════
 var obs=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';}});},{threshold:0.08});
 document.querySelectorAll('.fade-in').forEach(function(el){el.style.opacity='0';el.style.transform='translateY(20px)';el.style.transition='opacity 0.6s ease,transform 0.6s ease';obs.observe(el);});
@@ -807,7 +870,7 @@ function handleProjectBackdropClick(e){if(e.target===document.getElementById('pr
 function showPrevSlide(){if(currentProjectPopup&&currentProjectSlide>0){currentProjectSlide--;renderProjectSlide();}}
 function showNextSlide(){if(currentProjectPopup&&currentProjectSlide<currentProjectPopup.slides.length-1){currentProjectSlide++;renderProjectSlide();}}
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.proj-card.clickable').forEach(function(c){c.addEventListener('click',function(){openProjectPopup(c.dataset.project);});});document.getElementById('projectPopupPrev').addEventListener('click',showPrevSlide);document.getElementById('projectPopupNext').addEventListener('click',showNextSlide);document.querySelector('#projectPopupBackdrop .popup-close').addEventListener('click',closeProjectPopup);});
-document.addEventListener('keydown',function(e){if(e.key==='Escape'){closePopup();closeProjectPopup();closeContact();}});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closePopup();closeProjectPopup();closeContact();closeCertificates();}});
 
 // QA sayfası qa.html'e taşındı
 </script>
