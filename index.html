@@ -410,6 +410,20 @@ section { position:relative; z-index:1; padding:6rem 3rem; }
 .certificate-close { position:absolute; top:1rem; right:1.2rem; z-index:2; background:none; border:0; color:var(--dim); font-size:1.2rem; cursor:pointer; }
 .certificate-close:hover { color:var(--cyan); }
 
+/* CV MODAL */
+.cv-backdrop { position:fixed; inset:0; z-index:10003; display:flex; align-items:center; justify-content:center; padding:1.5rem; visibility:hidden; opacity:0; transition:opacity 0.2s ease,visibility 0.2s ease; pointer-events:none; }
+.cv-backdrop.open { visibility:visible; opacity:1; pointer-events:auto; }
+.cv-bg { position:absolute; inset:0; background:rgba(6,14,8,0.92); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); }
+.cv-box { position:relative; z-index:1; width:min(900px,100%); height:min(88vh,800px); padding:2rem; background:var(--panel); border:1px solid rgba(0,200,100,0.4); border-radius:6px; box-shadow:0 0 60px rgba(0,122,60,0.3); }
+.cv-box::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--gdim),var(--cyan)); }
+.cv-heading { display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; margin-bottom:1rem; padding-right:2rem; }
+.cv-tag { font-family:var(--mono); font-size:0.68rem; color:var(--cyan); letter-spacing:0.2em; text-transform:uppercase; margin-bottom:0.5rem; }
+.cv-title { font-family:var(--disp); font-size:1.35rem; font-weight:700; color:var(--white); }
+.cv-preview { display:block; width:100%; height:calc(100% - 7.5rem); border:1px solid var(--border); border-radius:3px; background:#252525; }
+.cv-actions { display:flex; justify-content:flex-end; margin-top:0.8rem; }
+.cv-close { position:absolute; top:1rem; right:1.2rem; z-index:2; background:none; border:0; color:var(--dim); font-size:1.2rem; cursor:pointer; }
+.cv-close:hover { color:var(--cyan); }
+
 /* FOOTER */
 footer { position:relative; z-index:1; background:var(--dark2); border-top:1px solid var(--border); padding:1.8rem 3rem; display:flex; justify-content:space-between; align-items:center; font-family:var(--mono); font-size:0.7rem; color:var(--dim); }
 footer span { color:var(--cyan); }
@@ -467,7 +481,7 @@ footer span { color:var(--cyan); }
     <p class="hero-desc">İstanbul merkezli IT & Helpdesk uzmanı. Kurumsal ağ altyapıları, teknik destek ve yapay zeka destekli otomasyon geliştirme alanlarında 3.5+ yıllık deneyim.</p>
     <div class="hero-actions">
       <button class="btn btn-primary" onclick="openContact()">✉ İletişime Geç</button>
-      <a href="Huseyin_Alperen_Senel_CV_Final_v3.pdf" download="Huseyin_Alperen_Senel_CV_Final_v3.pdf" class="btn btn-outline">📥 CV İndir</a>
+      <button class="btn btn-outline" type="button" onclick="openCv()">📄 CV Görüntüle</button>
       <a href="https://linkedin.com/in/alperensenel" target="_blank" class="btn btn-outline">🔗 LinkedIn</a>
       <button class="btn btn-outline" type="button" onclick="openCertificates()">▣ Sertifikalar</button>
     </div>
@@ -652,6 +666,25 @@ footer span { color:var(--cyan); }
 </footer>
 
 <!-- CONTACT MODAL -->
+<div id="cvModal" class="cv-backdrop" onclick="handleCvBackdropClick(event)">
+  <div class="cv-bg"></div>
+  <div class="cv-box">
+    <button class="cv-close" type="button" onclick="closeCv()" aria-label="CV penceresini kapat">✕</button>
+    <div class="cv-heading">
+      <div>
+        <div class="cv-tag">// özgeçmiş</div>
+        <div class="cv-title">Hüseyin Alperen Şenel - CV</div>
+      </div>
+    </div>
+    <object class="cv-preview" data="Huseyin_Alperen_Senel_CV_Final_v3.pdf" type="application/pdf" aria-label="Hüseyin Alperen Şenel CV önizlemesi">
+      <a href="Huseyin_Alperen_Senel_CV_Final_v3.pdf" target="_blank" rel="noreferrer">CV'yi yeni sekmede aç</a>
+    </object>
+    <div class="cv-actions">
+      <a href="Huseyin_Alperen_Senel_CV_Final_v3.pdf" download="Huseyin_Alperen_Senel_CV_Final_v3.pdf" class="btn btn-primary">📥 CV'yi İndir</a>
+    </div>
+  </div>
+</div>
+
 <div id="certificateModal" class="certificate-backdrop" onclick="handleCertificateBackdropClick(event)">
   <div class="certificate-bg"></div>
   <div class="certificate-box">
@@ -780,6 +813,11 @@ function openContact(){document.getElementById('contactModal').classList.add('op
 function closeContact(){document.getElementById('contactModal').classList.remove('open');}
 function copyText(text,btn){navigator.clipboard.writeText(text).then(function(){var o=btn.textContent;btn.textContent='✓ KOPYALANDI';btn.style.color='#00ffaa';setTimeout(function(){btn.textContent=o;btn.style.color='';},2000);});}
 
+// ═══════════ CV ═══════════
+function openCv(){document.getElementById('cvModal').classList.add('open');document.body.style.overflow='hidden';}
+function closeCv(){document.getElementById('cvModal').classList.remove('open');document.body.style.overflow='';}
+function handleCvBackdropClick(e){if(e.target===document.getElementById('cvModal')||e.target.classList.contains('cv-bg'))closeCv();}
+
 // ═══════════ CERTIFICATES ═══════════
 function openCertificates(){document.getElementById('certificateModal').classList.add('open');document.body.style.overflow='hidden';}
 function closeCertificates(){document.getElementById('certificateModal').classList.remove('open');document.body.style.overflow='';}
@@ -870,7 +908,7 @@ function handleProjectBackdropClick(e){if(e.target===document.getElementById('pr
 function showPrevSlide(){if(currentProjectPopup&&currentProjectSlide>0){currentProjectSlide--;renderProjectSlide();}}
 function showNextSlide(){if(currentProjectPopup&&currentProjectSlide<currentProjectPopup.slides.length-1){currentProjectSlide++;renderProjectSlide();}}
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.proj-card.clickable').forEach(function(c){c.addEventListener('click',function(){openProjectPopup(c.dataset.project);});});document.getElementById('projectPopupPrev').addEventListener('click',showPrevSlide);document.getElementById('projectPopupNext').addEventListener('click',showNextSlide);document.querySelector('#projectPopupBackdrop .popup-close').addEventListener('click',closeProjectPopup);});
-document.addEventListener('keydown',function(e){if(e.key==='Escape'){closePopup();closeProjectPopup();closeContact();closeCertificates();}});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closePopup();closeProjectPopup();closeContact();closeCertificates();closeCv();}});
 
 // QA sayfası qa.html'e taşındı
 </script>
