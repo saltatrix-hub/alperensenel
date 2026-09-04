@@ -435,6 +435,11 @@ section { position:relative; z-index:1; padding:6rem 3rem; }
 .certificate-pdf-icon { display:grid; place-items:center; width:74px; height:88px; margin-bottom:1.25rem; border:1px solid rgba(241,216,138,.45); border-radius:8px; color:var(--cyan); font-family:var(--sans); font-size:.72rem; font-weight:600; letter-spacing:.12em; box-shadow:0 18px 45px rgba(0,0,0,.35),inset 0 0 22px rgba(201,168,76,.07); }
 .certificate-pdf-name { max-width:280px; color:var(--white); font-family:var(--disp); font-size:1.35rem; line-height:1.15; }
 .certificate-pdf-action { margin-top:1rem; color:var(--green); font-family:var(--sans); font-size:.66rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; }
+.certificate-visual-link { position:relative; display:block; overflow:hidden; border-radius:10px; background:#fff; text-decoration:none; }
+.certificate-visual-link img { transition:transform .3s ease,filter .3s ease; }
+.certificate-visual-link::after { content:'Belgeyi aç ↗'; position:absolute; left:50%; bottom:1rem; transform:translate(-50%,8px); padding:.65rem 1rem; border:1px solid rgba(241,216,138,.42); border-radius:999px; background:rgba(8,7,5,.88); color:var(--cyan); font-family:var(--sans); font-size:.62rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; opacity:0; transition:opacity .25s,transform .25s; backdrop-filter:blur(8px); white-space:nowrap; }
+.certificate-visual-link:hover img { transform:scale(1.025); filter:brightness(.78); }
+.certificate-visual-link:hover::after,.certificate-visual-link:focus-visible::after { opacity:1; transform:translate(-50%,0); }
 .certificate-close { position:absolute; top:1rem; right:1.2rem; z-index:2; background:none; border:0; color:var(--dim); font-size:1.2rem; cursor:pointer; }
 .certificate-close:hover { color:var(--cyan); }
 
@@ -772,26 +777,20 @@ section{padding:8rem 3rem}.inner{max-width:1120px}#skills,#projects,#qa{backgrou
       </article>
       <article class="certificate-item">
         <div class="certificate-item-title">Bilgi Teknolojileri giriş sertifikası</div>
-        <a class="certificate-pdf-card" href="sertifikalar/Bilgi_Teknolojilerine_Giriş_Sertifika.pdf" target="_blank" rel="noreferrer" aria-label="Bilgi Teknolojilerine Giriş sertifikasını yeni sekmede aç">
-          <span class="certificate-pdf-icon">PDF</span>
-          <span class="certificate-pdf-name">Bilgi Teknolojilerine Giriş</span>
-          <span class="certificate-pdf-action">Belgeyi aç ↗</span>
+        <a class="certificate-visual-link" href="sertifikalar/Bilgi_Teknolojilerine_Giriş_Sertifika.pdf" target="_blank" rel="noreferrer" aria-label="Bilgi Teknolojilerine Giriş sertifikasını yeni sekmede aç">
+          <img src="sertifikalar/bilgi-teknolojileri-onizleme.jpg" alt="Bilgi Teknolojilerine Giriş sertifikası önizlemesi" loading="lazy">
         </a>
       </article>
       <article class="certificate-item">
         <div class="certificate-item-title">Ağ Temelleri sertifikası</div>
-        <a class="certificate-pdf-card" href="sertifikalar/Ağ_Temelleri_Sertifika.pdf" target="_blank" rel="noreferrer" aria-label="Ağ Temelleri sertifikasını yeni sekmede aç">
-          <span class="certificate-pdf-icon">PDF</span>
-          <span class="certificate-pdf-name">Ağ Temelleri</span>
-          <span class="certificate-pdf-action">Belgeyi aç ↗</span>
+        <a class="certificate-visual-link" href="sertifikalar/Ağ_Temelleri_Sertifika.pdf" target="_blank" rel="noreferrer" aria-label="Ağ Temelleri sertifikasını yeni sekmede aç">
+          <img src="sertifikalar/ag-temelleri-onizleme.jpg" alt="Ağ Temelleri sertifikası önizlemesi" loading="lazy">
         </a>
       </article>
       <article class="certificate-item">
         <div class="certificate-item-title">iu programcılık sertifikası</div>
-        <a class="certificate-pdf-card" href="sertifikalar/iu_programcılık_sertifika.pdf" target="_blank" rel="noreferrer" aria-label="İstanbul Üniversitesi programcılık sertifikasını yeni sekmede aç">
-          <span class="certificate-pdf-icon">PDF</span>
-          <span class="certificate-pdf-name">İstanbul Üniversitesi Programcılık</span>
-          <span class="certificate-pdf-action">Belgeyi aç ↗</span>
+        <a class="certificate-visual-link" href="sertifikalar/iu_programcılık_sertifika.pdf" target="_blank" rel="noreferrer" aria-label="İstanbul Üniversitesi programcılık sertifikasını yeni sekmede aç">
+          <img src="sertifikalar/programcilik-onizleme.jpg" alt="İstanbul Üniversitesi programcılık sertifikası önizlemesi" loading="lazy">
         </a>
       </article>
     </div>
