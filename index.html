@@ -13,7 +13,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hüseyin Alperen Şenel — IT & Helpdesk Uzmanı</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<meta name="description" content="Hüseyin Alperen Şenel'in IT, teknik destek, otomasyon ve dijital çözüm projelerini keşfedin.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hüseyin Alperen Şenel — IT & Dijital Çözümler">
+<meta property="og:description" content="IT, teknik destek, otomasyon ve dijital çözüm projeleri.">
+<meta property="og:image" content="https://alperensenel.com/og.png">
+<meta property="og:url" content="https://alperensenel.com/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Hüseyin Alperen Şenel — IT & Dijital Çözümler">
+<meta name="twitter:description" content="IT, teknik destek, otomasyon ve dijital çözüm projeleri.">
+<meta name="twitter:image" content="https://alperensenel.com/og.png">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root {
   --green:  #d4af37;
@@ -84,7 +94,20 @@ nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; align-i
 .orb2 { position:absolute; width:350px; height:350px; border-radius:50%; background:radial-gradient(circle,rgba(246,215,120,0.08) 0%,transparent 70%); bottom:0; left:5%; filter:blur(60px); animation:floatOrb 10s ease-in-out infinite reverse; will-change:transform; }
 @keyframes floatOrb { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-20px,30px)} }
 .hero-inner { position:relative; z-index:2; max-width:800px; width:100%; margin:0 auto; display:flex; flex-direction:column; align-items:center; }
-.hero-profile-img { width:150px; height:150px; border-radius:50%; object-fit:cover; border:2px solid var(--green); box-shadow:0 0 20px var(--glow); margin-bottom:1.5rem; transition:transform 0.3s,box-shadow 0.3s; }
+.profile-orbit { position:relative; width:218px; height:218px; display:grid; place-items:center; margin-bottom:1.5rem; isolation:isolate; }
+.profile-orbit::before,.profile-orbit::after { content:''; position:absolute; border:1px solid rgba(212,175,55,0.55); border-radius:50%; pointer-events:none; }
+.profile-orbit::before { inset:10px 0; transform:rotate(28deg); box-shadow:0 0 18px rgba(212,175,55,0.2),inset 0 0 18px rgba(212,175,55,0.12); animation:orbitSweep 7s linear infinite; }
+.profile-orbit::after { inset:0 10px; transform:rotate(-28deg); border-color:rgba(246,215,120,0.34); box-shadow:0 0 24px rgba(246,215,120,0.16); animation:orbitSweepReverse 10s linear infinite; }
+.profile-ring { position:absolute; inset:-20px; border:1px solid rgba(212,175,55,0.16); border-radius:50%; transform:rotate(-18deg) scaleX(0.72); pointer-events:none; }
+.profile-ring::before,.profile-ring::after { content:''; position:absolute; width:8px; height:8px; border-radius:50%; background:var(--cyan); box-shadow:0 0 8px var(--cyan),0 0 20px var(--green); }
+.profile-ring::before { top:13%; left:11%; animation:orbitDot 5s linear infinite; }
+.profile-ring::after { right:8%; bottom:17%; width:5px; height:5px; animation:orbitDotReverse 6s linear infinite; }
+.profile-profile { position:relative; z-index:1; width:150px; height:150px; border-radius:50%; object-fit:cover; border:2px solid var(--green); box-shadow:0 0 20px var(--glow),0 0 55px rgba(212,175,55,0.14); transition:transform 0.3s,box-shadow 0.3s; }
+.profile-orbit:hover .profile-profile { transform:scale(1.05); box-shadow:0 0 30px rgba(212,175,55,0.6),0 0 65px rgba(212,175,55,0.2); }
+@keyframes orbitSweep { from{transform:rotate(28deg)} to{transform:rotate(388deg)} }
+@keyframes orbitSweepReverse { from{transform:rotate(-28deg)} to{transform:rotate(-388deg)} }
+@keyframes orbitDot { from{transform:rotate(0deg) translateX(85px) rotate(0deg)} to{transform:rotate(360deg) translateX(85px) rotate(-360deg)} }
+@keyframes orbitDotReverse { from{transform:rotate(0deg) translateX(78px) rotate(0deg)} to{transform:rotate(-360deg) translateX(78px) rotate(360deg)} }
 .hero-profile-img:hover { transform:scale(1.05); box-shadow:0 0 30px rgba(212,175,55,0.6); }
 .terminal-badge { display:inline-flex; align-items:center; gap:0.6rem; font-family:var(--mono); font-size:0.72rem; background:rgba(212,175,55,0.08); border:1px solid rgba(212,175,55,0.3); border-radius:3px; padding:0.4rem 1rem; color:var(--green); margin-bottom:1.4rem; letter-spacing:0.1em; }
 .terminal-badge .dot { width:6px; height:6px; border-radius:50%; background:var(--green); box-shadow:0 0 6px var(--green); animation:pulseDot 2s ease-in-out infinite; }
@@ -407,6 +430,11 @@ section { position:relative; z-index:1; padding:6rem 3rem; }
 .certificate-item object { background:#252525; }
 .certificate-open-link { display:inline-block; margin-top:0.6rem; color:var(--cyan); font-family:var(--mono); font-size:0.66rem; text-decoration:none; }
 .certificate-open-link:hover { color:var(--white); }
+.certificate-pdf-card { display:flex; min-height:340px; padding:2rem; flex-direction:column; align-items:center; justify-content:center; text-align:center; color:inherit; text-decoration:none; border:1px solid rgba(225,196,116,.2); border-radius:12px; background:radial-gradient(circle at 50% 20%,rgba(201,168,76,.13),transparent 48%),#0c0b09; transition:transform .25s,border-color .25s,background .25s; }
+.certificate-pdf-card:hover { transform:translateY(-3px); border-color:rgba(241,216,138,.55); background:radial-gradient(circle at 50% 20%,rgba(201,168,76,.2),transparent 52%),#0f0e0b; }
+.certificate-pdf-icon { display:grid; place-items:center; width:74px; height:88px; margin-bottom:1.25rem; border:1px solid rgba(241,216,138,.45); border-radius:8px; color:var(--cyan); font-family:var(--sans); font-size:.72rem; font-weight:600; letter-spacing:.12em; box-shadow:0 18px 45px rgba(0,0,0,.35),inset 0 0 22px rgba(201,168,76,.07); }
+.certificate-pdf-name { max-width:280px; color:var(--white); font-family:var(--disp); font-size:1.35rem; line-height:1.15; }
+.certificate-pdf-action { margin-top:1rem; color:var(--green); font-family:var(--sans); font-size:.66rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; }
 .certificate-close { position:absolute; top:1rem; right:1.2rem; z-index:2; background:none; border:0; color:var(--dim); font-size:1.2rem; cursor:pointer; }
 .certificate-close:hover { color:var(--cyan); }
 
@@ -419,8 +447,8 @@ section { position:relative; z-index:1; padding:6rem 3rem; }
 .cv-heading { display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; margin-bottom:1rem; padding-right:2rem; }
 .cv-tag { font-family:var(--mono); font-size:0.68rem; color:var(--cyan); letter-spacing:0.2em; text-transform:uppercase; margin-bottom:0.5rem; }
 .cv-title { font-family:var(--disp); font-size:1.35rem; font-weight:700; color:var(--white); }
-.cv-preview { display:block; width:100%; height:calc(100% - 7.5rem); border:1px solid var(--border); border-radius:3px; background:#252525; }
-.cv-actions { display:flex; justify-content:flex-end; margin-top:0.8rem; }
+.cv-preview { display:block; width:100%; height:calc(100% - 7.5rem); border:1px solid var(--border); border-radius:10px; background:#252525; }
+.cv-actions { display:flex; justify-content:flex-end; gap:.65rem; margin-top:0.8rem; }
 .cv-close { position:absolute; top:1rem; right:1.2rem; z-index:2; background:none; border:0; color:var(--dim); font-size:1.2rem; cursor:pointer; }
 .cv-close:hover { color:var(--cyan); }
 
@@ -444,10 +472,48 @@ footer span { color:var(--cyan); }
   .certificate-box{padding:1.5rem}
   .certificate-item img,.certificate-item object{height:300px}
   footer{flex-direction:column;gap:0.5rem;text-align:center}
-  .hero-profile-img{width:120px;height:120px}
+  .profile-orbit{width:178px;height:178px}
+  .profile-profile{width:120px;height:120px}
+  .profile-ring{inset:-14px}
   .rm-cards{margin-left:36px}
   .qa-roadmap::before{left:13px}
 }
+/* PREMIUM BLACK & GOLD — 2026 REFRESH */
+:root{--green:#c9a84c;--cyan:#f1d88a;--gdim:#9b792c;--glow:rgba(201,168,76,.16);--dark:#070706;--dark2:#0b0a08;--panel:#11100d;--border:rgba(225,196,116,.17);--text:#d8d2c4;--dim:#938d80;--white:#f7f2e8;--sans:'Manrope',sans-serif;--disp:'Cormorant Garamond',serif}
+body{cursor:auto;background:#070706;letter-spacing:-.01em}
+body::before{background-image:linear-gradient(rgba(218,185,96,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(218,185,96,.035) 1px,transparent 1px);background-size:72px 72px;opacity:1;mask-image:linear-gradient(to bottom,black,transparent 78%)}
+.scanlines,#matrix-bg,#cur-dot,#cur-ring{display:none!important}
+
+nav{width:min(1180px,calc(100% - 40px));left:50%;right:auto;top:18px;transform:translateX(-50%);padding:.8rem .85rem .8rem 1.2rem;background:rgba(12,11,9,.78);border:1px solid rgba(225,196,116,.16);border-radius:999px;box-shadow:0 18px 60px rgba(0,0,0,.38),inset 0 1px rgba(255,255,255,.035)}
+.nav-logo{display:flex;align-items:center;gap:.7rem;font-family:var(--sans);font-size:.72rem;font-weight:600;letter-spacing:.18em;color:var(--white);text-transform:uppercase}
+.nav-logo::before{content:'H';display:grid;place-items:center;width:34px;height:34px;border:1px solid rgba(241,216,138,.55);border-radius:50%;color:var(--cyan);font-family:var(--disp);font-size:1.2rem;font-weight:600;box-shadow:inset 0 0 16px rgba(201,168,76,.1)}
+.nav-logo span{color:var(--green)}
+.nav-links{gap:.25rem}.nav-links a{display:block;padding:.62rem .85rem;border-radius:999px;font-family:var(--sans);font-size:.68rem;font-weight:500;color:#aaa395;letter-spacing:.08em}.nav-links a::after{display:none}.nav-links a:hover{color:var(--white);background:rgba(241,216,138,.07)}
+.nav-qa{padding-inline:1rem!important;background:linear-gradient(135deg,#d6b65c,#9d7728)!important;color:#0a0907!important}.nav-qa:hover{color:#000!important;box-shadow:0 5px 20px rgba(201,168,76,.22)}.qa-dot{background:#18140b;box-shadow:none}
+
+.hero{min-height:100svh;padding:10rem 3rem 6rem;isolation:isolate}.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 38% 42% at 50% 35%,rgba(201,168,76,.13),transparent 72%),linear-gradient(to bottom,transparent 65%,#0b0a08 100%);z-index:-1}.hero::after{background-image:radial-gradient(circle,rgba(241,216,138,.14) .7px,transparent .8px);background-size:34px 34px;opacity:.32;mask-image:radial-gradient(circle at 50% 38%,black,transparent 68%)}
+.orb1{width:620px;height:620px;right:calc(50% - 310px);top:8%;background:radial-gradient(circle,rgba(201,168,76,.09),transparent 67%);filter:blur(30px)}.orb2{display:none}.hero-inner{max-width:940px}
+.profile-orbit{width:230px;height:230px;margin-bottom:1.8rem}.profile-orbit::before,.profile-orbit::after{border-color:rgba(241,216,138,.33);box-shadow:none}.profile-ring{border-color:rgba(241,216,138,.11)}.profile-profile{width:158px;height:158px;border:1px solid rgba(241,216,138,.72);box-shadow:0 0 0 8px rgba(201,168,76,.055),0 25px 80px rgba(0,0,0,.6);filter:saturate(.88) contrast(1.03)}
+.terminal-badge{margin-bottom:1.15rem;padding:.46rem 1rem;border:0;background:transparent;color:#b9a873;font-family:var(--sans);font-size:.62rem;font-weight:600;letter-spacing:.22em}.terminal-badge::before,.terminal-badge::after{content:'';width:38px;height:1px;background:linear-gradient(90deg,transparent,var(--green))}.terminal-badge::after{transform:scaleX(-1)}.terminal-badge .dot{display:none}
+.hero h1{max-width:880px;font-size:clamp(4rem,9vw,7.5rem);line-height:.76;font-weight:600;letter-spacing:-.055em;margin-bottom:1.8rem;text-shadow:0 12px 50px rgba(0,0,0,.45)}.hero h1 .gdim{color:var(--white)}.hero h1 .acc{color:var(--cyan);font-style:italic;font-weight:500}.glitch::before,.glitch::after{display:none}
+.hero-subtitle{font-family:var(--sans);font-size:.82rem;text-transform:uppercase;letter-spacing:.2em;color:#c4aa62;margin-bottom:1.4rem}.hero-desc{max-width:620px;font-size:1.02rem;line-height:1.9;color:#aaa396}
+.hero-actions{gap:.75rem}.btn{min-height:48px;padding:.82rem 1.35rem;border-radius:999px;font-family:var(--sans);font-size:.68rem;font-weight:600;letter-spacing:.09em}.btn-primary{background:linear-gradient(135deg,#e0c16a 0%,#a27b2b 100%);color:#0b0905;border-color:#e2c46f;box-shadow:0 12px 32px rgba(158,119,40,.2),inset 0 1px rgba(255,255,255,.45)}.btn-primary:hover{background:linear-gradient(135deg,#f0d989,#b88b30);color:#070604;box-shadow:0 16px 42px rgba(201,168,76,.3)}.btn-outline{color:#d7c58f;border-color:rgba(225,196,116,.28);background:rgba(255,255,255,.015)}.btn-outline:hover{color:var(--white);border-color:rgba(241,216,138,.58);background:rgba(241,216,138,.065);box-shadow:none}
+.hero-stats{width:min(650px,100%);gap:0;margin-top:4rem;padding-top:0;border:1px solid var(--border);border-radius:16px;background:rgba(16,15,12,.54);overflow:hidden;backdrop-filter:blur(10px)}.hero-stats>div{flex:1;padding:1.25rem 1rem}.hero-stats>div+div{border-left:1px solid var(--border)}.stat-num{font-family:var(--disp);font-size:2rem;font-weight:600}.stat-label{font-family:var(--sans);font-size:.58rem;letter-spacing:.15em}
+
+section{padding:8rem 3rem}.inner{max-width:1120px}#skills,#projects,#qa{background:linear-gradient(180deg,#0b0a08,#090806)}#experience,#about{background:#070706}
+.sec-tag{margin-bottom:1rem;color:#bfa457;font-family:var(--sans);font-size:.62rem;font-weight:600;letter-spacing:.25em}.sec-tag::before{width:42px;background:linear-gradient(90deg,var(--green),transparent)}.sec-title{max-width:700px;margin-bottom:3.5rem;font-size:clamp(2.8rem,5vw,4.6rem);line-height:.98;font-weight:600;letter-spacing:-.035em}.sec-title em{color:var(--cyan);font-weight:500;font-style:italic}
+
+.skills-grid{grid-template-columns:repeat(3,1fr);gap:1rem}.skill-card,.proj-card,.contact-panel{border-color:var(--border);border-radius:18px;background:linear-gradient(145deg,rgba(24,22,17,.9),rgba(13,12,10,.94));box-shadow:inset 0 1px rgba(255,255,255,.025)}.skill-card{min-height:190px;padding:1.7rem}.skill-card::before{left:1.7rem;right:1.7rem;top:auto;bottom:0;height:1px;transform:scaleX(.25);background:linear-gradient(90deg,transparent,var(--cyan),transparent);transform-origin:center}.skill-card:hover,.proj-card:hover{border-color:rgba(241,216,138,.45);transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,.32),inset 0 1px rgba(255,255,255,.04)}.skill-num{top:1.25rem;right:1.35rem;color:rgba(241,216,138,.35)}.skill-label{margin-bottom:1rem;padding-right:2rem;color:#dfc879;font-family:var(--sans);font-size:.68rem;font-weight:600}.skill-val{color:#aaa396;line-height:1.75}
+.timeline{padding-left:0;display:grid;grid-template-columns:1fr 1fr;gap:1rem}.timeline::before{display:none}.titem{margin:0;padding:1.75rem;border:1px solid var(--border);border-radius:18px;background:linear-gradient(145deg,rgba(22,20,16,.78),rgba(12,11,9,.88))}.titem::before{position:static;display:block;margin-bottom:1.25rem;width:28px;height:2px;border:0;border-radius:0;background:linear-gradient(90deg,var(--cyan),transparent);box-shadow:none}.t-role{font-family:var(--disp);font-size:1.45rem;font-weight:600}.t-company{font-family:var(--sans);color:#c4a950;font-size:.7rem;line-height:1.5}.t-period{border-color:var(--border);border-radius:999px;background:rgba(201,168,76,.055);font-size:.6rem}.t-list li{color:#999286}.t-list li::before{content:'—';color:var(--green)}
+.proj-grid{grid-template-columns:repeat(3,1fr);gap:1rem}.proj-card{min-height:280px;padding:1.7rem}.proj-card::after{background:radial-gradient(circle at 100% 0,rgba(201,168,76,.12),transparent 50%)}.proj-icon{display:grid;place-items:center;width:48px;height:48px;margin-bottom:1.5rem;border:1px solid rgba(225,196,116,.22);border-radius:14px;background:rgba(201,168,76,.055);font-size:1.25rem}.proj-name{font-family:var(--disp);font-size:1.45rem;font-weight:600}.proj-tag{border:0;padding:0;color:#bea45d;font-family:var(--sans);font-size:.56rem;font-weight:600}.proj-desc{color:#999286}.proj-card .proj-cta{top:auto;right:1.2rem;bottom:1.2rem;min-height:auto;padding:.45rem .8rem}
+#qa>.inner>div[style*="grid-template-columns"]{padding:2.25rem;border:1px solid var(--border);border-radius:22px;background:linear-gradient(135deg,rgba(25,22,16,.74),rgba(11,10,8,.86))}#qa div[style*="grid-template-columns:1fr 1fr;gap:0.5rem"]>div{background:rgba(201,168,76,.045)!important;border-color:rgba(225,196,116,.15)!important;border-radius:10px!important}
+.about-grid{gap:5rem}.about-text{font-size:1rem;color:#aaa396}.about-text strong{color:#e8ddbe}.itag{padding:.42rem .75rem;border-radius:999px;color:#a9a194}.contact-panel{padding:2rem}.contact-panel h3{font-family:var(--disp);font-size:1.6rem;font-weight:600}.citem{border-color:rgba(225,196,116,.1)}.cicon{color:#c9ad5b}
+.project-popup-bg,.popup-bg,.cv-bg,.certificate-bg,.contact-bg{background:rgba(4,4,3,.86)}.project-popup-box,.popup-box,.cv-box,.certificate-box,.contact-box{border-color:rgba(225,196,116,.3)!important;border-radius:20px!important;background:#11100d!important;box-shadow:0 30px 100px rgba(0,0,0,.7)!important}footer{padding:2rem 3rem;border-color:var(--border);background:#070706}
+
+@media(max-width:900px){.skills-grid,.proj-grid{grid-template-columns:repeat(2,1fr)}.timeline{grid-template-columns:1fr}}
+@media(max-width:768px){nav{width:calc(100% - 24px);top:10px;padding:.65rem .75rem}.nav-logo{font-size:.62rem}.nav-logo::before{width:30px;height:30px}.hero{padding:8.5rem 1.25rem 4rem}.hero h1{font-size:clamp(3.7rem,19vw,5.5rem);line-height:.8}.profile-orbit{width:190px;height:190px}.profile-profile{width:126px;height:126px}.hero-actions{width:100%}.hero-actions .btn{flex:1 1 calc(50% - .5rem);justify-content:center;padding-inline:.8rem}.hero-stats{margin-top:3rem;gap:0;flex-wrap:nowrap}.hero-stats>div{padding:1rem .55rem}section{padding:5.5rem 1.25rem}.skills-grid,.proj-grid{grid-template-columns:1fr}.skill-card{min-height:auto}#qa>.inner>div[style*="grid-template-columns"]{grid-template-columns:1fr!important;padding:1.25rem}.about-grid{gap:2rem}}
+@media(max-width:600px){.cv-backdrop{padding:.5rem}.cv-box{height:94dvh;padding:1.2rem}.cv-heading{margin-bottom:.75rem}.cv-preview{height:calc(100% - 7rem)}.cv-actions{display:grid;grid-template-columns:1fr 1fr}.cv-actions .btn{justify-content:center;padding-inline:.65rem}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
@@ -459,7 +525,7 @@ footer span { color:var(--cyan); }
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">HAS<span>::</span>portfolio</div>
+  <div class="nav-logo">Alperen <span>Şenel</span></div>
   <ul class="nav-links">
     <li><a href="#skills">Yetenekler</a></li>
     <li><a href="#experience">Deneyim</a></li>
@@ -474,14 +540,17 @@ footer span { color:var(--cyan); }
   <div class="orb1"></div>
   <div class="orb2"></div>
   <div class="hero-inner">
-    <img src="alperen.jpg" alt="Hüseyin Alperen Şenel" class="hero-profile-img">
-    <div class="terminal-badge"><span class="dot"></span>SYS://ISTANBUL &nbsp;·&nbsp; ONLINE &nbsp;·&nbsp; READY</div>
+    <div class="profile-orbit" aria-label="Hüseyin Alperen Şenel profil fotoğrafı">
+      <span class="profile-ring" aria-hidden="true"></span>
+      <img src="alperen.jpg" alt="Hüseyin Alperen Şenel" class="profile-profile">
+    </div>
+    <div class="terminal-badge"><span class="dot"></span>İstanbul · IT & Dijital Çözümler</div>
     <h1>Hüseyin<br><span class="gdim">Alperen</span> <span class="acc glitch" data-text="Şenel">Şenel</span></h1>
     <div class="hero-subtitle"><span id="typed"></span><span class="blink">_</span></div>
     <p class="hero-desc">İstanbul merkezli IT & Helpdesk uzmanı. Kurumsal ağ altyapıları, teknik destek ve yapay zeka destekli otomasyon geliştirme alanlarında 3.5+ yıllık deneyim.</p>
     <div class="hero-actions">
       <button class="btn btn-primary" onclick="openContact()">✉ İletişime Geç</button>
-      <button class="btn btn-outline" type="button" onclick="openCv()">📄 CV Görüntüle</button>
+      <a class="btn btn-outline" href="Huseyin_Alperen_Senel_CV_Final_v3.pdf" target="_blank" rel="noreferrer">📄 CV Görüntüle</a>
       <a href="https://linkedin.com/in/alperensenel" target="_blank" class="btn btn-outline">🔗 LinkedIn</a>
       <button class="btn btn-outline" type="button" onclick="openCertificates()">▣ Sertifikalar</button>
     </div>
@@ -538,7 +607,7 @@ footer span { color:var(--cyan); }
     <div class="proj-card fade-in"><div class="proj-icon">🎣</div><div class="proj-name">BalıkçıPro Mobil Uygulaması</div><span class="proj-tag">Mobil · Devam Ediyor</span><p class="proj-desc">Sportif balıkçıların ihtiyaçlarına yönelik uygulamanın fikir, konsept ve operasyonel tasarım süreçlerinde proje yöneticisi/geliştirici.</p></div>
     <div class="proj-card fade-in"><div class="proj-icon">🤖</div><div class="proj-name">YZ Destekli Süreç Otomasyonu</div><span class="proj-tag">Python · AI Destekli · YOLO · OCR</span><p class="proj-desc">Görüntü işleme (YOLO) ve OCR ile insan müdahalesi gerektiren doğrulama adımlarını otomatik çözen Python tabanlı otonom betikler.</p></div>
     <div class="proj-card fade-in"><div class="proj-icon">⚡</div><div class="proj-name">İletişim API Entegrasyonları</div><span class="proj-tag">Python · AI Destekli · Discord · Telegram</span><p class="proj-desc">Discord ticket taleplerini anlık olarak Telegram kanallarına yönlendiren otomasyon botları.</p></div>
-    <div class="proj-card fade-in clickable" data-project="avente"><img class="proj-img" src="avente/avente-logo.png" alt="Avente logo" onerror="this.style.display='none'"><div class="proj-icon">🌿</div><div class="proj-name">Avente Parfüm Kataloğu</div><span class="proj-tag">Nuxt · TypeScript · Supabase</span><p class="proj-desc">Stok ve filtreleme odaklı parfüm kataloğu — nota, karakter, performans bilgileri, "Kokunu Keşfet" testi ve yönetim paneli.</p><button class="btn btn-outline proj-cta" type="button" onclick="openProjectPopup('avente')" aria-label="Avente görsellerini aç">Tıkla</button></div>
+    <div class="proj-card fade-in clickable" data-project="avente"><img class="proj-img" src="avente/logo.png" alt="Avente logo" onerror="this.style.display='none'"><div class="proj-icon">🌿</div><div class="proj-name">Avente Parfüm Kataloğu</div><span class="proj-tag">Nuxt · TypeScript · Supabase</span><p class="proj-desc">Stok ve filtreleme odaklı parfüm kataloğu — nota, karakter, performans bilgileri, "Kokunu Keşfet" testi ve yönetim paneli.</p><button class="btn btn-outline proj-cta" type="button" onclick="openProjectPopup('avente')" aria-label="Avente görsellerini aç">Tıkla</button></div>
     <div class="proj-card fade-in clickable" data-project="sonvardiya"><div class="proj-icon">🧟</div><div class="proj-name">Son Vardiya</div><span class="proj-tag">Co‑op · AI Destekli</span><p class="proj-desc">1–4 oyunculu co‑op zombi oyunu: dalga tabanlı mücadele, karakter gelişimi ve ekipman satın alma.</p><button class="btn btn-outline proj-cta" type="button" onclick="openProjectPopup('sonvardiya')" aria-label="Son Vardiya görsellerini aç">Tıkla</button></div>
   </div>
 </div>
@@ -676,10 +745,9 @@ footer span { color:var(--cyan); }
         <div class="cv-title">Hüseyin Alperen Şenel - CV</div>
       </div>
     </div>
-    <object class="cv-preview" data="Huseyin_Alperen_Senel_CV_Final_v3.pdf" type="application/pdf" aria-label="Hüseyin Alperen Şenel CV önizlemesi">
-      <a href="Huseyin_Alperen_Senel_CV_Final_v3.pdf" target="_blank" rel="noreferrer">CV'yi yeni sekmede aç</a>
-    </object>
+    <iframe id="cvPreview" class="cv-preview" title="Hüseyin Alperen Şenel CV önizlemesi" data-src="Huseyin_Alperen_Senel_CV_Final_v3.pdf#view=FitH&toolbar=1" loading="lazy"></iframe>
     <div class="cv-actions">
+      <a href="Huseyin_Alperen_Senel_CV_Final_v3.pdf" target="_blank" rel="noreferrer" class="btn btn-outline">↗ Yeni Sekmede Aç</a>
       <a href="Huseyin_Alperen_Senel_CV_Final_v3.pdf" download="Huseyin_Alperen_Senel_CV_Final_v3.pdf" class="btn btn-primary">📥 CV'yi İndir</a>
     </div>
   </div>
@@ -704,17 +772,19 @@ footer span { color:var(--cyan); }
       </article>
       <article class="certificate-item">
         <div class="certificate-item-title">Bilgi Teknolojileri giriş sertifikası</div>
-        <object data="Bilgi_Teknolojilerine_Giriş_Sertifika.pdf" type="application/pdf" aria-label="Bilgi Teknolojilerine Giriş sertifikası">
-          <a class="certificate-open-link" href="Bilgi_Teknolojilerine_Giriş_Sertifika.pdf" target="_blank" rel="noreferrer">PDF'yi aç ↗</a>
-        </object>
-        <a class="certificate-open-link" href="Bilgi_Teknolojilerine_Giriş_Sertifika.pdf" target="_blank" rel="noreferrer">Yeni sekmede aç ↗</a>
+        <a class="certificate-pdf-card" href="Bilgi_Teknolojilerine_Giriş_Sertifika.pdf" target="_blank" rel="noreferrer" aria-label="Bilgi Teknolojilerine Giriş sertifikasını yeni sekmede aç">
+          <span class="certificate-pdf-icon">PDF</span>
+          <span class="certificate-pdf-name">Bilgi Teknolojilerine Giriş</span>
+          <span class="certificate-pdf-action">Belgeyi aç ↗</span>
+        </a>
       </article>
       <article class="certificate-item">
         <div class="certificate-item-title">iu programcılık sertifikası</div>
-        <object data="iu_programcılık_sertifika.pdf" type="application/pdf" aria-label="IU programcılık sertifikası">
-          <a class="certificate-open-link" href="iu_programcılık_sertifika.pdf" target="_blank" rel="noreferrer">PDF'yi aç ↗</a>
-        </object>
-        <a class="certificate-open-link" href="iu_programcılık_sertifika.pdf" target="_blank" rel="noreferrer">Yeni sekmede aç ↗</a>
+        <a class="certificate-pdf-card" href="iu_programcılık_sertifika.pdf" target="_blank" rel="noreferrer" aria-label="İstanbul Üniversitesi programcılık sertifikasını yeni sekmede aç">
+          <span class="certificate-pdf-icon">PDF</span>
+          <span class="certificate-pdf-name">İstanbul Üniversitesi Programcılık</span>
+          <span class="certificate-pdf-action">Belgeyi aç ↗</span>
+        </a>
       </article>
     </div>
   </div>
@@ -814,7 +884,7 @@ function closeContact(){document.getElementById('contactModal').classList.remove
 function copyText(text,btn){navigator.clipboard.writeText(text).then(function(){var o=btn.textContent;btn.textContent='✓ KOPYALANDI';btn.style.color='#f6d778';setTimeout(function(){btn.textContent=o;btn.style.color='';},2000);});}
 
 // ═══════════ CV ═══════════
-function openCv(){document.getElementById('cvModal').classList.add('open');document.body.style.overflow='hidden';}
+function openCv(){var preview=document.getElementById('cvPreview');if(!preview.getAttribute('src'))preview.setAttribute('src',preview.dataset.src);document.getElementById('cvModal').classList.add('open');document.body.style.overflow='hidden';}
 function closeCv(){document.getElementById('cvModal').classList.remove('open');document.body.style.overflow='';}
 function handleCvBackdropClick(e){if(e.target===document.getElementById('cvModal')||e.target.classList.contains('cv-bg'))closeCv();}
 
